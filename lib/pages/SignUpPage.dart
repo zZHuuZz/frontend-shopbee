@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart';
+
 class SignUpPage extends StatefulWidget {
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -11,7 +12,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final emailControler = TextEditingController();
   final passController = TextEditingController();
   final nameControler = TextEditingController();
- 
+
   bool termAndConditions = false;
   bool passToggle = true;
 
@@ -27,27 +28,33 @@ class _SignUpPageState extends State<SignUpPage> {
     return Color(0xFF44E49E);
   }
 
-  void signup(String email , password, name) async {
-    
-    try{
+  void signup(String email, password, name) async {
+    print(name);
+    print(email);
+    print(password);
+    Map<String, dynamic> requestBody = {
+      'fullname': name,
+      'email': email,
+      'password': password,
+    };
+    try {
       Response response = await post(
-        Uri.parse('http://4.194.216.57:3000/v1/sign-in'),
-        body: {
-          'full name': name, 
-          'email' : email,
-          'password' : password
-        }
+        Uri.parse('http://4.194.216.57:3000/v1/sign-up'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       );
 
-      if(response.statusCode == 200){
-        var data = jsonDecode(response.body.toString());
-        print(data['token']);
+      if (response.statusCode == 201) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        String data = responseBody['data'];
+        print(data);
         print('Sign up successfully');
-
-      }else {
+      } else {
         print('failed');
       }
-    }catch(e){
+    } catch (e) {
       print(e.toString());
     }
   }
@@ -79,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Welcome you,",
+                    "Welcome ! ",
                     style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.bold,
@@ -89,24 +96,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(height: 40),
                 TextFormField(
                   keyboardType: TextInputType.text,
+                  controller: nameControler,
                   decoration: InputDecoration(
-                    labelText: " name",
+                    labelText: "Full name",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.account_circle),
                   ),
                 ),
-                // SizedBox(height: 40),
-                // TextFormField(
-                //   keyboardType: TextInputType.name,
-                //   decoration: InputDecoration(
-                //     labelText: "Full name",
-                //     border: OutlineInputBorder(),
-                //     prefixIcon: Icon(Icons.person),
-                //   ),
-                // ),
                 SizedBox(height: 40),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  controller: emailControler,
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(),
@@ -155,7 +155,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "TermsAndConditionsPage");
+                          Navigator.pushNamed(
+                              context, "TermsAndConditionsPage");
                         },
                         child: Text(
                           "Agree with terms and conditions",
@@ -172,7 +173,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(height: 30),
                 InkWell(
                   onTap: () {
-                    signup(emailControler.text.toString(), passController.text.toString(), nameControler.text.toString());
+                    signup(
+                        emailControler.text.toString(),
+                        passController.text.toString(),
+                        nameControler.text.toString());
                     //Main page
                   },
                   child: Container(
