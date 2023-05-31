@@ -1,4 +1,7 @@
+// import 'dart:convert';
+
 import 'package:flutter/material.dart';
+// import 'package:http/http.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -6,9 +9,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final userControler = TextEditingController();
+  final emailControler = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: "User name",
+                    labelText: "Email",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.account_circle),
                   ),
@@ -78,25 +83,26 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "ForgotPasswordPage");
-                    },
-                    child: Text(
-                      "Forgot password?",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "ForgotPasswordPage");
+                      },
+                      child: Text(
+                        "Forgot password?",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
                 SizedBox(height: 50),
                 InkWell(
                   onTap: () {
+                    //login(emailControler.text.toString(), passController.text.toString());
                     //Main page
                   },
                   child: Container(

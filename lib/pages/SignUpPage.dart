@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:http/http.dart';
 class SignUpPage extends StatefulWidget {
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final userControler = TextEditingController();
+  final emailControler = TextEditingController();
   final passController = TextEditingController();
   final nameControler = TextEditingController();
-  final emailController = TextEditingController();
+ 
   bool termAndConditions = false;
   bool passToggle = true;
 
@@ -23,6 +25,31 @@ class _SignUpPageState extends State<SignUpPage> {
       return Colors.blue;
     }
     return Color(0xFF44E49E);
+  }
+
+  void signup(String email , password, name) async {
+    
+    try{
+      Response response = await post(
+        Uri.parse('http://4.194.216.57:3000/v1/sign-in'),
+        body: {
+          'full name': name, 
+          'email' : email,
+          'password' : password
+        }
+      );
+
+      if(response.statusCode == 200){
+        var data = jsonDecode(response.body.toString());
+        print(data['token']);
+        print('Sign up successfully');
+
+      }else {
+        print('failed');
+      }
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   @override
@@ -63,20 +90,20 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: "User name",
+                    labelText: " name",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.account_circle),
                   ),
                 ),
-                SizedBox(height: 40),
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    labelText: "Full name",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person),
-                  ),
-                ),
+                // SizedBox(height: 40),
+                // TextFormField(
+                //   keyboardType: TextInputType.name,
+                //   decoration: InputDecoration(
+                //     labelText: "Full name",
+                //     border: OutlineInputBorder(),
+                //     prefixIcon: Icon(Icons.person),
+                //   ),
+                // ),
                 SizedBox(height: 40),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -145,6 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(height: 30),
                 InkWell(
                   onTap: () {
+                    signup(emailControler.text.toString(), passController.text.toString(), nameControler.text.toString());
                     //Main page
                   },
                   child: Container(
