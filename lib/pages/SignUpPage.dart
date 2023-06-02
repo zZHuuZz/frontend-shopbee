@@ -28,10 +28,36 @@ class _SignUpPageState extends State<SignUpPage> {
     return Color(0xFF44E49E);
   }
 
+  void _sleep() {
+    // Sleep for 3 seconds
+    Future.delayed(Duration(seconds: 10)).then((value) {
+      // Perform any task after the sleep
+      print('Sleep completed');
+    });
+  }
+
   void signup(String email, password, name) async {
-    print(name);
-    print(email);
-    print(password);
+    if(name == "") {
+      print('Please fill in the blank following the form of Full name !');
+      return;
+    }
+
+    if (email == "") {
+      print('Please fill in the blank following the form of Email !');
+      return;
+    }
+
+    if (password == "") {
+      print('Please fill your password in the blank !');
+      return;
+    }
+
+    else {
+      print(name);
+      print(email);
+      print(password);
+    }
+    
     Map<String, dynamic> requestBody = {
       'fullname': name,
       'email': email,
@@ -51,8 +77,11 @@ class _SignUpPageState extends State<SignUpPage> {
         String data = responseBody['data'];
         print(data);
         print('Sign up successfully');
+        _sleep();
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamed(context, '/');
       } else {
-        print('failed');
+        print('Sign up failed');
       }
     } catch (e) {
       print(e.toString());

@@ -1,7 +1,7 @@
-// import 'dart:convert';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart';
+import 'package:http/http.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,7 +13,45 @@ class _LoginPageState extends State<LoginPage> {
   final passController = TextEditingController();
   bool passToggle = true;
 
-  
+  void signin(String email, password) async{
+    if(email == "") {
+      print('Email cannot empty !');
+      Navigator.pushNamed(context, 'ForgotPasswordPage');
+    }
+    else {
+      if (password == "") {
+        print('password cannot empty !');
+        Navigator.pushNamed(context, 'ForgotPasswordPage');
+      }
+    }
+    Map<String, dynamic> requestBody = {
+      'email': email,
+      'password': password,
+    };
+
+    try {
+      Response response = await post(
+        Uri.parse('http://4.194.216.57:3000/v1/sign-in'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        String data = responseBody['data']['fullname'];
+        print(data);
+        print('Sign in successfully');
+        Navigator.pushNamed(context, 'MainPage');
+      } else {
+        print('Sign in failed');
+      }
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 50),
                 TextFormField(
                   keyboardType: TextInputType.text,
+                  controller: emailControler,
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(),
@@ -102,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 50),
                 InkWell(
                   onTap: () {
-                    //login(emailControler.text.toString(), passController.text.toString());
+                    signin(emailControler.text.toString(), passController.text.toString());
                     //Main page
                   },
                   child: Container(
