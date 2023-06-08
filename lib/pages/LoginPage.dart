@@ -9,16 +9,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailControler = TextEditingController();
+  final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
 
-  void signin(String email, password) async{
-    if(email == "") {
+  void signin(String email, password) async {
+    if (email == "") {
       print('Email cannot empty !');
       Navigator.pushNamed(context, 'ForgotPasswordPage');
-    }
-    else {
+    } else {
       if (password == "") {
         print('password cannot empty !');
         Navigator.pushNamed(context, 'ForgotPasswordPage');
@@ -47,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         print('Sign in failed');
       }
-
     } catch (e) {
       print(e.toString());
     }
@@ -90,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 50),
                 TextFormField(
                   keyboardType: TextInputType.text,
-                  controller: emailControler,
+                  controller: emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(),
@@ -122,27 +120,27 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "ForgotPasswordPage");
-                      },
-                      child: Text(
-                        "Forgot password?",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "ForgotPasswordPage");
+                    },
+                    child: Text(
+                      "Forgot password?",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                   ),
+                ),
                 SizedBox(height: 50),
                 InkWell(
                   onTap: () {
-                    signin(emailControler.text.toString(), passController.text.toString());
-                    //Main page
+                    signin(emailController.text.toString(),
+                        passController.text.toString());
                   },
                   child: Container(
                     height: 49,

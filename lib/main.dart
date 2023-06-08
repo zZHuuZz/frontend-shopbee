@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:shopbee/pages/MainPage.dart';
+import 'package:shopbee/pages/MainPage.dart';
+import 'pages/AddProductPage.dart';
 import 'pages/ForgotPasswordPage.dart';
 import 'pages/LoginPage.dart';
 import 'pages/SignUpPage.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
         "SignUpPage": (context) => SignUpPage(),
         "ForgotPasswordPage": (context) => ForgotPasswordPage(),
         "TermsAndConditionsPage": (context) => TermsAndConditionsPage(),
-        //"MainPage": (context) => MainPage(),
+        "MainPage": (context) => MainPage(),
+        "AddProductPage": (context) => AddProductPage(),
       },
     );
   }
