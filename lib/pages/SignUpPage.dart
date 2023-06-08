@@ -37,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void signup(String email, password, name) async {
-    if(name == "") {
+    if (name == "") {
       print('Please fill in the blank following the form of Full name !');
       return;
     }
@@ -50,14 +50,12 @@ class _SignUpPageState extends State<SignUpPage> {
     if (password == "") {
       print('Please fill your password in the blank !');
       return;
-    }
-
-    else {
+    } else {
       print(name);
       print(email);
       print(password);
     }
-    
+
     Map<String, dynamic> requestBody = {
       'fullname': name,
       'email': email,
@@ -206,7 +204,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         emailControler.text.toString(),
                         passController.text.toString(),
                         nameControler.text.toString());
-                    //Main page
                   },
                   child: Container(
                     height: 49,

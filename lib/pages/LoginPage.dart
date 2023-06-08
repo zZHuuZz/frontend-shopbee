@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         String data = responseBody['data']['fullname'];
         print(data);
         print('Sign in successfully');
-        Navigator.pushNamed(context, 'MainPage');
+        Navigator.pushNamed(context, 'HomePage');
       } else {
         print('Sign in failed');
       }

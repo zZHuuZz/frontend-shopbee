@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shopbee/pages/MainPage.dart';
 import 'pages/AddProductPage.dart';
 import 'pages/EditProductPage.dart';
 import 'pages/ForgotPasswordPage.dart';
+import 'pages/HomePage.dart';
 import 'pages/LoginPage.dart';
+import 'pages/MyStorePage.dart';
 import 'pages/SignUpPage.dart';
 import 'pages/TermsAndConditionsPage.dart';
 
@@ -18,12 +19,13 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
-        "/": (context) => EditProductPage(),
+        "/": (context) => HomePage(),
         //"/": (context) => LoginPage(),
         "SignUpPage": (context) => SignUpPage(),
         "ForgotPasswordPage": (context) => ForgotPasswordPage(),
         "TermsAndConditionsPage": (context) => TermsAndConditionsPage(),
-        "MainPage": (context) => MainPage(),
+        "HomePage": (context) => HomePage(),
+        "MyStorePage": (context) => MyStorePage(),
         "AddProductPage": (context) => AddProductPage(),
         "EditProductPage": (context) => EditProductPage(),
       },
