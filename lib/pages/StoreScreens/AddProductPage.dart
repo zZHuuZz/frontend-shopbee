@@ -388,6 +388,15 @@ class _AddProductState extends State<AddProductPage> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
+                        suffix: InkWell(
+                          onTap: () {
+                            //add map functions
+                          },
+                          child: Icon(
+                            Icons.map,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -511,7 +520,9 @@ class _AddProductState extends State<AddProductPage> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                //add create product button
+              },
               child: Container(
                 height: 49,
                 width: 84,

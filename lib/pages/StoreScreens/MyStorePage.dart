@@ -83,7 +83,7 @@ class _MyStorePageState extends State<MyStorePage> {
           ),
           SizedBox(height: 30),
           Text(
-            'You Don\'t Have a Store ',
+            'You Don\'t Have a Store',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -92,7 +92,7 @@ class _MyStorePageState extends State<MyStorePage> {
           SizedBox(height: 40),
           InkWell(
             onTap: () {
-              //navigate to create store page
+              Navigator.pushNamed(context, 'CreateStorePage');
             },
             child: Container(
               height: 50,

@@ -388,6 +388,15 @@ class _EditProductState extends State<EditProductPage> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
+                        suffix: InkWell(
+                          onTap: () {
+                            //add map functions
+                          },
+                          child: Icon(
+                            Icons.map,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -511,7 +520,9 @@ class _EditProductState extends State<EditProductPage> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                //add edit product button
+              },
               child: Container(
                 height: 49,
                 width: 84,
@@ -521,7 +532,7 @@ class _EditProductState extends State<EditProductPage> {
                 ),
                 child: Center(
                   child: Text(
-                    "Add Product",
+                    "Edit Product",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
