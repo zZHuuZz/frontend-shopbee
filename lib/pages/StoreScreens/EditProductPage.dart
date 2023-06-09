@@ -20,6 +20,7 @@ class _EditProductState extends State<EditProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF6F9FF),
       appBar: AppBar(
         toolbarHeight: 100,
         backgroundColor: Color(0xFF33907C),

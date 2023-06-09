@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MyStorePage extends StatefulWidget {
+class UncreatedStorePage extends StatefulWidget {
   @override
-  State<MyStorePage> createState() => _MyStorePageState();
+  State<UncreatedStorePage> createState() => _UncreatedStorePageState();
 }
 
-class _MyStorePageState extends State<MyStorePage> {
+class _UncreatedStorePageState extends State<UncreatedStorePage> {
   int _selectedIndex = 2;
   void _onItemTapped(int index) {
     setState(() {
@@ -28,6 +28,7 @@ class _MyStorePageState extends State<MyStorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF6F9FF),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(

@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+
+//store screens
 import 'pages/StoreScreens/AddProductPage.dart';
 import 'pages/StoreScreens/CreateStorePage.dart';
 import 'pages/StoreScreens/EditProductPage.dart';
+import 'pages/StoreScreens/EditStorePage.dart';
+import 'pages/StoreScreens/EmptyStorePage.dart';
+import 'pages/StoreScreens/UncreatedStorePage.dart';
+
+//login screens
 import 'pages/LoginScreens/ForgotPasswordPage.dart';
-import 'pages/HomeScreens/HomePage.dart';
 import 'pages/LoginScreens/LoginPage.dart';
-import 'pages/StoreScreens/MyStorePage.dart';
 import 'pages/LoginScreens/SignUpPage.dart';
 import 'pages/LoginScreens/TermsAndConditionsPage.dart';
+
+//home screens
+import 'pages/HomeScreens/HomePage.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,14 +28,21 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
-        "/": (context) => MyStorePage(),
+        "/": (context) => EmptyStorePage(),
+        //login screens
         //"/": (context) => LoginPage(),
         "SignUpPage": (context) => SignUpPage(),
         "ForgotPasswordPage": (context) => ForgotPasswordPage(),
         "TermsAndConditionsPage": (context) => TermsAndConditionsPage(),
+
+        //home screens
         "HomePage": (context) => HomePage(),
-        "MyStorePage": (context) => MyStorePage(),
+
+        //store screens
+        "UncreatedStorePage": (context) => UncreatedStorePage(),
         "CreateStorePage": (context) => CreateStorePage(),
+        "EditStorePage": (context) => EditStorePage(),
+        "EmptyStorePage": (context) => EmptyStorePage(),
         "AddProductPage": (context) => AddProductPage(),
         "EditProductPage": (context) => EditProductPage(),
       },

@@ -20,6 +20,7 @@ class _AddProductState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
         toolbarHeight: 100,
         backgroundColor: Color(0xFF33907C),

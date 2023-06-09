@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
         //Navigator.pushNamed(context, 'BrowsePage');
       }
       if (index == 2) {
-        Navigator.pushNamed(context, 'MyStorePage');
+        Navigator.pushNamed(context, 'EmptyStorePage');
       }
       if (index == 3) {
         //Navigator.pushNamed(context, 'OrderHistoryPage');

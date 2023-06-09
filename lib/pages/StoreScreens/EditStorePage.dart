@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CreateStorePage extends StatefulWidget {
+class EditStorePage extends StatefulWidget {
   @override
-  State<CreateStorePage> createState() => _CreateStorePageState();
+  State<EditStorePage> createState() => _EditStorePageState();
 }
 
-class _CreateStorePageState extends State<CreateStorePage> {
+class _EditStorePageState extends State<EditStorePage> {
   final storeNameController = TextEditingController();
   final storeWebAddressController = TextEditingController();
   final storeDescriptionController = TextEditingController();
@@ -32,7 +32,7 @@ class _CreateStorePageState extends State<CreateStorePage> {
         toolbarHeight: 100,
         backgroundColor: Color(0xFF33907C),
         title: Text(
-          'My Store',
+          'Edit Store',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
@@ -55,7 +55,7 @@ class _CreateStorePageState extends State<CreateStorePage> {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                'This information is used to set up your shop',
+                'Change information is used to set up your shop',
                 style: TextStyle(
                   fontSize: 15,
                 ),
