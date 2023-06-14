@@ -54,106 +54,128 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFFC0F4D0),
-            Color(0xFFECFAB3),
-          ],
-        )),
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Form(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Image.asset(
-                  "images/logo.png",
-                  height: 300,
-                  width: 300,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Welcome back,",
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                    ),
+      backgroundColor: Color(0xFF33907C),
+      body: Form(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              SizedBox(height: 150),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Welcome to ShopBee",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 29,
                   ),
                 ),
-                SizedBox(height: 50),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.account_circle),
+              ),
+              SizedBox(height: 66),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Login to your account",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
                   ),
                 ),
-                SizedBox(height: 50),
-                TextFormField(
-                  keyboardType: TextInputType.visiblePassword,
-                  controller: passController,
-                  obscureText: passToggle,
-                  decoration: InputDecoration(
-                    labelText: "Password",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
-                    suffix: InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (passToggle == true) {
-                            passToggle = false;
-                          } else {
-                            passToggle = true;
-                          }
-                        });
-                      },
-                      child: Icon(
-                          passToggle ? Icons.visibility : Icons.visibility_off),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "ForgotPasswordPage");
-                    },
-                    child: Text(
-                      "Forgot password?",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+              ),
+              SizedBox(height: 50),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Container(
+                  height: 48,
+                  child: TextFormField(
+                    autofocus: false,
+                    keyboardType: TextInputType.text,
+                    controller: emailController,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
-                InkWell(
+              ),
+              SizedBox(height: 16),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Container(
+                  height: 48,
+                  child: TextFormField(
+                    autofocus: false,
+                    keyboardType: TextInputType.visiblePassword,
+                    controller: passController,
+                    obscureText: passToggle,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      suffix: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (passToggle == true) {
+                              passToggle = false;
+                            } else {
+                              passToggle = true;
+                            }
+                          });
+                        },
+                        child: Icon(
+                          passToggle ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 38),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: InkWell(
                   onTap: () {
                     signin(emailController.text.toString(),
                         passController.text.toString());
                   },
                   child: Container(
-                    height: 49,
-                    width: 84,
+                    width: MediaQuery.of(context).size.width,
+                    height: 48,
                     decoration: BoxDecoration(
-                      color: Color(0xFF44E49E),
-                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100),
                     ),
                     child: Center(
                       child: Text(
                         "Log in",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF13B58C),
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -161,33 +183,50 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account?",
+              ),
+              SizedBox(height: 30),
+              Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "EmailVerificationPage");
+                  },
+                  child: Text(
+                    "Forgot your password?",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account?",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "SignUpPage");
+                    },
+                    child: Text(
+                      "Sign Up",
                       style: TextStyle(
                         fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "SignUpPage");
-                      },
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

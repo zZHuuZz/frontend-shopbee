@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shopbee/widgets/MyStoreEmptyWidget.dart';
+import 'package:shopbee/widgets/MyStoreItemWidget.dart';
 
 class EmptyStorePage extends StatefulWidget {
   @override
@@ -180,44 +182,10 @@ class _EmptyStorePageState extends State<EmptyStorePage> {
               ],
             ),
           ),
-          SizedBox(
-            height: 60,
-          ),
-          Text(
-            'You don\'t have product',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Container(
-            height: 50,
-            width: 220,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Color(0xFF33907C),
-              ),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, 'AddProductPage');
-              },
-              child: Center(
-                child: Text(
-                  "Add Product",
-                  style: TextStyle(
-                    color: Color(0xFF33907C),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
+
+          //function to change page depend on store state
+          //MyStoreEmptyWidget(),
+          MyStoreItemWidget(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

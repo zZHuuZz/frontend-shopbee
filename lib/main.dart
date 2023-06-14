@@ -9,7 +9,7 @@ import 'pages/StoreScreens/EmptyStorePage.dart';
 import 'pages/StoreScreens/UncreatedStorePage.dart';
 
 //login screens
-import 'pages/LoginScreens/ForgotPasswordPage.dart';
+import 'pages/LoginScreens/EmailVerificationPage.dart';
 import 'pages/LoginScreens/LoginPage.dart';
 import 'pages/LoginScreens/SignUpPage.dart';
 import 'pages/LoginScreens/TermsAndConditionsPage.dart';
@@ -28,11 +28,10 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
-        "/": (context) => EmptyStorePage(),
         //login screens
-        //"/": (context) => LoginPage(),
+        "/": (context) => LoginPage(),
         "SignUpPage": (context) => SignUpPage(),
-        "ForgotPasswordPage": (context) => ForgotPasswordPage(),
+        "EmailVerificationPage": (context) => EmailVerificationPage(),
         "TermsAndConditionsPage": (context) => TermsAndConditionsPage(),
 
         //home screens

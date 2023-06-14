@@ -9,9 +9,10 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final emailControler = TextEditingController();
+  final emailController = TextEditingController();
   final passController = TextEditingController();
-  final nameControler = TextEditingController();
+  final nameController = TextEditingController();
+  final checkPassController = TextEditingController();
 
   bool termAndConditions = false;
   bool passToggle = true;
@@ -89,134 +90,215 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFFC0F4D0),
-            Color(0xFFECFAB3),
-          ],
-        )),
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Form(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Image.asset(
-                  "images/logo.png",
-                  height: 300,
-                  width: 300,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Welcome ! ",
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
+      backgroundColor: Color(0xFF33907C),
+      body: Form(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-                SizedBox(height: 40),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  controller: nameControler,
-                  decoration: InputDecoration(
-                    labelText: "Full name",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.account_circle),
+              ),
+              SizedBox(height: 85),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Welcome to ShopBee",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 29,
                   ),
                 ),
-                SizedBox(height: 40),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: emailControler,
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
+              ),
+              SizedBox(height: 54),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Signup to your account",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
                   ),
                 ),
-                SizedBox(height: 40),
-                TextFormField(
-                  keyboardType: TextInputType.visiblePassword,
-                  controller: passController,
-                  obscureText: passToggle,
-                  decoration: InputDecoration(
-                    labelText: "Password",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
-                    suffix: InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (passToggle == true) {
-                            passToggle = false;
-                          } else {
-                            passToggle = true;
-                          }
-                        });
-                      },
-                      child: Icon(
-                          passToggle ? Icons.visibility : Icons.visibility_off),
+              ),
+              SizedBox(height: 40),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Container(
+                  height: 48,
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    controller: nameController,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      labelText: "Full Name",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                      value: termAndConditions,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          termAndConditions = value!;
-                        });
-                      },
+              ),
+              SizedBox(height: 16),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Container(
+                  height: 48,
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, "TermsAndConditionsPage");
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Container(
+                  height: 48,
+                  child: TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
+                    controller: passController,
+                    obscureText: passToggle,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      suffix: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (passToggle == true) {
+                              passToggle = false;
+                            } else {
+                              passToggle = true;
+                            }
+                          });
                         },
-                        child: Text(
-                          "Agree with terms and conditions",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                        child: Icon(
+                          passToggle ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: 30),
-                InkWell(
+              ),
+              SizedBox(height: 16),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Container(
+                  height: 48,
+                  child: TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
+                    controller: checkPassController,
+                    obscureText: passToggle,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      labelText: "Re-enter Password",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      suffix: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (passToggle == true) {
+                              passToggle = false;
+                            } else {
+                              passToggle = true;
+                            }
+                          });
+                        },
+                        child: Icon(
+                          passToggle ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 38),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: InkWell(
                   onTap: () {
                     signup(
-                        emailControler.text.toString(),
+                        emailController.text.toString(),
                         passController.text.toString(),
-                        nameControler.text.toString());
+                        nameController.text.toString());
                   },
                   child: Container(
-                    height: 49,
-                    width: 84,
+                    width: MediaQuery.of(context).size.width,
+                    height: 48,
                     decoration: BoxDecoration(
-                      color: Color(0xFF44E49E),
-                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100),
                     ),
                     child: Center(
                       child: Text(
-                        "Sign Up",
+                        "Create",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF13B58C),
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -224,33 +306,34 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Already have an account?",
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Have an account?",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/");
+                    },
+                    child: Text(
+                      "Sign In",
                       style: TextStyle(
                         fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/");
-                      },
-                      child: Text(
-                        "Log In",
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
