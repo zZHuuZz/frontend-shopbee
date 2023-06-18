@@ -12,7 +12,7 @@ import 'pages/StoreScreens/UncreatedStorePage.dart';
 import 'pages/LoginScreens/EmailVerificationPage.dart';
 import 'pages/LoginScreens/LoginPage.dart';
 import 'pages/LoginScreens/SignUpPage.dart';
-import 'pages/LoginScreens/TermsAndConditionsPage.dart';
+import 'pages/LoginScreens/ForgotPasswordPage.dart';
 
 //home screens
 import 'pages/HomeScreens/HomePage.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         "/": (context) => LoginPage(),
         "SignUpPage": (context) => SignUpPage(),
         "EmailVerificationPage": (context) => EmailVerificationPage(),
-        "TermsAndConditionsPage": (context) => TermsAndConditionsPage(),
+        "ForgotPasswordPage": (context) => ForgotPasswordPage(),
 
         //home screens
         "HomePage": (context) => HomePage(),

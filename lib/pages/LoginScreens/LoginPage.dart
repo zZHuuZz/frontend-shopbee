@@ -5,10 +5,10 @@ import 'package:http/http.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.center,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "EmailVerificationPage");
+                    Navigator.pushNamed(context, "ForgotPasswordPage");
                   },
                   child: Text(
                     "Forgot your password?",

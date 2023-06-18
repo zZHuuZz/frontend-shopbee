@@ -5,10 +5,10 @@ import 'package:http/http.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpPage> createState() => _SignUpState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpState extends State<SignUpPage> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
