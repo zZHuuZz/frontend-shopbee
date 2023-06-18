@@ -5,7 +5,7 @@ import 'pages/StoreScreens/AddProductPage.dart';
 import 'pages/StoreScreens/CreateStorePage.dart';
 import 'pages/StoreScreens/EditProductPage.dart';
 import 'pages/StoreScreens/EditStorePage.dart';
-import 'pages/StoreScreens/EmptyStorePage.dart';
+import 'pages/StoreScreens/MyStorePage.dart';
 import 'pages/StoreScreens/UncreatedStorePage.dart';
 
 //login screens
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         "UncreatedStorePage": (context) => UncreatedStorePage(),
         "CreateStorePage": (context) => CreateStorePage(),
         "EditStorePage": (context) => EditStorePage(),
-        "EmptyStorePage": (context) => EmptyStorePage(),
+        "MyStorePage": (context) => MyStorePage(),
         "AddProductPage": (context) => AddProductPage(),
         "EditProductPage": (context) => EditProductPage(),
       },
