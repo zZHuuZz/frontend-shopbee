@@ -36,7 +36,7 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                     Icons.search,
                     color: Color(0xFF13B58C),
                   ),
-                  labelText: "Search Product",
+                  hintText: "Search Product",
                   labelStyle: TextStyle(
                     color: Colors.grey,
                     fontSize: 18,
@@ -142,10 +142,13 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                                   topRight: Radius.circular(12),
                                   topLeft: Radius.circular(12),
                                 ),
-                                child: Image(
-                                  fit: BoxFit.cover,
-                                  //add image api here
-                                  image: AssetImage('images/book_devonly.png'),
+                                child: Container(
+                                  foregroundDecoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'images/book_devonly.png'),
+                                        fit: BoxFit.fill),
+                                  ),
                                 ),
                               ),
                             )),
@@ -191,6 +194,7 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                                             style: TextStyle(color: Colors.red),
                                           ),
                                           onPressed: () {
+                                            // add delete product funtion here
                                             Navigator.pop(context);
                                           },
                                         ),
