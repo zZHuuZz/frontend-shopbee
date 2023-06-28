@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:shopbee/widgets/OrderHistoryScreens/OrderWidget.dart';
 
-class UncreatedStorePage extends StatefulWidget {
+class OrderHistoryPage extends StatefulWidget {
   @override
-  State<UncreatedStorePage> createState() => _UncreatedStorePageState();
+  State<OrderHistoryPage> createState() => _OrderHistoryPageState();
 }
 
-class _UncreatedStorePageState extends State<UncreatedStorePage> {
-  int _selectedIndex = 2;
+class _OrderHistoryPageState extends State<OrderHistoryPage> {
+  int _selectedIndex = 3;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -16,8 +18,8 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
       if (index == 1) {
         //Navigator.pushNamed(context, 'BrowsePage');
       }
-      if (index == 3) {
-        Navigator.pushNamed(context, 'OrderHistoryPage');
+      if (index == 2) {
+        Navigator.pushNamed(context, 'MyStorePage');
       }
       if (index == 4) {
         //Navigator.pushNamed(context, 'ProfilePage');
@@ -44,7 +46,7 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
         title: Row(
           children: [
             Text(
-              'My Store',
+              'Order History',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
@@ -73,48 +75,52 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 80),
-          Align(
-            alignment: Alignment.center,
-            child: Image.asset(
-              "images/mystore.png",
-            ),
-          ),
-          SizedBox(height: 30),
-          Text(
-            'You Don\'t Have a Store',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          SizedBox(height: 40),
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, 'CreateStorePage');
-            },
-            child: Container(
-              height: 50,
-              width: 210,
-              decoration: BoxDecoration(
-                color: Color(0xFF33907C),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Center(
-                child: Text(
-                  "Create store",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            SizedBox(height: 30),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 9),
+                  child: Text(
+                    "Transactions",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(width: 7),
+                Container(
+                  width: 107,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: Color.fromARGB(20, 51, 144, 124),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Januari 2022",
+                      style: TextStyle(
+                          color: Color(0xFF33907C),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            SizedBox(height: 18),
+            Column(
+              children: [
+                for (int i = 0; i < 15; i++) OrderWidget(),
+              ],
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF33907C),

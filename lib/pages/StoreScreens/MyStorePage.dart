@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopbee/widgets/MyStoreEmptyWidget.dart';
-import 'package:shopbee/widgets/MyStoreViewWidget.dart';
+import 'package:shopbee/widgets/StoreScreens/MyStoreEmptyWidget.dart';
+import 'package:shopbee/widgets/StoreScreens/MyStoreViewWidget.dart';
 
 class MyStorePage extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _MyStorePageState extends State<MyStorePage> {
         //Navigator.pushNamed(context, 'BrowsePage');
       }
       if (index == 3) {
-        //Navigator.pushNamed(context, 'OrderHistoryPage');
+        Navigator.pushNamed(context, 'OrderHistoryPage');
       }
       if (index == 4) {
         //Navigator.pushNamed(context, 'ProfilePage');

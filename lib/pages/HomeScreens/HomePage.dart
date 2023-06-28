@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
-import 'package:shopbee/widgets/Category2Widget.dart';
-import 'package:shopbee/widgets/Category3Widget.dart';
-import 'package:shopbee/widgets/FollowStoreWidget.dart';
-import 'package:shopbee/widgets/ProductWidget.dart';
-import 'package:shopbee/widgets/category1Widget.dart';
+import 'package:shopbee/widgets/HomeScreens/FollowStoreWidget.dart';
+import 'package:shopbee/widgets/HomeScreens/Category1Widget.dart';
+import 'package:shopbee/widgets/HomeScreens/Category2Widget.dart';
+import 'package:shopbee/widgets/HomeScreens/Category3Widget.dart';
+import 'package:shopbee/widgets/HomeScreens/HomePageProductWidget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.pushNamed(context, 'MyStorePage');
       }
       if (index == 3) {
-        //Navigator.pushNamed(context, 'OrderHistoryPage');
+        Navigator.pushNamed(context, 'OrderHistoryPage');
       }
       if (index == 4) {
         //Navigator.pushNamed(context, 'ProfilePage');
@@ -308,7 +308,7 @@ class _HomePageState extends State<HomePage> {
                 physics: ScrollPhysics(),
                 crossAxisCount: 1,
                 children: [
-                  for (int i = 0; i < 6; i++) ProductWidget(),
+                  for (int i = 0; i < 6; i++) HomePageProductWidget(),
                 ],
               ),
             ),
@@ -372,7 +372,7 @@ class _HomePageState extends State<HomePage> {
                 physics: ScrollPhysics(),
                 crossAxisCount: 1,
                 children: [
-                  for (int i = 0; i < 6; i++) ProductWidget(),
+                  for (int i = 0; i < 6; i++) HomePageProductWidget(),
                 ],
               ),
             ),
