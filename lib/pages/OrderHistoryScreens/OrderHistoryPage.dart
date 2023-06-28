@@ -22,7 +22,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         Navigator.pushNamed(context, 'MyStorePage');
       }
       if (index == 4) {
-        //Navigator.pushNamed(context, 'ProfilePage');
+        Navigator.pushNamed(context, 'ProfilePage');
       }
     });
   }
@@ -32,14 +32,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
     return Scaffold(
       backgroundColor: Color(0xFFF6F9FF),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
         automaticallyImplyLeading: false,
         toolbarHeight: 100,
         backgroundColor: Color(0xFF33907C),

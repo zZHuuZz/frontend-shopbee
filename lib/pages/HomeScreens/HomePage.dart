@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.pushNamed(context, 'OrderHistoryPage');
       }
       if (index == 4) {
-        //Navigator.pushNamed(context, 'ProfilePage');
+        Navigator.pushNamed(context, 'ProfilePage');
       }
     });
   }

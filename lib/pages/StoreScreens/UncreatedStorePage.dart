@@ -20,7 +20,7 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
         Navigator.pushNamed(context, 'OrderHistoryPage');
       }
       if (index == 4) {
-        //Navigator.pushNamed(context, 'ProfilePage');
+        Navigator.pushNamed(context, 'ProfilePage');
       }
     });
   }

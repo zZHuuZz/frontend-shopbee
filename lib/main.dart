@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopbee/pages/OrderHistoryScreens/OrderHistoryPage.dart';
 
 //store screens
+import 'pages/ProfileScreens/ProfilePage.dart';
 import 'pages/StoreScreens/AddProductPage.dart';
 import 'pages/StoreScreens/CreateStorePage.dart';
 import 'pages/StoreScreens/EditProductPage.dart';
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
+        "/": (context) => ProfilePage(),
+
         //login screens
         //"/": (context) => LoginPage(),
         "SignUpPage": (context) => SignUpPage(),
@@ -48,6 +51,9 @@ class MyApp extends StatelessWidget {
 
         //order history screens
         "OrderHistoryPage": (context) => OrderHistoryPage(),
+
+        //profile screens
+        "ProfilePage": (context) => ProfilePage(),
       },
     );
   }
