@@ -12,7 +12,7 @@ class _SignUpState extends State<SignUpPage> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
-  final checkPassController = TextEditingController();
+  final repassController = TextEditingController();
 
   bool termAndConditions = false;
   bool passToggle = true;
@@ -37,7 +37,7 @@ class _SignUpState extends State<SignUpPage> {
     });
   }
 
-  void signup(String email, password, name) async {
+  void signup(String email, password, name, repass) async {
     if (name == "") {
       print('Please fill in the blank following the form of Full name !');
       return;
@@ -51,6 +51,10 @@ class _SignUpState extends State<SignUpPage> {
     if (password == "") {
       print('Please fill your password in the blank !');
       return;
+    }
+    if (password != repass) {
+      print('Your password is not matched!');
+      return;
     } else {
       print(name);
       print(email);
@@ -61,10 +65,11 @@ class _SignUpState extends State<SignUpPage> {
       'fullname': name,
       'email': email,
       'password': password,
+      'sex': "M",
     };
     try {
       Response response = await post(
-        Uri.parse('http://4.194.216.57:3000/v1/sign-up'),
+        Uri.parse('http://shopbee-api.shop:3000/v1/auth/sign-up'),
         body: jsonEncode(requestBody),
         headers: {
           'Content-Type': 'application/json',
@@ -240,7 +245,7 @@ class _SignUpState extends State<SignUpPage> {
                   height: 48,
                   child: TextFormField(
                     keyboardType: TextInputType.visiblePassword,
-                    controller: checkPassController,
+                    controller: repassController,
                     obscureText: passToggle,
                     style: TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
@@ -285,7 +290,8 @@ class _SignUpState extends State<SignUpPage> {
                     signup(
                         emailController.text.toString(),
                         passController.text.toString(),
-                        nameController.text.toString());
+                        nameController.text.toString(),
+                        repassController.text.toString());
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,

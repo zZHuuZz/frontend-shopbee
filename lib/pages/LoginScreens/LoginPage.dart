@@ -30,7 +30,7 @@ class _LoginState extends State<LoginPage> {
 
     try {
       Response response = await post(
-        Uri.parse('http://4.194.216.57:3000/v1/sign-in'),
+        Uri.parse('http://shopbee-api.shop:3000/v1/auth/sign-in'),
         body: jsonEncode(requestBody),
         headers: {
           'Content-Type': 'application/json',
