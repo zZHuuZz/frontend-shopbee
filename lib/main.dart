@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopbee/pages/BrowseScreens/BrowsePage.dart';
 import 'package:shopbee/pages/OrderHistoryScreens/OrderHistoryPage.dart';
 
 //store screens
@@ -30,16 +31,17 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
-        "/": (context) => ProfilePage(),
-
         //login screens
-        //"/": (context) => LoginPage(),
+        "/": (context) => LoginPage(),
         "SignUpPage": (context) => SignUpPage(),
         "EmailVerificationPage": (context) => EmailVerificationPage(),
         "ForgotPasswordPage": (context) => ForgotPasswordPage(),
 
         //home screens
         "HomePage": (context) => HomePage(),
+
+        //browse screens
+        "BrowsePage": (context) => BrowsePage(),
 
         //store screens
         "UncreatedStorePage": (context) => UncreatedStorePage(),

@@ -14,7 +14,7 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
         Navigator.pushNamed(context, 'HomePage');
       }
       if (index == 1) {
-        //Navigator.pushNamed(context, 'BrowsePage');
+        Navigator.pushNamed(context, 'BrowsePage');
       }
       if (index == 3) {
         Navigator.pushNamed(context, 'OrderHistoryPage');
