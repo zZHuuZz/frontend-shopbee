@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BrowseItemsWidget extends StatefulWidget {
+class CategoryItemsWidget extends StatefulWidget {
   @override
-  State<BrowseItemsWidget> createState() => _BrowseItemsWidgetState();
+  State<CategoryItemsWidget> createState() => _CategoryItemsWidgetState();
 }
 
-class _BrowseItemsWidgetState extends State<BrowseItemsWidget> {
+class _CategoryItemsWidgetState extends State<CategoryItemsWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(

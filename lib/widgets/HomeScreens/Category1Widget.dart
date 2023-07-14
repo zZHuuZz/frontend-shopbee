@@ -16,7 +16,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -52,7 +52,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -88,7 +88,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -124,7 +124,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -164,7 +164,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -200,7 +200,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -236,7 +236,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -272,7 +272,7 @@ class _Category1WidgetState extends State<Category1Widget> {
               padding: EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
-                  //add category path
+                  Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
                   decoration: BoxDecoration(

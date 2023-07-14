@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopbee/pages/BrowseScreens/BrowsePage.dart';
+import 'package:shopbee/pages/CategoryScreens/CategoryPage.dart';
 import 'package:shopbee/pages/OrderHistoryScreens/OrderHistoryPage.dart';
 
 //store screens
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
 
         //profile screens
         "ProfilePage": (context) => ProfilePage(),
+
+        //category screens
+        "CategoryPage": (context) => CategoryPage(),
       },
     );
   }
