@@ -24,6 +24,8 @@ import 'pages/HomeScreens/HomePage.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
         //login screens
         "/": (context) => LoginPage(),
         "SignUpPage": (context) => SignUpPage(),
-        "EmailVerificationPage": (context) => EmailVerificationPage(),
+        "EmailVerificationPage": (context) => const EmailVerificationPage(),
         "ForgotPasswordPage": (context) => ForgotPasswordPage(),
 
         //home screens

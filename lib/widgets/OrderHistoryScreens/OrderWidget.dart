@@ -1,8 +1,12 @@
+// ignore_for_file: unused_import, file_names
+
 import 'package:flutter/material.dart';
-import 'package:shopbee/widgets/OrderHistoryScreens/OrderDeliveredStateWidget.dart';
+import 'OrderDeliveredStateWidget.dart';
 import 'package:shopbee/widgets/OrderHistoryScreens/OrderGeneralStateWidget.dart';
 
 class OrderWidget extends StatefulWidget {
+  const OrderWidget({super.key});
+
   @override
   State<OrderWidget> createState() => _OrderWidgetState();
 }
@@ -11,7 +15,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Container(
         height: 68,
         width: MediaQuery.of(context).size.width,
@@ -20,7 +24,8 @@ class _OrderWidgetState extends State<OrderWidget> {
           color: Colors.white,
         ),
         child: Padding(
-          padding: EdgeInsets.only(top: 15, left: 16, bottom: 16, right: 10),
+          padding:
+              const EdgeInsets.only(top: 15, left: 16, bottom: 16, right: 10),
           child: Row(children: [
             Container(
               height: 37,
@@ -34,8 +39,8 @@ class _OrderWidgetState extends State<OrderWidget> {
                 borderRadius: BorderRadius.circular(6),
               ),
             ),
-            SizedBox(width: 22),
-            Column(
+            const SizedBox(width: 22),
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -89,7 +94,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             Align(
               alignment: Alignment.centerRight,
               child: OrderGeneralStateWidget(),

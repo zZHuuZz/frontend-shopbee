@@ -1,9 +1,13 @@
+// ignore_for_file: file_names, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
   @override
   State<SignUpPage> createState() => _SignUpState();
 }
@@ -26,12 +30,12 @@ class _SignUpState extends State<SignUpPage> {
     if (states.any(interactiveStates.contains)) {
       return Colors.blue;
     }
-    return Color(0xFF44E49E);
+    return const Color(0xFF44E49E);
   }
 
   void _sleep() {
     // Sleep for 3 seconds
-    Future.delayed(Duration(seconds: 10)).then((value) {
+    Future.delayed(const Duration(seconds: 10)).then((value) {
       // Perform any task after the sleep
       print('Sleep completed');
     });
@@ -95,7 +99,7 @@ class _SignUpState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF33907C),
+      backgroundColor: const Color(0xFF33907C),
       body: Form(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -104,20 +108,21 @@ class _SignUpState extends State<SignUpPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.arrow_back,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 85),
-              Align(
+              const SizedBox(height: 85),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Welcome to ShopBee",
@@ -127,8 +132,8 @@ class _SignUpState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 54),
-              Align(
+              const SizedBox(height: 54),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Signup to your account",
@@ -138,85 +143,85 @@ class _SignUpState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Container(
                   height: 48,
                   child: TextFormField(
                     keyboardType: TextInputType.text,
                     controller: nameController,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: "Full Name",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Container(
                   height: 48,
                   child: TextFormField(
                     keyboardType: TextInputType.emailAddress,
                     controller: emailController,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: "Email",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Container(
                   height: 48,
                   child: TextFormField(
                     keyboardType: TextInputType.visiblePassword,
                     controller: passController,
                     obscureText: passToggle,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: "Password",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       suffix: InkWell(
@@ -238,29 +243,29 @@ class _SignUpState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Container(
                   height: 48,
                   child: TextFormField(
                     keyboardType: TextInputType.visiblePassword,
                     controller: repassController,
                     obscureText: passToggle,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: "Re-enter Password",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       suffix: InkWell(
@@ -282,9 +287,9 @@ class _SignUpState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 38),
+              const SizedBox(height: 38),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(
                   onTap: () {
                     signup(
@@ -300,7 +305,7 @@ class _SignUpState extends State<SignUpPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Create",
                         style: TextStyle(
@@ -313,11 +318,11 @@ class _SignUpState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Have an account?",
                     style: TextStyle(
                       fontSize: 18,
@@ -328,7 +333,7 @@ class _SignUpState extends State<SignUpPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, "/");
                     },
-                    child: Text(
+                    child: const Text(
                       "Sign In",
                       style: TextStyle(
                         fontSize: 18,

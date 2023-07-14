@@ -1,7 +1,11 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class EmailVerificationPage extends StatefulWidget {
+  const EmailVerificationPage({super.key});
+
   @override
   State<EmailVerificationPage> createState() => _EmailVerificationState();
 }
@@ -13,7 +17,7 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF33907C),
+      backgroundColor: const Color(0xFF33907C),
       body: Form(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -22,20 +26,21 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.arrow_back,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 85),
-              Align(
+              const SizedBox(height: 85),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Email Verification",
@@ -45,8 +50,8 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 54),
-              Align(
+              const SizedBox(height: 54),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Enter your OTP code here",
@@ -56,16 +61,16 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 68),
+              const SizedBox(height: 68),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 47),
+                  padding: const EdgeInsets.symmetric(horizontal: 47),
                   child: PinCodeTextField(
                     appContext: context,
-                    pastedTextStyle: TextStyle(
+                    pastedTextStyle: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -110,8 +115,8 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
                       });
                     },
                   )),
-              SizedBox(height: 65),
-              Align(
+              const SizedBox(height: 65),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Didn't you received any code?",
@@ -121,14 +126,14 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Align(
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
                     //add reset code function here
                   },
-                  child: Text(
+                  child: const Text(
                     "Reset new code",
                     style: TextStyle(
                       color: Colors.white,
@@ -137,9 +142,9 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 57),
+              const SizedBox(height: 57),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(
                   onTap: () {},
                   child: Container(
@@ -149,7 +154,7 @@ class _EmailVerificationState extends State<EmailVerificationPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Verify",
                         style: TextStyle(

@@ -1,6 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordState();
 }
@@ -12,7 +16,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF33907C),
+      backgroundColor: const Color(0xFF33907C),
       body: Form(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -21,20 +25,21 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.arrow_back,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 85),
-              Align(
+              const SizedBox(height: 85),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Forgot Password?",
@@ -44,8 +49,8 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 66),
-              Align(
+              const SizedBox(height: 66),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Enter your email address to recieve",
@@ -55,7 +60,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              Align(
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "verified code to reset password",
@@ -65,38 +70,38 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 60),
+              const SizedBox(height: 60),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Container(
                   height: 48,
                   child: TextFormField(
                     autofocus: false,
                     keyboardType: TextInputType.text,
                     controller: emailController,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: "Email",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 47),
+              const SizedBox(height: 47),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(
                   onTap: () {
                     //add send code to email functions
@@ -109,7 +114,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Confirm",
                         style: TextStyle(
@@ -122,11 +127,11 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Don't have an account?",
                     style: TextStyle(
                       fontSize: 18,
@@ -137,7 +142,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, "SignUpPage");
                     },
-                    child: Text(
+                    child: const Text(
                       "Sign Up",
                       style: TextStyle(
                         fontSize: 18,

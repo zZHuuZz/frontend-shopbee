@@ -1,9 +1,13 @@
+// ignore_for_file: file_names, use_build_context_synchronously, sized_box_for_whitespace
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginState();
 }
@@ -54,14 +58,14 @@ class _LoginState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF33907C),
+      backgroundColor: const Color(0xFF33907C),
       body: Form(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              SizedBox(height: 150),
-              Align(
+              const SizedBox(height: 150),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Welcome to ShopBee",
@@ -71,8 +75,8 @@ class _LoginState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 66),
-              Align(
+              const SizedBox(height: 66),
+              const Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Login to your account",
@@ -82,38 +86,38 @@ class _LoginState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Container(
                   height: 48,
                   child: TextFormField(
                     autofocus: false,
                     keyboardType: TextInputType.text,
                     controller: emailController,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: "Email",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Container(
                   height: 48,
                   child: TextFormField(
@@ -121,20 +125,20 @@ class _LoginState extends State<LoginPage> {
                     keyboardType: TextInputType.visiblePassword,
                     controller: passController,
                     obscureText: passToggle,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: "Password",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       suffix: InkWell(
@@ -156,9 +160,9 @@ class _LoginState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 38),
+              const SizedBox(height: 38),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(
                   onTap: () {
                     signin(emailController.text.toString(),
@@ -171,7 +175,7 @@ class _LoginState extends State<LoginPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Log in",
                         style: TextStyle(
@@ -184,14 +188,14 @@ class _LoginState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Align(
                 alignment: Alignment.center,
                 child: TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, "ForgotPasswordPage");
                   },
-                  child: Text(
+                  child: const Text(
                     "Forgot your password?",
                     style: TextStyle(
                       fontSize: 18,
@@ -200,11 +204,11 @@ class _LoginState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Don't have an account?",
                     style: TextStyle(
                       fontSize: 18,
@@ -215,7 +219,7 @@ class _LoginState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, "SignUpPage");
                     },
-                    child: Text(
+                    child: const Text(
                       "Sign Up",
                       style: TextStyle(
                         fontSize: 18,
