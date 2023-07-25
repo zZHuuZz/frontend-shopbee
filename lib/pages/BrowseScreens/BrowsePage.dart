@@ -1,8 +1,12 @@
+// ignore_for_file: sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use, file_names
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shopbee/widgets/BrowseScreens/BrowseItemsWidget.dart';
 
 class BrowsePage extends StatefulWidget {
+  const BrowsePage({super.key});
+
   @override
   State<BrowsePage> createState() => _BrowsePageState();
 }
@@ -34,26 +38,26 @@ class _BrowsePageState extends State<BrowsePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F9FF),
+      backgroundColor: const Color(0xFFF6F9FF),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 150,
         elevation: 0,
-        backgroundColor: Color(0xFF33907C),
+        backgroundColor: const Color(0xFF33907C),
         title: Column(
           children: [
             Row(
               children: [
-                Text(
+                const Text(
                   'ShopBee',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.favorite,
                     size: 30,
                   ),
@@ -61,9 +65,9 @@ class _BrowsePageState extends State<BrowsePage> {
                     //favorite shop button
                   },
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopping_cart,
                     size: 30,
                   ),
@@ -73,7 +77,7 @@ class _BrowsePageState extends State<BrowsePage> {
                 ),
               ],
             ),
-            SizedBox(height: 23),
+            const SizedBox(height: 23),
             Container(
               height: 48,
               decoration: BoxDecoration(
@@ -84,24 +88,24 @@ class _BrowsePageState extends State<BrowsePage> {
                 autofocus: false,
                 keyboardType: TextInputType.text,
                 controller: searchController,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search,
                     color: Color(0xFF13B58C),
                   ),
                   hintText: "Search Product",
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Colors.grey,
                     fontSize: 18,
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Colors.white),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Colors.white),
                     borderRadius: BorderRadius.circular(100),
                   ),
                 ),
@@ -115,10 +119,10 @@ class _BrowsePageState extends State<BrowsePage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               width: MediaQuery.of(context).size.width,
               height: 56,
-              color: Color(0xFF33907C),
+              color: const Color(0xFF33907C),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -130,7 +134,7 @@ class _BrowsePageState extends State<BrowsePage> {
                         Container(
                           width: 112,
                           height: 31,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -164,7 +168,7 @@ class _BrowsePageState extends State<BrowsePage> {
                         Container(
                           width: 112,
                           height: 31,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -198,7 +202,7 @@ class _BrowsePageState extends State<BrowsePage> {
                         Container(
                           width: 112,
                           height: 31,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -227,15 +231,15 @@ class _BrowsePageState extends State<BrowsePage> {
                 ],
               ),
             ),
-            SizedBox(height: 30),
-            BrowseItemsWidget(),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
+            const BrowseItemsWidget(),
+            const SizedBox(height: 30),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFF33907C),
-        items: <BottomNavigationBarItem>[
+        backgroundColor: const Color(0xFF33907C),
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -258,7 +262,7 @@ class _BrowsePageState extends State<BrowsePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF33907C),
+        selectedItemColor: const Color(0xFF33907C),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),

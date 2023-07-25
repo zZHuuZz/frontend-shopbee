@@ -1,6 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class FollowStoreWidget extends StatefulWidget {
+  const FollowStoreWidget({super.key});
+
   @override
   State<FollowStoreWidget> createState() => _FollowStoreWidgetState();
 }
@@ -21,11 +25,11 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
         clipBehavior: Clip.antiAlias,
         children: [
           Align(
-              alignment: Alignment(0, -1),
+              alignment: const Alignment(0, -1),
               child: FractionallySizedBox(
                 heightFactor: .4,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
                   ),
@@ -39,11 +43,11 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                 ),
               )),
           Align(
-            alignment: Alignment(-1, 1),
+            alignment: const Alignment(-1, 1),
             child: FractionallySizedBox(
               heightFactor: .6,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(12),
@@ -54,8 +58,8 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                   widthFactor: 1,
                   child: Column(
                     children: [
-                      SizedBox(height: 14),
-                      Padding(
+                      const SizedBox(height: 14),
+                      const Padding(
                         padding: EdgeInsets.symmetric(vertical: 35),
                         child: Align(
                           alignment: Alignment.center,
@@ -68,8 +72,8 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
-                      Spacer(),
+                      const SizedBox(height: 15),
+                      const Spacer(),
                       Align(
                         alignment: Alignment.center,
                         child: InkWell(
@@ -81,9 +85,9 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                             height: 23,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              color: Color(0xFF33907C),
+                              color: const Color(0xFF33907C),
                             ),
-                            child: Align(
+                            child: const Align(
                               alignment: Alignment.center,
                               child: Text(
                                 "Follow",
@@ -96,14 +100,14 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
               ),
             ),
           ),
-          Align(
+          const Align(
             alignment: Alignment(0, -0.25),
             child: CircleAvatar(
               radius: 35,

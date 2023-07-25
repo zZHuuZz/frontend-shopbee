@@ -1,6 +1,10 @@
+// ignore_for_file: file_names, prefer_const_constructors, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 
 class CreateStorePage extends StatefulWidget {
+  const CreateStorePage({super.key});
+
   @override
   State<CreateStorePage> createState() => _CreateStorePageState();
 }

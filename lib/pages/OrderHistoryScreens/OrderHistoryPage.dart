@@ -1,8 +1,12 @@
+// ignore_for_file: unnecessary_import, file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shopbee/widgets/OrderHistoryScreens/OrderWidget.dart';
 
 class OrderHistoryPage extends StatefulWidget {
+  const OrderHistoryPage({super.key});
+
   @override
   State<OrderHistoryPage> createState() => _OrderHistoryPageState();
 }
@@ -30,23 +34,23 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F9FF),
+      backgroundColor: const Color(0xFFF6F9FF),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 100,
-        backgroundColor: Color(0xFF33907C),
+        backgroundColor: const Color(0xFF33907C),
         title: Row(
           children: [
-            Text(
+            const Text(
               'Order History',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.favorite,
                 size: 30,
               ),
@@ -54,9 +58,9 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 //favorite shop button
               },
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.shopping_cart,
                 size: 30,
               ),
@@ -71,10 +75,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Row(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 9),
                   child: Text(
                     "Transactions",
@@ -84,15 +88,15 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                     ),
                   ),
                 ),
-                SizedBox(width: 7),
+                const SizedBox(width: 7),
                 Container(
                   width: 107,
                   height: 26,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
-                    color: Color.fromARGB(20, 51, 144, 124),
+                    color: const Color.fromARGB(20, 51, 144, 124),
                   ),
-                  child: Align(
+                  child: const Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Januari 2022",
@@ -105,41 +109,42 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 ),
               ],
             ),
-            SizedBox(height: 18),
+            const SizedBox(height: 18),
             Column(
               children: [
-                for (int i = 0; i < 15; i++) OrderWidget(),
+                for (int i = 0; i < 15; i++) const OrderWidget(),
               ],
             ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFF33907C),
+        backgroundColor: const Color(0xFF33907C),
+        // ignore: prefer_const_literals_to_create_immutables
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Browse',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.store),
             label: 'Store',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.subject),
             label: 'Order History',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF33907C),
+        selectedItemColor: const Color(0xFF33907C),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),

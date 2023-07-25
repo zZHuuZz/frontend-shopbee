@@ -1,6 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class Category2Widget extends StatefulWidget {
+  const Category2Widget({super.key});
+
   @override
   State<Category2Widget> createState() => _Category2WidgetState();
 }
@@ -13,27 +17,27 @@ class _Category2WidgetState extends State<Category2Widget> {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Information \nTechnology',
@@ -49,27 +53,27 @@ class _Category2WidgetState extends State<Category2Widget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Physics',
@@ -85,27 +89,27 @@ class _Category2WidgetState extends State<Category2Widget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Phylosophy',
@@ -121,27 +125,27 @@ class _Category2WidgetState extends State<Category2Widget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Chemistry',
@@ -161,27 +165,27 @@ class _Category2WidgetState extends State<Category2Widget> {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Electronics',
@@ -197,27 +201,27 @@ class _Category2WidgetState extends State<Category2Widget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Economics',
@@ -233,27 +237,27 @@ class _Category2WidgetState extends State<Category2Widget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Biology',
@@ -269,27 +273,27 @@ class _Category2WidgetState extends State<Category2Widget> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 1, bottom: 1),
+              padding: const EdgeInsets.only(right: 1, bottom: 1),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "CategoryPage");
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/book_devonly.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 1, bottom: 1),
+                    padding: const EdgeInsets.only(right: 1, bottom: 1),
                     height: MediaQuery.of(context).size.width / 4 - 1,
                     width: MediaQuery.of(context).size.width / 4 - 1,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(65, 0, 0, 0),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Mathematics',

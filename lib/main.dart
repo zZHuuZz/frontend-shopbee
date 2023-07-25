@@ -21,7 +21,7 @@ import 'pages/LoginScreens/ForgotPasswordPage.dart';
 //home screens
 import 'pages/HomeScreens/HomePage.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,33 +35,33 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         //login screens
-        "/": (context) => LoginPage(),
-        "SignUpPage": (context) => SignUpPage(),
+        "/": (context) => const LoginPage(),
+        "SignUpPage": (context) => const SignUpPage(),
         "EmailVerificationPage": (context) => const EmailVerificationPage(),
-        "ForgotPasswordPage": (context) => ForgotPasswordPage(),
+        "ForgotPasswordPage": (context) => const ForgotPasswordPage(),
 
         //home screens
-        "HomePage": (context) => HomePage(),
+        "HomePage": (context) => const HomePage(),
 
         //browse screens
-        "BrowsePage": (context) => BrowsePage(),
+        "BrowsePage": (context) => const BrowsePage(),
 
         //store screens
         "UncreatedStorePage": (context) => UncreatedStorePage(),
-        "CreateStorePage": (context) => CreateStorePage(),
+        "CreateStorePage": (context) => const CreateStorePage(),
         "EditStorePage": (context) => EditStorePage(),
         "MyStorePage": (context) => MyStorePage(),
-        "AddProductPage": (context) => AddProductPage(),
-        "EditProductPage": (context) => EditProductPage(),
+        "AddProductPage": (context) => const AddProductPage(),
+        "EditProductPage": (context) => const EditProductPage(),
 
         //order history screens
-        "OrderHistoryPage": (context) => OrderHistoryPage(),
+        "OrderHistoryPage": (context) => const OrderHistoryPage(),
 
         //profile screens
         "ProfilePage": (context) => ProfilePage(),
 
         //category screens
-        "CategoryPage": (context) => CategoryPage(),
+        "CategoryPage": (context) => const CategoryPage(),
       },
     );
   }

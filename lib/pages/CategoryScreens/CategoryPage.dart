@@ -1,8 +1,12 @@
+// ignore_for_file: sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use, file_names
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shopbee/widgets/CategoryScreens/CategoryItemsWidget.dart';
 
 class CategoryPage extends StatefulWidget {
+  const CategoryPage({super.key});
+
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }
@@ -13,12 +17,12 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F9FF),
+      backgroundColor: const Color(0xFFF6F9FF),
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.white,
             size: 30,
@@ -27,8 +31,8 @@ class _CategoryPageState extends State<CategoryPage> {
         ),
         automaticallyImplyLeading: false,
         toolbarHeight: 100,
-        backgroundColor: Color(0xFF33907C),
-        title: Text(
+        backgroundColor: const Color(0xFF33907C),
+        title: const Text(
           'Information Technology', //change label of category here
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -41,10 +45,10 @@ class _CategoryPageState extends State<CategoryPage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               width: MediaQuery.of(context).size.width,
               height: 56,
-              color: Color(0xFF33907C),
+              color: const Color(0xFF33907C),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -56,7 +60,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         Container(
                           width: 112,
                           height: 31,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -90,7 +94,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         Container(
                           width: 112,
                           height: 31,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -124,7 +128,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         Container(
                           width: 112,
                           height: 31,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -153,9 +157,9 @@ class _CategoryPageState extends State<CategoryPage> {
                 ],
               ),
             ),
-            SizedBox(height: 30),
-            CategoryItemsWidget(),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
+            const CategoryItemsWidget(),
+            const SizedBox(height: 30),
           ],
         ),
       ),

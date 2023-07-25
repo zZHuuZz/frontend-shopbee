@@ -95,7 +95,7 @@ class _OrderWidgetState extends State<OrderWidget> {
               ],
             ),
             const Spacer(),
-            Align(
+            const Align(
               alignment: Alignment.centerRight,
               child: OrderGeneralStateWidget(),
               //OderDeliveredStateWidget(),

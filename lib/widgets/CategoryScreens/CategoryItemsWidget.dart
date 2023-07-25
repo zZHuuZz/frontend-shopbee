@@ -1,7 +1,11 @@
+// ignore_for_file: file_names, unnecessary_import
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CategoryItemsWidget extends StatefulWidget {
+  const CategoryItemsWidget({super.key});
+
   @override
   State<CategoryItemsWidget> createState() => _CategoryItemsWidgetState();
 }
@@ -10,14 +14,14 @@ class _CategoryItemsWidgetState extends State<CategoryItemsWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 23),
+      padding: const EdgeInsets.symmetric(horizontal: 23),
       child: GridView.count(
         mainAxisSpacing: 15,
         crossAxisSpacing: 12.35,
         childAspectRatio: 0.82,
         primary: true,
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 2,
         children: [
           for (int i = 0; i < 9; i++)
@@ -34,11 +38,11 @@ class _CategoryItemsWidgetState extends State<CategoryItemsWidget> {
                 clipBehavior: Clip.antiAlias,
                 children: [
                   Align(
-                      alignment: Alignment(0, -1),
+                      alignment: const Alignment(0, -1),
                       child: FractionallySizedBox(
                         heightFactor: .67,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12),
                             topLeft: Radius.circular(12),
                           ),
@@ -52,18 +56,18 @@ class _CategoryItemsWidgetState extends State<CategoryItemsWidget> {
                         ),
                       )),
                   Align(
-                    alignment: Alignment(-1, 1),
+                    alignment: const Alignment(-1, 1),
                     child: FractionallySizedBox(
                       heightFactor: .33,
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(12),
                             bottomLeft: Radius.circular(12),
                           ),
                         ),
-                        child: FractionallySizedBox(
+                        child: const FractionallySizedBox(
                           widthFactor: 1,
                           child: Column(
                             children: [

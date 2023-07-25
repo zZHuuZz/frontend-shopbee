@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 
 class HomePageProductWidget extends StatefulWidget {
@@ -21,11 +23,11 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
         clipBehavior: Clip.antiAlias,
         children: [
           Align(
-              alignment: Alignment(0, -1),
+              alignment: const Alignment(0, -1),
               child: FractionallySizedBox(
                 heightFactor: .67,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
                   ),
@@ -39,18 +41,18 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                 ),
               )),
           Align(
-            alignment: Alignment(-1, 1),
+            alignment: const Alignment(-1, 1),
             child: FractionallySizedBox(
               heightFactor: .33,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(12),
                     bottomLeft: Radius.circular(12),
                   ),
                 ),
-                child: FractionallySizedBox(
+                child: const FractionallySizedBox(
                   widthFactor: 1,
                   child: Column(
                     children: [

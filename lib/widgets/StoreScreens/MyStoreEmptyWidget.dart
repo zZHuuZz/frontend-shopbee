@@ -1,6 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class MyStoreEmptyWidget extends StatefulWidget {
+  const MyStoreEmptyWidget({super.key});
+
   @override
   State<MyStoreEmptyWidget> createState() => _MyStoreEmptyWidgetState();
 }
@@ -10,17 +14,17 @@ class _MyStoreEmptyWidgetState extends State<MyStoreEmptyWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 60,
         ),
-        Text(
+        const Text(
           'You don\'t have product',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 40,
         ),
         Container(
@@ -28,7 +32,7 @@ class _MyStoreEmptyWidgetState extends State<MyStoreEmptyWidget> {
           width: 220,
           decoration: BoxDecoration(
             border: Border.all(
-              color: Color(0xFF33907C),
+              color: const Color(0xFF33907C),
             ),
             borderRadius: BorderRadius.circular(100),
           ),
@@ -36,7 +40,7 @@ class _MyStoreEmptyWidgetState extends State<MyStoreEmptyWidget> {
             onTap: () {
               Navigator.pushNamed(context, 'AddProductPage');
             },
-            child: Center(
+            child: const Center(
               child: Text(
                 "Add Product",
                 style: TextStyle(

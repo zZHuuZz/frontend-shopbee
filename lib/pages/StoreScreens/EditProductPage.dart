@@ -1,7 +1,11 @@
+// ignore_for_file: file_names, prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class EditProductPage extends StatefulWidget {
+  const EditProductPage({super.key});
+
   @override
   State<EditProductPage> createState() => _EditProductState();
 }

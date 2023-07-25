@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 import 'package:shopbee/widgets/HomeScreens/FollowStoreWidget.dart';
@@ -7,6 +9,8 @@ import 'package:shopbee/widgets/HomeScreens/Category3Widget.dart';
 import 'package:shopbee/widgets/HomeScreens/HomePageProductWidget.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -47,25 +51,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F9FF),
+      backgroundColor: const Color(0xFFF6F9FF),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 150,
-        backgroundColor: Color(0xFF33907C),
+        backgroundColor: const Color(0xFF33907C),
         title: Column(
           children: [
             Row(
               children: [
-                Text(
+                const Text(
                   'ShopBee',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.favorite,
                     size: 30,
                   ),
@@ -73,9 +77,9 @@ class _HomePageState extends State<HomePage> {
                     //favorite shop button
                   },
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopping_cart,
                     size: 30,
                   ),
@@ -85,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            SizedBox(height: 23),
+            const SizedBox(height: 23),
             Container(
               height: 48,
               decoration: BoxDecoration(
@@ -96,24 +100,24 @@ class _HomePageState extends State<HomePage> {
                 autofocus: false,
                 keyboardType: TextInputType.text,
                 controller: searchController,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search,
                     color: Color(0xFF13B58C),
                   ),
                   hintText: "Search Product",
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Colors.grey,
                     fontSize: 18,
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Colors.white),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Colors.white),
                     borderRadius: BorderRadius.circular(100),
                   ),
                 ),
@@ -126,15 +130,15 @@ class _HomePageState extends State<HomePage> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            SizedBox(height: 11),
+            const SizedBox(height: 11),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
                   for (int i = 0; i < 3; i++)
                     Container(
-                      padding: EdgeInsets.only(left: 16),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.only(left: 16),
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage("images/book_devonly.png"),
                           fit: BoxFit.fitHeight,
@@ -149,8 +153,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Column(
                           children: [
-                            SizedBox(height: 51),
-                            Padding(
+                            const SizedBox(height: 51),
+                            const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 17),
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -164,9 +168,10 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 17),
+                            const SizedBox(height: 17),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 17),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 17),
                               child: Align(
                                 alignment: Alignment.bottomLeft,
                                 child: InkWell(
@@ -183,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    child: Align(
+                                    child: const Align(
                                       alignment: Alignment.center,
                                       child: Text(
                                         "START SHOPPING",
@@ -205,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               height: MediaQuery.of(context).size.width / 2,
               width: MediaQuery.of(context).size.width,
@@ -218,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                       });
                     },
                     controller: _categoryController,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Center(
                         child: Category1Widget(),
                       ),
@@ -240,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                         count: 3,
                         unselectedColor: Colors.black26,
                         selectedColor: Colors.white,
-                        duration: Duration(milliseconds: 200),
+                        duration: const Duration(milliseconds: 200),
                         boxShape: BoxShape.circle,
                       ),
                     ),
@@ -248,11 +253,11 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            SizedBox(height: 27),
+            const SizedBox(height: 27),
             Row(
               children: [
-                SizedBox(width: 20),
-                Align(
+                const SizedBox(width: 20),
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'New Book',
@@ -263,9 +268,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
-                  padding: EdgeInsets.only(right: 22),
+                  padding: const EdgeInsets.only(right: 22),
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: InkWell(
@@ -277,9 +282,9 @@ class _HomePageState extends State<HomePage> {
                         height: 23,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(14),
-                          color: Color(0xFF33907C),
+                          color: const Color(0xFF33907C),
                         ),
-                        child: Align(
+                        child: const Align(
                           alignment: Alignment.center,
                           child: Text(
                             "See All",
@@ -295,28 +300,28 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               height: 268,
               child: GridView.count(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 12.35,
                 childAspectRatio: 1.219512,
                 primary: true,
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 crossAxisCount: 1,
                 children: [
                   for (int i = 0; i < 6; i++) HomePageProductWidget(),
                 ],
               ),
             ),
-            SizedBox(height: 27),
+            const SizedBox(height: 27),
             Row(
               children: [
-                SizedBox(width: 20),
-                Align(
+                const SizedBox(width: 20),
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Poppular Product',
@@ -327,9 +332,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
-                  padding: EdgeInsets.only(right: 22),
+                  padding: const EdgeInsets.only(right: 22),
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: InkWell(
@@ -341,9 +346,9 @@ class _HomePageState extends State<HomePage> {
                         height: 23,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(14),
-                          color: Color(0xFF33907C),
+                          color: const Color(0xFF33907C),
                         ),
-                        child: Align(
+                        child: const Align(
                           alignment: Alignment.center,
                           child: Text(
                             "See All",
@@ -359,24 +364,24 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               height: 268,
               child: GridView.count(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 12.35,
                 childAspectRatio: 1.219512,
                 primary: true,
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 crossAxisCount: 1,
                 children: [
                   for (int i = 0; i < 6; i++) HomePageProductWidget(),
                 ],
               ),
             ),
-            SizedBox(height: 27),
+            const SizedBox(height: 27),
             Container(
               height: 363,
               child: Stack(
@@ -384,10 +389,10 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: 210,
                     width: MediaQuery.of(context).size.width,
-                    color: Color(0xFF33907C),
+                    color: const Color(0xFF33907C),
                     child: Row(
                       children: [
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 22, horizontal: 20),
                           child: Align(
@@ -402,9 +407,9 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 22, horizontal: 16),
                           child: Align(
                             alignment: Alignment.topRight,
@@ -419,7 +424,7 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.circular(14),
                                   color: Colors.white,
                                 ),
-                                child: Align(
+                                child: const Align(
                                   alignment: Alignment.center,
                                   child: Text(
                                     "View All",
@@ -437,22 +442,23 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 60),
+                    padding: const EdgeInsets.only(top: 60),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Container(
                         height: 268,
                         child: GridView.count(
                           scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           mainAxisSpacing: 15,
                           crossAxisSpacing: 12.35,
                           childAspectRatio: 1.219512,
                           primary: true,
-                          physics: ScrollPhysics(),
+                          physics: const ScrollPhysics(),
                           crossAxisCount: 1,
                           children: [
-                            for (int i = 0; i < 6; i++) FollowStoreWidget(),
+                            for (int i = 0; i < 6; i++)
+                              const FollowStoreWidget(),
                           ],
                         ),
                       ),
@@ -465,8 +471,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFF33907C),
-        items: <BottomNavigationBarItem>[
+        backgroundColor: const Color(0xFF33907C),
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -489,7 +495,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF33907C),
+        selectedItemColor: const Color(0xFF33907C),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
