@@ -21,6 +21,9 @@ import 'pages/LoginScreens/ForgotPasswordPage.dart';
 //home screens
 import 'pages/HomeScreens/HomePage.dart';
 
+//cart screens
+import 'pages/CartScreens/CartPage.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -53,6 +56,9 @@ class MyApp extends StatelessWidget {
         "MyStorePage": (context) => MyStorePage(),
         "AddProductPage": (context) => const AddProductPage(),
         "EditProductPage": (context) => const EditProductPage(),
+
+        //cart screens
+        "CartPage": (context) => CartPage(),
 
         //order history screens
         "OrderHistoryPage": (context) => const OrderHistoryPage(),

@@ -7,6 +7,7 @@ import 'package:shopbee/widgets/HomeScreens/Category1Widget.dart';
 import 'package:shopbee/widgets/HomeScreens/Category2Widget.dart';
 import 'package:shopbee/widgets/HomeScreens/Category3Widget.dart';
 import 'package:shopbee/widgets/HomeScreens/HomePageProductWidget.dart';
+import 'package:shopbee/globals.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,15 +17,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? jwtToken;
   final searchController = TextEditingController();
-
   late int selectedPage;
   late final PageController _categoryController;
   @override
   void initState() {
     selectedPage = 0;
     _categoryController = PageController(initialPage: selectedPage);
-
+    _getToken();
     super.initState();
   }
 
@@ -37,14 +38,32 @@ class _HomePageState extends State<HomePage> {
         Navigator.pushNamed(context, 'BrowsePage');
       }
       if (index == 2) {
-        Navigator.pushNamed(context, 'MyStorePage');
+        Navigator.pushNamed(context, 'UncreatedStorePage');
       }
       if (index == 3) {
         Navigator.pushNamed(context, 'OrderHistoryPage');
       }
       if (index == 4) {
+        _getToken();
+        print(jwtToken);
         Navigator.pushNamed(context, 'ProfilePage');
       }
+    });
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
     });
   }
 

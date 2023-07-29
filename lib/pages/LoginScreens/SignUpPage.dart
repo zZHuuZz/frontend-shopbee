@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,6 +13,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpPage> {
+  final apiUrl = 'http://shopbee-api.shop:3000/api/v1/user/register';
+
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
@@ -41,7 +43,7 @@ class _SignUpState extends State<SignUpPage> {
     });
   }
 
-  void signup(String email, password, name, repass) async {
+  void signup(String email, name, password, repass) async {
     if (name == "") {
       print('Please fill in the blank following the form of Full name !');
       return;
@@ -66,21 +68,21 @@ class _SignUpState extends State<SignUpPage> {
     }
 
     Map<String, dynamic> requestBody = {
-      'fullname': name,
       'email': email,
+      'fullname': name,
       'password': password,
-      'sex': "M",
     };
     try {
-      Response response = await post(
-        Uri.parse('http://shopbee-api.shop:3000/v1/auth/sign-up'),
-        body: jsonEncode(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
+      final response = await http.post(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
         },
+        body: jsonEncode(requestBody),
+        encoding: Encoding.getByName('utf-8'),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
         String data = responseBody['data'];
         print(data);
@@ -294,8 +296,8 @@ class _SignUpState extends State<SignUpPage> {
                   onTap: () {
                     signup(
                         emailController.text.toString(),
-                        passController.text.toString(),
                         nameController.text.toString(),
+                        passController.text.toString(),
                         repassController.text.toString());
                   },
                   child: Container(

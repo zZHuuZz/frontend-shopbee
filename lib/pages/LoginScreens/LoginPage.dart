@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shopbee/globals.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginPage> {
+  String? jwtToken;
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
@@ -34,17 +36,16 @@ class _LoginState extends State<LoginPage> {
 
     try {
       Response response = await post(
-        Uri.parse('http://shopbee-api.shop:3000/v1/auth/sign-in'),
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/authenticate'),
         body: jsonEncode(requestBody),
         headers: {
           'Content-Type': 'application/json',
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
-        String data = responseBody['data']['fullname'];
-        print(data);
+        String token = responseBody['data']['token'];
+        _setToken(token);
         print('Sign in successfully');
         Navigator.pushNamed(context, 'HomePage');
       } else {
@@ -53,6 +54,28 @@ class _LoginState extends State<LoginPage> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
   }
 
   @override

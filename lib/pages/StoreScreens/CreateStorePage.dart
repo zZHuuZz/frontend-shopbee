@@ -1,6 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:shopbee/globals.dart';
+import 'package:http/http.dart' as http;
 
 class CreateStorePage extends StatefulWidget {
   const CreateStorePage({super.key});
@@ -10,6 +12,7 @@ class CreateStorePage extends StatefulWidget {
 }
 
 class _CreateStorePageState extends State<CreateStorePage> {
+  String? jwtToken;
   final storeNameController = TextEditingController();
   final storeWebAddressController = TextEditingController();
   final storeDescriptionController = TextEditingController();
@@ -17,6 +20,48 @@ class _CreateStorePageState extends State<CreateStorePage> {
   final addressController = TextEditingController();
   final cityController = TextEditingController();
   final countryController = TextEditingController();
+
+  void requestCreateStore() async {
+    try {
+      print(jwtToken);
+      final response = await http.post(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/upgrade'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        print('Waiting accepted');
+        Navigator.pushNamed(context, 'HomePage');
+      } else {
+        print('Failed');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -333,7 +378,8 @@ class _CreateStorePageState extends State<CreateStorePage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
               onTap: () {
-                //add create store button
+                _getToken();
+                requestCreateStore();
               },
               child: Container(
                 height: 49,
