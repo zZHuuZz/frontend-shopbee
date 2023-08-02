@@ -56,7 +56,7 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                   widthFactor: 1,
                   child: Column(
                     children: [
-                      SizedBox(height: 14),
+                      SizedBox(height: 4),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         child: Align(
@@ -70,11 +70,35 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Spacer(),
                       Padding(
                         padding:
-                            EdgeInsets.only(left: 12, right: 12, bottom: 12),
+                            EdgeInsets.only(left: 12, right: 12, bottom: 4),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: [
+                              Text(
+                                "\$9990",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                "\$9990",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFF33907C),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: 12, right: 12, bottom: 1),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Row(
@@ -91,22 +115,6 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 14,
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                "\$9990",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                "\$9990",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF33907C),
                                 ),
                               ),
                             ],

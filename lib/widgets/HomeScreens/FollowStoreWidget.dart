@@ -80,27 +80,29 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                           onTap: () {
                             //add start shopping function
                           },
-                          child: Container(
-                            width: 86,
-                            height: 23,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              color: const Color(0xFF33907C),
-                            ),
-                            child: const Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Follow",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 12),
+                            child: Container(
+                              width: 86,
+                              height: 23,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: const Color(0xFF33907C),
+                              ),
+                              child: const Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Follow",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
                     ],
                   ),
                 ),

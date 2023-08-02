@@ -17,7 +17,7 @@ class _OrderWidgetState extends State<OrderWidget> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Container(
-        height: 68,
+        height: 78,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -28,8 +28,8 @@ class _OrderWidgetState extends State<OrderWidget> {
               const EdgeInsets.only(top: 15, left: 16, bottom: 16, right: 10),
           child: Row(children: [
             Container(
-              height: 37,
-              width: 37,
+              height: 47,
+              width: 47,
               foregroundDecoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('images/book_devonly.png'),

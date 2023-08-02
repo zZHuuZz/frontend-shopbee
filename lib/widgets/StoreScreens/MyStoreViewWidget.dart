@@ -140,7 +140,7 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                         Align(
                             alignment: const Alignment(0, -1),
                             child: FractionallySizedBox(
-                              heightFactor: .67,
+                              heightFactor: .65,
                               child: ClipRRect(
                                 borderRadius: const BorderRadius.only(
                                   topRight: Radius.circular(12),
@@ -220,7 +220,7 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                         Align(
                           alignment: const Alignment(-1, 1),
                           child: FractionallySizedBox(
-                            heightFactor: .33,
+                            heightFactor: .35,
                             child: Container(
                               decoration: const BoxDecoration(
                                 color: Colors.white,
@@ -233,7 +233,7 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                                 widthFactor: 1,
                                 child: Column(
                                   children: [
-                                    SizedBox(height: 14),
+                                    SizedBox(height: 4),
                                     Padding(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 12),
@@ -248,11 +248,36 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 16),
-                                    Spacer(),
                                     Padding(
                                       padding: EdgeInsets.only(
-                                          left: 12, right: 12, bottom: 12),
+                                          left: 12, right: 12, bottom: 4),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "\$9990",
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                              ),
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "\$9990",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF33907C),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 12, right: 12, bottom: 1),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Row(
@@ -270,23 +295,6 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                                               style: TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: 14,
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Text(
-                                              "\$9990",
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                              ),
-                                            ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              "\$9990",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xFF33907C),
                                               ),
                                             ),
                                           ],

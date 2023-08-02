@@ -2,6 +2,10 @@
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart';
+import 'package:shopbee/globals.dart';
+import 'dart:io';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -11,6 +15,7 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProductPage> {
+  String? jwtToken;
   final productNameController = TextEditingController();
   final categoryProductController = TextEditingController();
   final priceController = TextEditingController();
@@ -19,7 +24,59 @@ class _AddProductState extends State<AddProductPage> {
   final productDescriptionController = TextEditingController();
   final priceTypeController = TextEditingController();
   final additionalDetailsController = TextEditingController();
-  int photoController = 0;
+
+  File? _image;
+
+  Future getImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    setState(() {
+      this._image = imageTemporary;
+    });
+  }
+
+  void createProduct() async {
+    var postUri = Uri.parse('http://localhost:3055/api/v1/image/upload');
+    var request = MultipartRequest("POST", postUri);
+    request.files.add(
+      await MultipartFile.fromPath(
+        "file",
+        _image.toString(),
+        filename: _image.toString().split("/").last,
+      ),
+    );
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      print('good');
+    } else {
+      print('not good');
+    }
+    return;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,65 +120,115 @@ class _AddProductState extends State<AddProductPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                if (photoController < 4) photoController++;
-                              });
-                            },
-                            child: DottedBorder(
-                              color: Colors.grey,
-                              borderType: BorderType.RRect,
-                              radius: Radius.circular(12),
-                              padding: EdgeInsets.all(12),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(24)),
-                                child: Container(
-                                  height: 105,
-                                  width: 150,
-                                  child: Column(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 50,
-                                          color: Colors.grey,
+                        _image != null
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      getImage();
+                                    });
+                                  },
+                                  child: DottedBorder(
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(12),
+                                    padding: EdgeInsets.all(12),
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(24)),
+                                      child: Container(
+                                        height: 105,
+                                        width: 150,
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.refresh,
+                                                size: 50,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Change photos',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          'Add photos',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 22,
-                                            color: Colors.grey,
-                                          ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      getImage();
+                                      print(_image);
+                                    });
+                                  },
+                                  child: DottedBorder(
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(12),
+                                    padding: EdgeInsets.all(12),
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(24)),
+                                      child: Container(
+                                        height: 105,
+                                        width: 150,
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 50,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Add photos',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 22,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '1600 x 1200 for high res',
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          '1600 x 1200 for high res',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                        for (int i = 0; i < photoController; i++)
+                        if (_image != null)
                           Stack(
                             clipBehavior: Clip.none,
                             children: [
@@ -144,7 +251,7 @@ class _AddProductState extends State<AddProductPage> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(24)),
                                       image: DecorationImage(
-                                        image: AssetImage('images/logo.png'),
+                                        image: FileImage(_image!),
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -163,8 +270,8 @@ class _AddProductState extends State<AddProductPage> {
                                   child: IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        if (photoController > 0)
-                                          photoController--;
+                                        print(_image);
+                                        _image = null;
                                       });
                                     },
                                     icon: const Icon(
@@ -187,7 +294,7 @@ class _AddProductState extends State<AddProductPage> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      'Max. 4 photos per product',
+                      'Max. 1 photo per product',
                       style: TextStyle(color: Colors.grey, fontSize: 18),
                     ),
                   ),
@@ -512,6 +619,7 @@ class _AddProductState extends State<AddProductPage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
@@ -526,7 +634,7 @@ class _AddProductState extends State<AddProductPage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
               onTap: () {
-                //add create product button
+                createProduct();
               },
               child: Container(
                 height: 49,

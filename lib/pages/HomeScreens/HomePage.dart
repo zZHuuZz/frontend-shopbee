@@ -1,13 +1,10 @@
-// ignore_for_file: file_names, sized_box_for_whitespace
-
 import 'package:flutter/material.dart';
-import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 import 'package:shopbee/widgets/HomeScreens/FollowStoreWidget.dart';
-import 'package:shopbee/widgets/HomeScreens/Category1Widget.dart';
-import 'package:shopbee/widgets/HomeScreens/Category2Widget.dart';
-import 'package:shopbee/widgets/HomeScreens/Category3Widget.dart';
+import 'package:shopbee/widgets/HomeScreens/CategoryWidget.dart';
 import 'package:shopbee/widgets/HomeScreens/HomePageProductWidget.dart';
 import 'package:shopbee/globals.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,14 +16,33 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? jwtToken;
   final searchController = TextEditingController();
-  late int selectedPage;
-  late final PageController _categoryController;
+  Map<String, dynamic> categoryData = {};
+  Map<String, dynamic> temp = {};
   @override
   void initState() {
-    selectedPage = 0;
-    _categoryController = PageController(initialPage: selectedPage);
-    _getToken();
+    getCategory().then((value) {});
     super.initState();
+  }
+
+  Future<Map<String, dynamic>> getCategory() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/category/list'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        categoryData = responseBody;
+        return responseBody;
+      } else {
+        print('failed');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return categoryData;
   }
 
   int _selectedIndex = 0;
@@ -44,8 +60,6 @@ class _HomePageState extends State<HomePage> {
         Navigator.pushNamed(context, 'OrderHistoryPage');
       }
       if (index == 4) {
-        _getToken();
-        print(jwtToken);
         Navigator.pushNamed(context, 'ProfilePage');
       }
     });
@@ -230,47 +244,71 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            Container(
-              height: MediaQuery.of(context).size.width / 2,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                children: [
-                  PageView(
-                    onPageChanged: (page) {
-                      setState(() {
-                        selectedPage = page;
-                      });
-                    },
-                    controller: _categoryController,
-                    children: const <Widget>[
-                      Center(
-                        child: Category1Widget(),
+            FutureBuilder<Map<String, dynamic>>(
+              future: getCategory(), // function where you call your api
+              builder: (BuildContext context,
+                  AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                // AsyncSnapshot<Your object type>
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    color: Colors.white,
+                    child: Center(child: Text('Please wait its loading...')),
+                  );
+                } else {
+                  if (snapshot.hasError)
+                    return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 200,
+                        color: Colors.white,
+                        child: Center(child: Text('Error: ${snapshot.error}')));
+                  else
+                    return Container(
+                      height: MediaQuery.of(context).size.width / 2,
+                      width: MediaQuery.of(context).size.width,
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  for (int i = 0; i <= 3; i++)
+                                    Center(
+                                      child: CategoryWidget(
+                                          RID: snapshot.data?['data'][i]['rid'],
+                                          name: snapshot.data?['data'][i]
+                                              ['name'],
+                                          URL: snapshot.data?['data'][i]
+                                              ['image']['url']),
+                                    ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Row(
+                                    children: [
+                                      for (int i = 4; i <= 7; i++)
+                                        Center(
+                                          child: CategoryWidget(
+                                              RID: snapshot.data?['data'][i]
+                                                  ['rid'],
+                                              name: snapshot.data?['data'][i]
+                                                  ['name'],
+                                              URL: snapshot.data?['data'][i]
+                                                  ['image']['url']),
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      Center(
-                        child: Category2Widget(),
-                      ),
-                      Center(
-                        child: Category3Widget(),
-                      ),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 5),
-                      child: PageViewDotIndicator(
-                        currentItem: selectedPage,
-                        count: 3,
-                        unselectedColor: Colors.black26,
-                        selectedColor: Colors.white,
-                        duration: const Duration(milliseconds: 200),
-                        boxShape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                    ); // snapshot.data  :- get your object which is pass from your downloadData() function
+                }
+              },
             ),
             const SizedBox(height: 27),
             Row(

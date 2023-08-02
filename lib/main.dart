@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+
+//browse screens
 import 'package:shopbee/pages/BrowseScreens/BrowsePage.dart';
+
+//category screens
 import 'package:shopbee/pages/CategoryScreens/CategoryPage.dart';
+
+//order history screens
 import 'package:shopbee/pages/OrderHistoryScreens/OrderHistoryPage.dart';
 
 //store screens
@@ -23,6 +29,9 @@ import 'pages/HomeScreens/HomePage.dart';
 
 //cart screens
 import 'pages/CartScreens/CartPage.dart';
+import 'package:shopbee/pages/CartScreens/AddNewAddressPage.dart';
+import 'package:shopbee/pages/CartScreens/PaymentOptionPage.dart';
+import 'package:shopbee/pages/CartScreens/AddCardPage.dart';
 
 void main() => runApp(const MyApp());
 
@@ -37,8 +46,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
+        '/': (context) => const HomePage(),
         //login screens
-        "/": (context) => const LoginPage(),
+        //"/": (context) => const LoginPage(),
         "SignUpPage": (context) => const SignUpPage(),
         "EmailVerificationPage": (context) => const EmailVerificationPage(),
         "ForgotPasswordPage": (context) => const ForgotPasswordPage(),
@@ -58,7 +68,10 @@ class MyApp extends StatelessWidget {
         "EditProductPage": (context) => const EditProductPage(),
 
         //cart screens
-        "CartPage": (context) => CartPage(),
+        "CartPage": (context) => const CartPage(),
+        "AddNewAddressPage": (context) => const AddNewAddressPage(),
+        'PaymentOptionPage': (context) => const PaymentOptionPage(),
+        'AddCardPage': (context) => const AddCardPage(),
 
         //order history screens
         "OrderHistoryPage": (context) => const OrderHistoryPage(),

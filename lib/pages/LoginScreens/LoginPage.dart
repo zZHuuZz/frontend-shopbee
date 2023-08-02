@@ -18,17 +18,9 @@ class _LoginState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
+  bool errorMessage = false;
 
   void signin(String email, password) async {
-    if (email == "") {
-      print('Email cannot empty !');
-      Navigator.pushNamed(context, 'ForgotPasswordPage');
-    } else {
-      if (password == "") {
-        print('password cannot empty !');
-        Navigator.pushNamed(context, 'ForgotPasswordPage');
-      }
-    }
     Map<String, dynamic> requestBody = {
       'email': email,
       'password': password,
@@ -50,6 +42,7 @@ class _LoginState extends State<LoginPage> {
         Navigator.pushNamed(context, 'HomePage');
       } else {
         print('Sign in failed');
+        _errorMessage();
       }
     } catch (e) {
       print(e.toString());
@@ -75,6 +68,12 @@ class _LoginState extends State<LoginPage> {
     String? token = await getToken();
     setState(() {
       jwtToken = token;
+    });
+  }
+
+  void _errorMessage() {
+    setState(() {
+      errorMessage = true;
     });
   }
 
@@ -109,81 +108,93 @@ class _LoginState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 42),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Container(
-                  height: 48,
-                  child: TextFormField(
-                    autofocus: false,
-                    keyboardType: TextInputType.text,
-                    controller: emailController,
-                    style: const TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      labelStyle: const TextStyle(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                child: TextFormField(
+                  autofocus: false,
+                  keyboardType: TextInputType.text,
+                  controller: emailController,
+                  style: const TextStyle(color: Colors.white),
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    labelText: "Email",
+                    labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                child: TextFormField(
+                  autofocus: false,
+                  keyboardType: TextInputType.visiblePassword,
+                  controller: passController,
+                  obscureText: passToggle,
+                  style: const TextStyle(color: Colors.white),
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    labelText: "Password",
+                    labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    suffix: InkWell(
+                      onTap: () {
+                        setState(() {
+                          if (passToggle == true) {
+                            passToggle = false;
+                          } else {
+                            passToggle = true;
+                          }
+                        });
+                      },
+                      child: Icon(
+                        passToggle ? Icons.visibility : Icons.visibility_off,
                         color: Colors.white,
-                        fontSize: 18,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(100),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Container(
-                  height: 48,
-                  child: TextFormField(
-                    autofocus: false,
-                    keyboardType: TextInputType.visiblePassword,
-                    controller: passController,
-                    obscureText: passToggle,
-                    style: const TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      labelStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      suffix: InkWell(
-                        onTap: () {
-                          setState(() {
-                            if (passToggle == true) {
-                              passToggle = false;
-                            } else {
-                              passToggle = true;
-                            }
-                          });
-                        },
-                        child: Icon(
-                          passToggle ? Icons.visibility : Icons.visibility_off,
-                          color: Colors.white,
+              const SizedBox(height: 10),
+              errorMessage
+                  ? const Align(
+                      child: Text(
+                        '*Your email or password is incorrect*',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 38),
+                    )
+                  : Container(),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(

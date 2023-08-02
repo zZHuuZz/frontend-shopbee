@@ -99,7 +99,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                   child: const Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Januari 2022",
+                      "January 2022",
                       style: TextStyle(
                           color: Color(0xFF33907C),
                           fontSize: 13,
