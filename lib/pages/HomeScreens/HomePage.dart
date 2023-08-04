@@ -17,10 +17,20 @@ class _HomePageState extends State<HomePage> {
   String? jwtToken;
   final searchController = TextEditingController();
   Map<String, dynamic> categoryData = {};
-  Map<String, dynamic> temp = {};
+  Map<String, dynamic> newBookData = {};
+  Map<String, dynamic> popularBookData = {};
+  Map<String, dynamic> storeListData = {};
+  Map<String, dynamic> profileData = {};
   @override
   void initState() {
-    getCategory().then((value) {});
+    _getToken().then((value) {
+      getProfile().then((result) {
+        print(result);
+        setState(() {
+          profileData = result;
+        });
+      });
+    });
     super.initState();
   }
 
@@ -37,12 +47,77 @@ class _HomePageState extends State<HomePage> {
         categoryData = responseBody;
         return responseBody;
       } else {
-        print('failed');
+        print('failed category');
       }
     } catch (e) {
       print(e.toString());
     }
     return categoryData;
+  }
+
+  Future<Map<String, dynamic>> getNewBook() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/product/list?limit=3'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        categoryData = responseBody;
+        return responseBody;
+      } else {
+        print('failed new book');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return categoryData;
+  }
+
+  Future<Map<String, dynamic>> getPopularBook() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/product/list?limit=3'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        categoryData = responseBody;
+        return responseBody;
+      } else {
+        print('failed popular book');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return categoryData;
+  }
+
+  Future<Map<String, dynamic>> getStoreList() async {
+    try {
+      Response response = await get(
+        Uri.parse(
+            'http://shopbee-api.shop:3055/api/v1/shop/list?role=retailer'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        storeListData = responseBody;
+        return responseBody;
+      } else {
+        print('failed store list');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return storeListData;
   }
 
   int _selectedIndex = 0;
@@ -54,7 +129,11 @@ class _HomePageState extends State<HomePage> {
         Navigator.pushNamed(context, 'BrowsePage');
       }
       if (index == 2) {
-        Navigator.pushNamed(context, 'UncreatedStorePage');
+        if (profileData['data']['role'] == 'buyer')
+          Navigator.pushNamed(context, 'UncreatedStorePage');
+        else {
+          Navigator.pushNamed(context, 'MyStorePage');
+        }
       }
       if (index == 3) {
         Navigator.pushNamed(context, 'OrderHistoryPage');
@@ -65,12 +144,35 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        return responseBody;
+      } else {
+        print('failed profile');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
   // Function to set the JWT token
   Future<void> _setToken(String token) async {
     await setToken(token);
     setState(() {
       jwtToken = token;
     });
+    print(jwtToken.toString());
   }
 
   // Function to get the JWT token
@@ -87,7 +189,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color(0xFFF6F9FF),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: 150,
+        toolbarHeight: 100,
         backgroundColor: const Color(0xFF33907C),
         title: Column(
           children: [
@@ -122,40 +224,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const SizedBox(height: 23),
-            Container(
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: TextFormField(
-                autofocus: false,
-                keyboardType: TextInputType.text,
-                controller: searchController,
-                style: const TextStyle(color: Colors.black),
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: Color(0xFF13B58C),
-                  ),
-                  hintText: "Search Product",
-                  labelStyle: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 18,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -164,85 +232,111 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             const SizedBox(height: 11),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  for (int i = 0; i < 3; i++)
-                    Container(
-                      padding: const EdgeInsets.only(left: 16),
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("images/book_devonly.png"),
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      child: Container(
-                        height: 165,
-                        width: 302,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(65, 0, 0, 0),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
+            FutureBuilder<Map<String, dynamic>>(
+                future: getNewBook(), // function where you call your api
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  // AsyncSnapshot<Your object type>
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 200,
+                      color: Colors.white,
+                      child: Center(child: Text('Please wait its loading...')),
+                    );
+                  } else {
+                    if (snapshot.hasError)
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
+                          color: Colors.white,
+                          child:
+                              Center(child: Text('Error: ${snapshot.error}')));
+                    else
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
                           children: [
-                            const SizedBox(height: 51),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 17),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "READY TO DELIVER TO \nYOUR HOME",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                            for (var adData in snapshot.data?['data'])
+                              Container(
+                                padding: const EdgeInsets.only(left: 16),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(adData['image']['url']),
+                                    fit: BoxFit.fitHeight,
                                   ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(height: 17),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 17),
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: InkWell(
-                                  onTap: () {
-                                    //add start shopping function
-                                  },
-                                  child: Container(
-                                    width: 147,
-                                    height: 28,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: Colors.transparent,
-                                      border: Border.all(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    child: const Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "START SHOPPING",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                child: Container(
+                                  height: 165,
+                                  width: 302,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(65, 0, 0, 0),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 51),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 17),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "READY TO DELIVER TO \nYOUR HOME",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                      const SizedBox(height: 17),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 17),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'BrowsePage');
+                                            },
+                                            child: Container(
+                                              width: 190,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                color: Colors.transparent,
+                                                border: Border.all(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              child: const Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "START SHOPPING",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
+                      );
+                  }
+                }),
             const SizedBox(height: 16),
             FutureBuilder<Map<String, dynamic>>(
               future: getCategory(), // function where you call your api
@@ -276,10 +370,10 @@ class _HomePageState extends State<HomePage> {
                                   for (int i = 0; i <= 3; i++)
                                     Center(
                                       child: CategoryWidget(
-                                          RID: snapshot.data?['data'][i]['rid'],
+                                          rid: snapshot.data?['data'][i]['rid'],
                                           name: snapshot.data?['data'][i]
                                               ['name'],
-                                          URL: snapshot.data?['data'][i]
+                                          url: snapshot.data?['data'][i]
                                               ['image']['url']),
                                     ),
                                 ],
@@ -291,11 +385,11 @@ class _HomePageState extends State<HomePage> {
                                       for (int i = 4; i <= 7; i++)
                                         Center(
                                           child: CategoryWidget(
-                                              RID: snapshot.data?['data'][i]
+                                              rid: snapshot.data?['data'][i]
                                                   ['rid'],
                                               name: snapshot.data?['data'][i]
                                                   ['name'],
-                                              URL: snapshot.data?['data'][i]
+                                              url: snapshot.data?['data'][i]
                                                   ['image']['url']),
                                         ),
                                     ],
@@ -332,7 +426,7 @@ class _HomePageState extends State<HomePage> {
                     alignment: Alignment.bottomLeft,
                     child: InkWell(
                       onTap: () {
-                        //add start shopping function
+                        Navigator.pushNamed(context, 'BrowsePage');
                       },
                       child: Container(
                         width: 87,
@@ -358,22 +452,51 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             const SizedBox(height: 16),
-            Container(
-              height: 268,
-              child: GridView.count(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 12.35,
-                childAspectRatio: 1.219512,
-                primary: true,
-                physics: const ScrollPhysics(),
-                crossAxisCount: 1,
-                children: [
-                  for (int i = 0; i < 6; i++) HomePageProductWidget(),
-                ],
-              ),
-            ),
+            FutureBuilder<Map<String, dynamic>>(
+                future: getNewBook(), // function where you call your api
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  // AsyncSnapshot<Your object type>
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 200,
+                      color: Colors.white,
+                      child: Center(child: Text('Please wait its loading...')),
+                    );
+                  } else {
+                    if (snapshot.hasError)
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
+                          color: Colors.white,
+                          child:
+                              Center(child: Text('Error: ${snapshot.error}')));
+                    else
+                      return Container(
+                        height: 268,
+                        child: GridView.count(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 12.35,
+                          childAspectRatio: 1.219512,
+                          primary: true,
+                          physics: const ScrollPhysics(),
+                          crossAxisCount: 1,
+                          children: [
+                            for (var product in snapshot.data?['data'])
+                              HomePageProductWidget(
+                                  id: product['id'],
+                                  name: product['name'],
+                                  price: product['price'],
+                                  store: product['shop']['fullname'],
+                                  url: product['image']['url']),
+                          ],
+                        ),
+                      );
+                  }
+                }),
             const SizedBox(height: 27),
             Row(
               children: [
@@ -381,7 +504,7 @@ class _HomePageState extends State<HomePage> {
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Poppular Product',
+                    'Popular Product',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -396,7 +519,7 @@ class _HomePageState extends State<HomePage> {
                     alignment: Alignment.bottomLeft,
                     child: InkWell(
                       onTap: () {
-                        //add start shopping function
+                        Navigator.pushNamed(context, 'BrowsePage');
                       },
                       child: Container(
                         width: 87,
@@ -422,22 +545,51 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             const SizedBox(height: 16),
-            Container(
-              height: 268,
-              child: GridView.count(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 12.35,
-                childAspectRatio: 1.219512,
-                primary: true,
-                physics: const ScrollPhysics(),
-                crossAxisCount: 1,
-                children: [
-                  for (int i = 0; i < 6; i++) HomePageProductWidget(),
-                ],
-              ),
-            ),
+            FutureBuilder<Map<String, dynamic>>(
+                future: getPopularBook(), // function where you call your api
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  // AsyncSnapshot<Your object type>
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 200,
+                      color: Colors.white,
+                      child: Center(child: Text('Please wait its loading...')),
+                    );
+                  } else {
+                    if (snapshot.hasError)
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
+                          color: Colors.white,
+                          child:
+                              Center(child: Text('Error: ${snapshot.error}')));
+                    else
+                      return Container(
+                        height: 268,
+                        child: GridView.count(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 12.35,
+                          childAspectRatio: 1.219512,
+                          primary: true,
+                          physics: const ScrollPhysics(),
+                          crossAxisCount: 1,
+                          children: [
+                            for (var product in snapshot.data?['data'])
+                              HomePageProductWidget(
+                                  id: product['id'],
+                                  name: product['name'],
+                                  price: product['price'],
+                                  store: product['shop']['fullname'],
+                                  url: product['image']['url']),
+                          ],
+                        ),
+                      );
+                  }
+                }),
             const SizedBox(height: 27),
             Container(
               height: 363,
@@ -498,29 +650,59 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        height: 268,
-                        child: GridView.count(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          mainAxisSpacing: 15,
-                          crossAxisSpacing: 12.35,
-                          childAspectRatio: 1.219512,
-                          primary: true,
-                          physics: const ScrollPhysics(),
-                          crossAxisCount: 1,
-                          children: [
-                            for (int i = 0; i < 6; i++)
-                              const FollowStoreWidget(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
+                  FutureBuilder<Map<String, dynamic>>(
+                      future:
+                          getStoreList(), // function where you call your api
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                        // AsyncSnapshot<Your object type>
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 200,
+                            color: Colors.white,
+                            child: Center(
+                                child: Text('Please wait its loading...')),
+                          );
+                        } else {
+                          if (snapshot.hasError)
+                            return Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 200,
+                                color: Colors.white,
+                                child: Center(
+                                    child: Text('Error: ${snapshot.error}')));
+                          else
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 60),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                  height: 268,
+                                  child: GridView.count(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    mainAxisSpacing: 15,
+                                    crossAxisSpacing: 12.35,
+                                    childAspectRatio: 1.219512,
+                                    primary: true,
+                                    physics: const ScrollPhysics(),
+                                    crossAxisCount: 1,
+                                    children: [
+                                      for (var storeData
+                                          in snapshot.data?['data'])
+                                        FollowStoreWidget(
+                                            name: storeData['fullname'],
+                                            id: storeData['id']),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                        }
+                      }),
                 ],
               ),
             ),

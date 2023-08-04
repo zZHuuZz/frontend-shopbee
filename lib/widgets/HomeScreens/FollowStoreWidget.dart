@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 
 class FollowStoreWidget extends StatefulWidget {
-  const FollowStoreWidget({super.key});
+  final String name;
+  final String id;
+  const FollowStoreWidget({super.key, required this.name, required this.id});
 
   @override
   State<FollowStoreWidget> createState() => _FollowStoreWidgetState();
@@ -59,12 +61,12 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                   child: Column(
                     children: [
                       const SizedBox(height: 14),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(vertical: 35),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "!Store Name",
+                            widget.name,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,

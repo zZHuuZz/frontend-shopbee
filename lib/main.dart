@@ -46,9 +46,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
-        '/': (context) => const HomePage(),
         //login screens
-        //"/": (context) => const LoginPage(),
+        "/": (context) => const LoginPage(),
         "SignUpPage": (context) => const SignUpPage(),
         "EmailVerificationPage": (context) => const EmailVerificationPage(),
         "ForgotPasswordPage": (context) => const ForgotPasswordPage(),

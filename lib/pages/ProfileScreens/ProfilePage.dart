@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shopbee/globals.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -9,6 +12,53 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String? jwtToken;
+  Map<String, dynamic> profileData = {};
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        return responseBody;
+      } else {
+        print('failed');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  @override
+  void initState() {
+    _getToken();
+    super.initState();
+  }
+
   int _selectedIndex = 4;
   void _onItemTapped(int index) {
     setState(() {
@@ -107,48 +157,81 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         SizedBox(width: 15),
-                        Container(
-                          height: 64,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Text(
-                                  "!User name", //change name with api
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "!Phone number", //change phone numebr with api
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Text(
-                                  "!Email", //change email with api
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        FutureBuilder<Map<String, dynamic>>(
+                            future:
+                                getProfile(), // function where you call your api
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                              // AsyncSnapshot<Your object type>
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Container(
+                                  width: 200,
+                                  height: 200,
+                                  color: Colors.white,
+                                  child: Center(
+                                      child:
+                                          Text('Please wait its loading...')),
+                                );
+                              } else {
+                                if (snapshot.hasError)
+                                  return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 200,
+                                      color: Colors.white,
+                                      child: Center(
+                                          child: Text(
+                                              'Error: ${snapshot.error}')));
+                                else
+                                  return Container(
+                                    height: 64,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topCenter,
+                                          child: Text(
+                                            snapshot.data?['data'][
+                                                'fullname'], //change name with api
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            snapshot.data?['data'][
+                                                'phone'], //change phone numebr with api
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Text(
+                                            snapshot.data?['data'][
+                                                'email'], //change email with api
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                              }
+                            }),
                       ],
                     ),
                   ],
@@ -292,7 +375,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     Expanded(
                       child: Container(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/', (Route<dynamic> route) => false);
+                          },
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(

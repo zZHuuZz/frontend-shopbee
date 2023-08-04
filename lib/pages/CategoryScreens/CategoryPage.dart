@@ -4,9 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shopbee/widgets/CategoryScreens/CategoryItemsWidget.dart';
 
+class CategoryData {
+  final int rid;
+  final String name;
+
+  CategoryData(this.rid, this.name);
+}
+
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
-
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }
@@ -15,7 +21,13 @@ class _CategoryPageState extends State<CategoryPage> {
   final searchController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as CategoryData;
     return Scaffold(
       backgroundColor: const Color(0xFFF6F9FF),
       appBar: AppBar(
@@ -32,8 +44,8 @@ class _CategoryPageState extends State<CategoryPage> {
         automaticallyImplyLeading: false,
         toolbarHeight: 100,
         backgroundColor: const Color(0xFF33907C),
-        title: const Text(
-          'Information Technology', //change label of category here
+        title: Text(
+          data.name, //change label of category here
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
@@ -158,7 +170,7 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
             const SizedBox(height: 30),
-            const CategoryItemsWidget(),
+            CategoryItemsWidget(rid: data.rid),
             const SizedBox(height: 30),
           ],
         ),

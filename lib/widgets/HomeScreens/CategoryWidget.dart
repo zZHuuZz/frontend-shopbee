@@ -1,12 +1,13 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:shopbee/pages/CategoryScreens/CategoryPage.dart';
 
 class CategoryWidget extends StatefulWidget {
-  final int RID;
-  final String name, URL;
+  final int rid;
+  final String name, url;
   CategoryWidget(
-      {Key? key, required this.RID, required this.name, required this.URL})
+      {Key? key, required this.rid, required this.name, required this.url})
       : super(key: key);
   @override
   State<CategoryWidget> createState() => _CategoryWidgetState();
@@ -19,12 +20,19 @@ class _CategoryWidgetState extends State<CategoryWidget> {
       padding: const EdgeInsets.only(right: 1, bottom: 1),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, "CategoryPage");
+          Navigator.pushNamed(
+            context,
+            'CategoryPage',
+            arguments: CategoryData(
+              widget.rid,
+              widget.name,
+            ),
+          );
         },
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(widget.URL),
+              image: NetworkImage(widget.url),
               fit: BoxFit.fitHeight,
             ),
           ),

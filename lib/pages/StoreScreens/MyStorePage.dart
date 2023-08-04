@@ -5,6 +5,9 @@
 import 'package:flutter/material.dart';
 import 'package:shopbee/widgets/StoreScreens/MyStoreEmptyWidget.dart';
 import 'package:shopbee/widgets/StoreScreens/MyStoreViewWidget.dart';
+import 'package:shopbee/globals.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 
 class MyStorePage extends StatefulWidget {
   @override
@@ -12,6 +15,84 @@ class MyStorePage extends StatefulWidget {
 }
 
 class _MyStorePageState extends State<MyStorePage> {
+  String? jwtToken;
+  Map<String, dynamic> profileData = {};
+  Map<String, dynamic> myProductData = {};
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        return responseBody;
+      } else {
+        print('failed profile');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
+  Future<Map<String, dynamic>> getMyProduct() async {
+    try {
+      Response response = await get(
+        Uri.parse(
+            'http://shopbee-api.shop:3055/api/v1/product/list?shop_id=${profileData['data']['id']}'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        myProductData = responseBody;
+        return responseBody;
+      } else {
+        print(response.body);
+        print('failed product');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return myProductData;
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  @override
+  void initState() {
+    _getToken().then((value) {
+      getProfile().then((result) {
+        setState(() {
+          profileData = result;
+        });
+      });
+    });
+    print(myProductData);
+    super.initState();
+  }
+
   int _selectedIndex = 2;
 
   //this bool define whether Empty or Item MyStoreWidget is loaded
@@ -75,126 +156,125 @@ class _MyStorePageState extends State<MyStorePage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.height,
-              height: 232,
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  CircleAvatar(
-                    radius: 24,
-                    backgroundColor: Color(0xFF33907C),
-                    foregroundColor: Colors.white,
-                    //backgroundImage: NetworkImage("ADD URL HERE"),
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'USER NAME HERE',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+      body: FutureBuilder<Map<String, dynamic>>(
+          future: getProfile(),
+          builder: (BuildContext context,
+              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+            // AsyncSnapshot<Your object type>
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: 210,
+                color: Colors.white,
+                child: Center(child: Text('Please wait its loading...')),
+              );
+            } else {
+              if (snapshot.hasError)
+                return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 210,
+                    color: Colors.white,
+                    child: Center(child: Text('Error: ${snapshot.error}')));
+              else
+                return SingleChildScrollView(
+                  child: Column(
                     children: [
                       Container(
-                        height: 25,
-                        width: 110,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xFF33907C),
-                          ),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, 'EditStorePage');
-                          },
-                          child: Center(
-                            child: Text(
-                              "Edit Store",
+                        width: MediaQuery.of(context).size.height,
+                        height: 210,
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 30,
+                            ),
+                            CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Color(0xFF33907C),
+                              foregroundColor: Colors.white,
+                              //backgroundImage: NetworkImage("ADD URL HERE"),
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              profileData['data']['fullname'],
                               style: TextStyle(
-                                color: Color(0xFF33907C),
-                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 17),
-                      Container(
-                        height: 25,
-                        width: 110,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF33907C),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            //Navigate to ViewStorePage
-                          },
-                          child: Center(
-                            child: Text(
-                              "View Store",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 25,
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xFF33907C),
+                                    ),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, 'EditStorePage');
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        "Edit Store",
+                                        style: TextStyle(
+                                          color: Color(0xFF33907C),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 17),
+                                Container(
+                                  height: 25,
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF33907C),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      //Navigate to ViewStorePage
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        "View Store",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 27,
+                            ),
+                          ],
                         ),
                       ),
+                      storeState
+                          ? MyStoreViewWidget(
+                              profileData: profileData,
+                            )
+                          : MyStoreEmptyWidget(),
                     ],
                   ),
-                  SizedBox(
-                    height: 27,
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        //remove store button
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.height,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                              color: Colors.grey,
-                              width: 0.5,
-                            ),
-                          ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Remove Store',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            storeState ? MyStoreViewWidget() : MyStoreEmptyWidget(),
-          ],
-        ),
-      ),
+                );
+            }
+          }),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF33907C),
         items: <BottomNavigationBarItem>[

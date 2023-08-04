@@ -1,6 +1,9 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:shopbee/globals.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class UncreatedStorePage extends StatefulWidget {
   @override
@@ -8,6 +11,62 @@ class UncreatedStorePage extends StatefulWidget {
 }
 
 class _UncreatedStorePageState extends State<UncreatedStorePage> {
+  String? jwtToken;
+  Map<String, dynamic> profileData = {};
+  int statusRequest = 200;
+  bool isRequested = false;
+  Future<Map<String, dynamic>> requestCreateStore() async {
+    try {
+      final response = await post(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/upgrade'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        statusRequest = 200;
+        print('Waiting accepted');
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+      } else {
+        statusRequest = response.statusCode;
+        print('Failed to request store');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
+  @override
+  void initState() {
+    _getToken().then((value) {
+      requestCreateStore().then((result) {
+        print(result);
+        setState(() {
+          profileData = result;
+        });
+      });
+    });
+    super.initState();
+  }
+
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
   int _selectedIndex = 2;
   void _onItemTapped(int index) {
     setState(() {
@@ -77,7 +136,29 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 80),
+          SizedBox(height: 40),
+          isRequested
+              ? statusRequest == 200
+                  ? Center(
+                      child:
+                          Text('Your request is being reviewed by our staff!',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              )),
+                    )
+                  : Center(
+                      child:
+                          Text('Your request is being reviewed by our staff!',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              )),
+                    )
+              : Text(''),
+          SizedBox(height: 40),
           Align(
             alignment: Alignment.center,
             child: Image.asset(
@@ -95,7 +176,10 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
           SizedBox(height: 40),
           InkWell(
             onTap: () {
-              Navigator.pushNamed(context, 'CreateStorePage');
+              setState(() {
+                requestCreateStore();
+                isRequested = true;
+              });
             },
             child: Container(
               height: 50,

@@ -3,6 +3,18 @@
 import 'package:flutter/material.dart';
 
 class HomePageProductWidget extends StatefulWidget {
+  final String id, name;
+  final int price;
+  final String store, url;
+
+  HomePageProductWidget(
+      {Key? key,
+      required this.id,
+      required this.name,
+      required this.price,
+      required this.store,
+      required this.url})
+      : super(key: key);
   @override
   State<HomePageProductWidget> createState() => _HomePageProductWidgetState();
 }
@@ -32,10 +44,9 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                     topLeft: Radius.circular(12),
                   ),
                   child: Container(
-                    foregroundDecoration: const BoxDecoration(
+                    foregroundDecoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('images/book_devonly.png'),
-                          fit: BoxFit.fill),
+                          image: NetworkImage(widget.url), fit: BoxFit.fill),
                     ),
                   ),
                 ),
@@ -52,7 +63,7 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                     bottomLeft: Radius.circular(12),
                   ),
                 ),
-                child: const FractionallySizedBox(
+                child: FractionallySizedBox(
                   widthFactor: 1,
                   child: Column(
                     children: [
@@ -62,7 +73,8 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "!Product Name",
+                            widget.name,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -78,15 +90,8 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                           child: Row(
                             children: [
                               Text(
-                                "\$9990",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                "\$9990",
+                                widget.price.toString() + ' đ',
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Color(0xFF33907C),
@@ -110,11 +115,14 @@ class _HomePageProductWidgetState extends State<HomePageProductWidget> {
                                 //backgroundImage: NetworkImage("ADD URL HERE"),
                               ),
                               SizedBox(width: 6),
-                              Text(
-                                "!Store name",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
+                              Flexible(
+                                child: Text(
+                                  widget.store,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                             ],

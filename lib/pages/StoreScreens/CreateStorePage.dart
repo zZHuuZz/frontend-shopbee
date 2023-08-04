@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shopbee/globals.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class CreateStorePage extends StatefulWidget {
   const CreateStorePage({super.key});
@@ -24,7 +24,7 @@ class _CreateStorePageState extends State<CreateStorePage> {
   void requestCreateStore() async {
     try {
       print(jwtToken);
-      final response = await http.post(
+      final response = await post(
         Uri.parse('http://shopbee-api.shop:3055/api/v1/user/upgrade'),
         headers: {
           'Content-Type': 'application/json',

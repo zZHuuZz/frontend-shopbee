@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shopbee/widgets/BrowseScreens/BrowseItemsWidget.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 
 class BrowsePage extends StatefulWidget {
   const BrowsePage({super.key});
@@ -13,7 +15,29 @@ class BrowsePage extends StatefulWidget {
 
 class _BrowsePageState extends State<BrowsePage> {
   final searchController = TextEditingController();
+  Map<String, dynamic> productData = {};
   late int selectedPage;
+
+  Future<Map<String, dynamic>> getProduct() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/product/list'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        productData = responseBody;
+        return responseBody;
+      } else {
+        print('failed');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return productData;
+  }
 
   int _selectedIndex = 1;
 
