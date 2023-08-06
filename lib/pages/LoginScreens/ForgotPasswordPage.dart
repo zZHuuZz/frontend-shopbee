@@ -105,7 +105,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 child: InkWell(
                   onTap: () {
                     //add send code to email functions
-                    Navigator.pushNamed(context, "EmailVerificationPage");
+                    Navigator.pushNamed(context, "/");
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,

@@ -21,13 +21,14 @@ class _HomePageState extends State<HomePage> {
   Map<String, dynamic> popularBookData = {};
   Map<String, dynamic> storeListData = {};
   Map<String, dynamic> profileData = {};
+  bool switchable = false;
   @override
   void initState() {
     _getToken().then((value) {
       getProfile().then((result) {
-        print(result);
         setState(() {
           profileData = result;
+          switchable = true;
         });
       });
     });
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getCategory() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/category/list'),
+        Uri.parse(apiURL + 'api/v1/category/list'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getNewBook() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/product/list?limit=3'),
+        Uri.parse(apiURL + 'api/v1/product/list?limit=3'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getPopularBook() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/product/list?limit=3'),
+        Uri.parse(apiURL + 'api/v1/product/list?limit=3'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -100,8 +101,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getStoreList() async {
     try {
       Response response = await get(
-        Uri.parse(
-            'http://shopbee-api.shop:3055/api/v1/shop/list?role=retailer'),
+        Uri.parse(apiURL + 'api/v1/user/list?role=retailer'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken',
@@ -123,31 +123,32 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 1) {
-        Navigator.pushNamed(context, 'BrowsePage');
-      }
-      if (index == 2) {
-        if (profileData['data']['role'] == 'buyer')
-          Navigator.pushNamed(context, 'UncreatedStorePage');
-        else {
-          Navigator.pushNamed(context, 'MyStorePage');
+    if (switchable)
+      setState(() {
+        _selectedIndex = index;
+        if (index == 1) {
+          Navigator.pushNamed(context, 'BrowsePage');
         }
-      }
-      if (index == 3) {
-        Navigator.pushNamed(context, 'OrderHistoryPage');
-      }
-      if (index == 4) {
-        Navigator.pushNamed(context, 'ProfilePage');
-      }
-    });
+        if (index == 2) {
+          if (profileData['data']['role'] == 'buyer')
+            Navigator.pushNamed(context, 'UncreatedStorePage');
+          else {
+            Navigator.pushNamed(context, 'MyStorePage');
+          }
+        }
+        if (index == 3) {
+          Navigator.pushNamed(context, 'OrderHistoryPage');
+        }
+        if (index == 4) {
+          Navigator.pushNamed(context, 'ProfilePage');
+        }
+      });
   }
 
   Future<Map<String, dynamic>> getProfile() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        Uri.parse(apiURL + 'api/v1/user/profile'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken',
@@ -241,14 +242,13 @@ class _HomePageState extends State<HomePage> {
                     return Container(
                       width: MediaQuery.of(context).size.width,
                       height: 200,
-                      color: Colors.white,
-                      child: Center(child: Text('Please wait its loading...')),
+                      color: Colors.grey,
                     );
                   } else {
                     if (snapshot.hasError)
                       return Container(
                           width: MediaQuery.of(context).size.width,
-                          height: 300,
+                          height: 165,
                           color: Colors.white,
                           child:
                               Center(child: Text('Error: ${snapshot.error}')));
@@ -347,8 +347,7 @@ class _HomePageState extends State<HomePage> {
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     height: 200,
-                    color: Colors.white,
-                    child: Center(child: Text('Please wait its loading...')),
+                    color: Colors.grey,
                   );
                 } else {
                   if (snapshot.hasError)
@@ -460,9 +459,8 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      color: Colors.white,
-                      child: Center(child: Text('Please wait its loading...')),
+                      height: 268,
+                      color: Colors.grey,
                     );
                   } else {
                     if (snapshot.hasError)
@@ -553,9 +551,8 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      color: Colors.white,
-                      child: Center(child: Text('Please wait its loading...')),
+                      height: 268,
+                      color: Colors.grey,
                     );
                   } else {
                     if (snapshot.hasError)
@@ -661,7 +658,7 @@ class _HomePageState extends State<HomePage> {
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             height: 200,
-                            color: Colors.white,
+                            color: Colors.grey,
                             child: Center(
                                 child: Text('Please wait its loading...')),
                           );

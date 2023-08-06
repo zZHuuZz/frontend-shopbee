@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, file_names
 
 import 'package:flutter/material.dart';
+import '../../pages/ProductDetailScreens/ProductDetailPage.dart';
 import 'OrderDeliveredStateWidget.dart';
 import 'package:shopbee/widgets/OrderHistoryScreens/OrderGeneralStateWidget.dart';
 
@@ -40,14 +41,26 @@ class _OrderWidgetState extends State<OrderWidget> {
               ),
             ),
             const SizedBox(width: 22),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "!Product name",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                InkWell(
+                  /*
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      'ProductDetailPage',
+                      arguments: ProductData(
+                        //product id here
+                      ),
+                    );
+                  },*/
+                  child: Text(
+                    "!Product name",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 Align(

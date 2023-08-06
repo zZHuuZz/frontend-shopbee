@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'package:shopbee/globals.dart';
+import 'package:http/http.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,7 +13,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpPage> {
-  final apiUrl = 'http://shopbee-api.shop:3000/api/v1/user/register';
   final _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
@@ -54,8 +53,8 @@ class _SignUpState extends State<SignUpPage> {
       'password': password,
     };
     try {
-      final response = await http.post(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/register'),
+      final response = await post(
+        Uri.parse(apiURL + 'api/v1/user/register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

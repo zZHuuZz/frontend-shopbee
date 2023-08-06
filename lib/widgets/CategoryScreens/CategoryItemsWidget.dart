@@ -52,14 +52,13 @@ class _CategoryItemsWidgetState extends State<CategoryItemsWidget> {
             return Container(
               width: MediaQuery.of(context).size.width,
               height: 200,
-              color: Colors.white,
-              child: Center(child: Text('Please wait its loading...')),
+              color: Colors.grey,
             );
           } else {
             if (snapshot.hasError)
               return Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 300,
+                  height: 200,
                   color: Colors.white,
                   child: Center(child: Text('Error: ${snapshot.error}')));
             else

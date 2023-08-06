@@ -18,7 +18,7 @@ class _UncreatedStorePageState extends State<UncreatedStorePage> {
   Future<Map<String, dynamic>> requestCreateStore() async {
     try {
       final response = await post(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/upgrade'),
+        Uri.parse(apiURL + 'api/v1/user/upgrade'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken',

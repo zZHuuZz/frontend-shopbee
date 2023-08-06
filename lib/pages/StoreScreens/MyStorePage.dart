@@ -21,7 +21,7 @@ class _MyStorePageState extends State<MyStorePage> {
   Future<Map<String, dynamic>> getProfile() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        Uri.parse(apiURL + 'api/v1/user/profile'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken',
@@ -43,8 +43,8 @@ class _MyStorePageState extends State<MyStorePage> {
   Future<Map<String, dynamic>> getMyProduct() async {
     try {
       Response response = await get(
-        Uri.parse(
-            'http://shopbee-api.shop:3055/api/v1/product/list?shop_id=${profileData['data']['id']}'),
+        Uri.parse(apiURL +
+            'api/v1/product/list?shop_id=${profileData['data']['id']}'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -165,8 +165,7 @@ class _MyStorePageState extends State<MyStorePage> {
               return Container(
                 width: MediaQuery.of(context).size.width,
                 height: 210,
-                color: Colors.white,
-                child: Center(child: Text('Please wait its loading...')),
+                color: Colors.grey,
               );
             } else {
               if (snapshot.hasError)
@@ -193,7 +192,8 @@ class _MyStorePageState extends State<MyStorePage> {
                               radius: 24,
                               backgroundColor: Color(0xFF33907C),
                               foregroundColor: Colors.white,
-                              //backgroundImage: NetworkImage("ADD URL HERE"),
+                              backgroundImage: NetworkImage(
+                                  profileData['data']['avatar']['url']),
                             ),
                             SizedBox(height: 16),
                             Text(

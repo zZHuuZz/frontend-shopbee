@@ -19,7 +19,6 @@ import 'pages/StoreScreens/MyStorePage.dart';
 import 'pages/StoreScreens/UncreatedStorePage.dart';
 
 //login screens
-import 'pages/LoginScreens/EmailVerificationPage.dart';
 import 'pages/LoginScreens/LoginPage.dart';
 import 'pages/LoginScreens/SignUpPage.dart';
 import 'pages/LoginScreens/ForgotPasswordPage.dart';
@@ -32,6 +31,9 @@ import 'pages/CartScreens/CartPage.dart';
 import 'package:shopbee/pages/CartScreens/AddNewAddressPage.dart';
 import 'package:shopbee/pages/CartScreens/PaymentOptionPage.dart';
 import 'package:shopbee/pages/CartScreens/AddCardPage.dart';
+
+//product detail screens
+import 'package:shopbee/pages/ProductDetailScreens/ProductDetailPage.dart';
 
 void main() => runApp(const MyApp());
 
@@ -46,10 +48,10 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
+        //'/': (context) => const ProductDetailPage(),
         //login screens
         "/": (context) => const LoginPage(),
         "SignUpPage": (context) => const SignUpPage(),
-        "EmailVerificationPage": (context) => const EmailVerificationPage(),
         "ForgotPasswordPage": (context) => const ForgotPasswordPage(),
 
         //home screens
@@ -80,6 +82,9 @@ class MyApp extends StatelessWidget {
 
         //category screens
         "CategoryPage": (context) => const CategoryPage(),
+
+        //product detail screens
+        "ProductDetailPage": (context) => const ProductDetailPage(),
       },
     );
   }

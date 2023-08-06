@@ -14,10 +14,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   String? jwtToken;
   Map<String, dynamic> profileData = {};
+  bool switchable = false;
+
   Future<Map<String, dynamic>> getProfile() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        Uri.parse(apiURL + 'api/v1/user/profile'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken',
@@ -28,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
         profileData = responseBody;
         return responseBody;
       } else {
-        print('failed');
+        print('failed profile');
       }
     } catch (e) {
       print(e.toString());
@@ -42,7 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       jwtToken = token;
     });
-    print(jwtToken.toString());
   }
 
   // Function to get the JWT token
@@ -55,27 +56,39 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    _getToken();
+    _getToken().then((value) {
+      getProfile().then((result) {
+        setState(() {
+          profileData = result;
+          switchable = true;
+        });
+      });
+    });
     super.initState();
   }
 
   int _selectedIndex = 4;
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 0) {
-        Navigator.pushNamed(context, 'HomePage');
-      }
-      if (index == 1) {
-        Navigator.pushNamed(context, 'BrowsePage');
-      }
-      if (index == 2) {
-        Navigator.pushNamed(context, 'MyStorePage');
-      }
-      if (index == 3) {
-        Navigator.pushNamed(context, 'OrderHistoryPage');
-      }
-    });
+    if (switchable)
+      setState(() {
+        _selectedIndex = index;
+        if (index == 0) {
+          Navigator.pushNamed(context, 'HomePage');
+        }
+        if (index == 1) {
+          Navigator.pushNamed(context, 'BrowsePage');
+        }
+        if (index == 2) {
+          if (profileData['data']['role'] == 'buyer')
+            Navigator.pushNamed(context, 'UncreatedStorePage');
+          else {
+            Navigator.pushNamed(context, 'MyStorePage');
+          }
+        }
+        if (index == 3) {
+          Navigator.pushNamed(context, 'OrderHistoryPage');
+        }
+      });
   }
 
   @override
@@ -165,14 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               // AsyncSnapshot<Your object type>
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Container(
-                                  width: 200,
-                                  height: 200,
-                                  color: Colors.white,
-                                  child: Center(
-                                      child:
-                                          Text('Please wait its loading...')),
-                                );
+                                return Container(height: 64);
                               } else {
                                 if (snapshot.hasError)
                                   return Container(

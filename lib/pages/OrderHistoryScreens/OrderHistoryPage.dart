@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shopbee/widgets/OrderHistoryScreens/OrderWidget.dart';
+import 'package:shopbee/globals.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 
 class OrderHistoryPage extends StatefulWidget {
   const OrderHistoryPage({super.key});
@@ -12,23 +15,83 @@ class OrderHistoryPage extends StatefulWidget {
 }
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
+  String? jwtToken;
+  Map<String, dynamic> profileData = {};
   int _selectedIndex = 3;
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 0) {
-        Navigator.pushNamed(context, 'HomePage');
-      }
-      if (index == 1) {
-        Navigator.pushNamed(context, 'BrowsePage');
-      }
-      if (index == 2) {
-        Navigator.pushNamed(context, 'MyStorePage');
-      }
-      if (index == 4) {
-        Navigator.pushNamed(context, 'ProfilePage');
-      }
+  bool switchable = false;
+
+  @override
+  void initState() {
+    _getToken().then((value) {
+      getProfile().then((result) {
+        setState(() {
+          profileData = result;
+          switchable = true;
+        });
+      });
     });
+    super.initState();
+  }
+
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        return responseBody;
+      } else {
+        print('failed profile');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  void _onItemTapped(int index) {
+    if (switchable)
+      setState(() {
+        _selectedIndex = index;
+        if (index == 0) {
+          Navigator.pushNamed(context, 'HomePage');
+        }
+        if (index == 1) {
+          Navigator.pushNamed(context, 'BrowsePage');
+        }
+        if (index == 2) {
+          if (profileData['data']['role'] == 'buyer')
+            Navigator.pushNamed(context, 'UncreatedStorePage');
+          else {
+            Navigator.pushNamed(context, 'MyStorePage');
+          }
+        }
+        if (index == 4) {
+          Navigator.pushNamed(context, 'ProfilePage');
+        }
+      });
   }
 
   @override

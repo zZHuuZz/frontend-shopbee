@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shopbee/widgets/BrowseScreens/BrowseItemsWidget.dart';
+import 'package:shopbee/globals.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
@@ -16,12 +17,71 @@ class BrowsePage extends StatefulWidget {
 class _BrowsePageState extends State<BrowsePage> {
   final searchController = TextEditingController();
   Map<String, dynamic> productData = {};
+  Map<String, dynamic> profileData = {};
   late int selectedPage;
+  String? jwtToken;
+  bool switchable = false;
+
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        return responseBody;
+      } else {
+        print('failed');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  @override
+  void initState() {
+    _getToken().then((value) {
+      getProfile().then((result) {
+        setState(() {
+          profileData = result;
+          switchable = true;
+        });
+      });
+    });
+    searchController
+      ..addListener(() {
+        setState(() {});
+      });
+    super.initState();
+  }
 
   Future<Map<String, dynamic>> getProduct() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/product/list'),
+        Uri.parse(apiURL + 'api/v1/product/list'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -31,7 +91,7 @@ class _BrowsePageState extends State<BrowsePage> {
         productData = responseBody;
         return responseBody;
       } else {
-        print('failed');
+        print('failed product');
       }
     } catch (e) {
       print(e.toString());
@@ -42,21 +102,26 @@ class _BrowsePageState extends State<BrowsePage> {
   int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 0) {
-        Navigator.pushNamed(context, 'HomePage');
-      }
-      if (index == 2) {
-        Navigator.pushNamed(context, 'MyStorePage');
-      }
-      if (index == 3) {
-        Navigator.pushNamed(context, 'OrderHistoryPage');
-      }
-      if (index == 4) {
-        Navigator.pushNamed(context, 'ProfilePage');
-      }
-    });
+    if (switchable)
+      setState(() {
+        _selectedIndex = index;
+        if (index == 0) {
+          Navigator.pushNamed(context, 'HomePage');
+        }
+        if (index == 2) {
+          if (profileData['data']['role'] == 'buyer')
+            Navigator.pushNamed(context, 'UncreatedStorePage');
+          else {
+            Navigator.pushNamed(context, 'MyStorePage');
+          }
+        }
+        if (index == 3) {
+          Navigator.pushNamed(context, 'OrderHistoryPage');
+        }
+        if (index == 4) {
+          Navigator.pushNamed(context, 'ProfilePage');
+        }
+      });
   }
 
   @override
@@ -256,7 +321,7 @@ class _BrowsePageState extends State<BrowsePage> {
               ),
             ),
             const SizedBox(height: 30),
-            const BrowseItemsWidget(),
+            BrowseItemsWidget(searchKey: searchController.text),
             const SizedBox(height: 30),
           ],
         ),
