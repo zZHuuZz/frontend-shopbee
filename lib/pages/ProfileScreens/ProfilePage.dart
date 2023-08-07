@@ -6,6 +6,8 @@ import 'package:shopbee/globals.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
+import 'EditProfilePage.dart';
+
 class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -139,111 +141,107 @@ class _ProfilePageState extends State<ProfilePage> {
           clipBehavior: Clip.antiAlias,
           children: [
             Align(
-              alignment: Alignment(0, -1),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                width: MediaQuery.of(context).size.width,
-                height: 250,
-                color: Color(0xFF33907C),
-                child: Column(
-                  children: [
-                    SizedBox(height: 14),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF33907C),
-                            //image: DecorationImage(
-                            //image: NetworkImage('add image here'),
-                            //fit: BoxFit.cover,
-                            //),
-
-                            //avatar image
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50.0)),
-                            border: Border.all(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        FutureBuilder<Map<String, dynamic>>(
-                            future:
-                                getProfile(), // function where you call your api
-                            builder: (BuildContext context,
-                                AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                              // AsyncSnapshot<Your object type>
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Container(height: 64);
-                              } else {
-                                if (snapshot.hasError)
-                                  return Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 200,
-                                      color: Colors.white,
-                                      child: Center(
-                                          child: Text(
-                                              'Error: ${snapshot.error}')));
-                                else
-                                  return Container(
-                                    height: 64,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.topCenter,
-                                          child: Text(
-                                            snapshot.data?['data'][
-                                                'fullname'], //change name with api
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                            ),
-                                          ),
+                alignment: Alignment(0, -1),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  width: MediaQuery.of(context).size.width,
+                  height: 250,
+                  color: Color(0xFF33907C),
+                  child: FutureBuilder<Map<String, dynamic>>(
+                      future: getProfile(), // function where you call your api
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                        // AsyncSnapshot<Your object type>
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(height: 64);
+                        } else {
+                          if (snapshot.hasError)
+                            return Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 200,
+                                color: Colors.white,
+                                child: Center(
+                                    child: Text('Error: ${snapshot.error}')));
+                          else
+                            return Column(
+                              children: [
+                                SizedBox(height: 14),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 64,
+                                      height: 64,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF33907C),
+                                        image: DecorationImage(
+                                          image: NetworkImage(snapshot
+                                              .data?['data']['avatar']['url']),
+                                          fit: BoxFit.cover,
                                         ),
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            snapshot.data?['data'][
-                                                'phone'], //change phone numebr with api
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                            ),
-                                          ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(50.0)),
+                                        border: Border.all(
+                                          color: Colors.white,
                                         ),
-                                        Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Text(
-                                            snapshot.data?['data'][
-                                                'email'], //change email with api
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  );
-                              }
-                            }),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                                    SizedBox(width: 15),
+                                    Container(
+                                      height: 64,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Text(
+                                              snapshot.data?['data'][
+                                                  'fullname'], //change name with api
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              snapshot.data?['data'][
+                                                  'phone'], //change phone numebr with api
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Text(
+                                              snapshot.data?['data'][
+                                                  'email'], //change email with api
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            );
+                        }
+                      }),
+                )),
             Padding(
               padding: EdgeInsets.only(top: 106),
               child: Container(
@@ -262,7 +260,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Container(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, 'EditProfilePage');
+                            Navigator.pushNamed(context, 'EditProfilePage',
+                                arguments: EditProfileData(
+                                  profileData['data']['id'],
+                                ));
                           },
                           child: Align(
                             alignment: Alignment.centerLeft,

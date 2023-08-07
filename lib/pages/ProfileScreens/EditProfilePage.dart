@@ -8,6 +8,12 @@ import 'package:shopbee/globals.dart';
 import 'dart:io';
 import 'dart:convert';
 
+class EditProfileData {
+  final String id;
+
+  EditProfileData(this.id);
+}
+
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
@@ -23,6 +29,7 @@ class _EditProfileState extends State<EditProfilePage> {
   File? _image;
   final picker = ImagePicker();
   Map<String, dynamic> imageOnCloud = {};
+  Map<String, dynamic> profileData = {};
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -36,7 +43,7 @@ class _EditProfileState extends State<EditProfilePage> {
   }
 
   Future<bool> addImage(Map<String, String> body, String filepath) async {
-    String addimageUrl = apiURL + 'api/v1/image/upload';
+    String addimageUrl = apiURL + 'api/v1/upload/image';
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
     };
@@ -57,10 +64,71 @@ class _EditProfileState extends State<EditProfilePage> {
     }
   }
 
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        return responseBody;
+      } else {
+        print('failed profile');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
+  Future<Map<String, dynamic>> updateProfile(
+      String fullname, phone, addr, id, Map<String, dynamic> image) async {
+    Map<String, dynamic> requestBody = {
+      "fullname": fullname,
+      "phone": phone,
+      "addr": addr,
+      "avatar": image['data'],
+    };
+
+    try {
+      Response response = await patch(
+        Uri.parse(apiURL + 'api/v1/user/update/${id}'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        print(responseBody);
+        return responseBody;
+      } else {
+        print(response.body);
+        print('failed update');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
   @override
   void initState() {
+    _getToken().then((value) {
+      getProfile().then((result) {
+        setState(() {
+          profileData = result;
+        });
+      });
+    });
     super.initState();
-    _getToken();
   }
 
   // Function to set the JWT token
@@ -81,6 +149,7 @@ class _EditProfileState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as EditProfileData;
     return Scaffold(
       backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
@@ -433,7 +502,13 @@ class _EditProfileState extends State<EditProfilePage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
               onTap: () {
-                //edit profile
+                updateProfile(
+                    fullNameController.text,
+                    phoneNumberController.text,
+                    addressController.text,
+                    data.id,
+                    imageOnCloud);
+                Navigator.pop(context);
               },
               child: Container(
                 height: 49,

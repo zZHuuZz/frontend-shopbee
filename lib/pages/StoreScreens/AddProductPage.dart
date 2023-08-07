@@ -61,7 +61,7 @@ class _AddProductState extends State<AddProductPage> {
   }
 
   Future<bool> addImage(Map<String, String> body, String filepath) async {
-    String addimageUrl = apiURL + 'api/v1/image/upload';
+    String addimageUrl = apiURL + 'api/v1/upload/image';
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
     };

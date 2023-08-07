@@ -356,7 +356,7 @@ class _HomePageState extends State<HomePage> {
                         height: 200,
                         color: Colors.white,
                         child: Center(child: Text('Error: ${snapshot.error}')));
-                  else if (snapshot.data == null)
+                  else if (snapshot.data != null)
                     return Container(
                       height: MediaQuery.of(context).size.width / 2,
                       width: MediaQuery.of(context).size.width,
@@ -659,7 +659,7 @@ class _HomePageState extends State<HomePage> {
                             ConnectionState.waiting) {
                           return Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 200,
+                            height: 210,
                             color: Colors.grey,
                             child: Center(
                                 child: Text('Please wait its loading...')),
@@ -668,7 +668,7 @@ class _HomePageState extends State<HomePage> {
                           if (snapshot.hasError)
                             return Container(
                                 width: MediaQuery.of(context).size.width,
-                                height: 200,
+                                height: 210,
                                 color: Colors.white,
                                 child: Center(
                                     child: Text('Error: ${snapshot.error}')));

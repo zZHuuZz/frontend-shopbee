@@ -192,7 +192,8 @@ class _MyStorePageState extends State<MyStorePage> {
                               radius: 24,
                               backgroundColor: Color(0xFF33907C),
                               foregroundColor: Colors.white,
-                              //backgroundImage: NetworkImage(profileData['data']['avatar']['url']),
+                              backgroundImage: NetworkImage(
+                                  profileData['data']['avatar']['url']),
                             ),
                             SizedBox(height: 16),
                             Text(
