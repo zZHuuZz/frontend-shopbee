@@ -261,7 +261,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     Expanded(
                       child: Container(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'EditProfilePage');
+                          },
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -382,8 +384,32 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Container(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, '/', (Route<dynamic> route) => false);
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Loging out"),
+                                content: const Text(
+                                    "Are you sure you want to logout?"),
+                                actions: [
+                                  TextButton(
+                                    child: const Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text(
+                                      "Logout",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          '/', (Route<dynamic> route) => false);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                           child: Align(
                             alignment: Alignment.centerLeft,

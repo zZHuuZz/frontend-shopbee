@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:shopbee/globals.dart';
 
 class CategoryItemsWidget extends StatefulWidget {
   final int rid;
@@ -17,8 +18,7 @@ class _CategoryItemsWidgetState extends State<CategoryItemsWidget> {
   Future<Map<String, dynamic>> getProduct() async {
     try {
       Response response = await get(
-        Uri.parse(
-            'http://shopbee-api.shop:3055/api/v1/product/list?category_id=${widget.rid}'),
+        Uri.parse(apiURL + 'api/v1/product/list?category_id=${widget.rid}'),
         headers: {
           'Content-Type': 'application/json',
         },

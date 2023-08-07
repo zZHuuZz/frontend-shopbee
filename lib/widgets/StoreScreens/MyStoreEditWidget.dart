@@ -1,19 +1,21 @@
 // ignore_for_file: unnecessary_import, file_names, avoid_unnecessary_containers
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopbee/globals.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
-class MyStoreViewWidget extends StatefulWidget {
+class MyStoreEditWidget extends StatefulWidget {
   final Map<String, dynamic> profileData;
-  const MyStoreViewWidget({super.key, required this.profileData});
+  const MyStoreEditWidget({super.key, required this.profileData});
 
   @override
-  State<MyStoreViewWidget> createState() => _MyStoreViewWidgetState();
+  State<MyStoreEditWidget> createState() => _MyStoreEditWidgetState();
 }
 
-class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
+class _MyStoreEditWidgetState extends State<MyStoreEditWidget> {
   final searchController = TextEditingController();
   Map<String, dynamic> myProductData = {};
 
@@ -130,6 +132,47 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                         physics: const NeverScrollableScrollPhysics(),
                         crossAxisCount: 2,
                         children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, "AddProductPage");
+                            },
+                            child: DottedBorder(
+                              color: Colors.grey,
+                              borderType: BorderType.RRect,
+                              radius: const Radius.circular(12),
+                              padding: const EdgeInsets.all(12),
+                              dashPattern: const [6, 6, 6, 6],
+                              child: ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(24)),
+                                child: Container(
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 50,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Add Product',
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           for (var myProduct in snapshot.data?['data'])
                             Container(
                               decoration: BoxDecoration(
@@ -164,6 +207,71 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                                           ),
                                         ),
                                       )),
+                                  Align(
+                                    alignment: const Alignment(0, -0.3),
+                                    child: Row(
+                                      children: [
+                                        const Spacer(),
+                                        InkWell(
+                                          onTap: () {
+                                            //add edit product api here
+                                            Navigator.pushNamed(
+                                                context, "EditProductPage");
+                                          },
+                                          child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor:
+                                                Color.fromARGB(85, 0, 0, 0),
+                                            child: Icon(Icons.border_color,
+                                                color: Color.fromARGB(
+                                                    115, 255, 255, 255)),
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        InkWell(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text(
+                                                    "Delete Product"),
+                                                content: const Text(
+                                                    "Are you sure you want to delete this product?"),
+                                                actions: [
+                                                  TextButton(
+                                                    child: const Text("Cancel"),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: const Text(
+                                                      "Delete",
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                                    onPressed: () {
+                                                      // add delete product funtion here
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor:
+                                                Color.fromARGB(85, 0, 0, 0),
+                                            child: Icon(Icons.delete,
+                                                color: Color.fromARGB(
+                                                    115, 255, 255, 255)),
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                      ],
+                                    ),
+                                  ),
                                   Align(
                                     alignment: const Alignment(-1, 1),
                                     child: FractionallySizedBox(

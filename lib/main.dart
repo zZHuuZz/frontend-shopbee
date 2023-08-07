@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 //browse screens
-import 'package:shopbee/pages/BrowseScreens/BrowsePage.dart';
+import 'pages/BrowseScreens/BrowsePage.dart';
 
 //category screens
-import 'package:shopbee/pages/CategoryScreens/CategoryPage.dart';
+import 'pages/CategoryScreens/CategoryPage.dart';
 
 //order history screens
-import 'package:shopbee/pages/OrderHistoryScreens/OrderHistoryPage.dart';
+import 'pages/OrderHistoryScreens/OrderHistoryPage.dart';
+
+//profile screens
+import 'pages/ProfileScreens/ProfilePage.dart';
+import 'pages/ProfileScreens/EditProfilePage.dart';
 
 //store screens
-import 'pages/ProfileScreens/ProfilePage.dart';
 import 'pages/StoreScreens/AddProductPage.dart';
-import 'pages/StoreScreens/CreateStorePage.dart';
 import 'pages/StoreScreens/EditProductPage.dart';
-import 'pages/StoreScreens/EditStorePage.dart';
 import 'pages/StoreScreens/MyStorePage.dart';
 import 'pages/StoreScreens/UncreatedStorePage.dart';
 
@@ -28,12 +29,15 @@ import 'pages/HomeScreens/HomePage.dart';
 
 //cart screens
 import 'pages/CartScreens/CartPage.dart';
-import 'package:shopbee/pages/CartScreens/AddNewAddressPage.dart';
-import 'package:shopbee/pages/CartScreens/PaymentOptionPage.dart';
-import 'package:shopbee/pages/CartScreens/AddCardPage.dart';
+import 'pages/CartScreens/AddNewAddressPage.dart';
+import 'pages/CartScreens/PaymentOptionPage.dart';
+import 'pages/CartScreens/AddCardPage.dart';
+
+//wishlist screens
+import 'pages/WishlistScreens/WishlistPage.dart';
 
 //product detail screens
-import 'package:shopbee/pages/ProductDetailScreens/ProductDetailPage.dart';
+import 'pages/ProductDetailScreens/ProductDetailPage.dart';
 
 void main() => runApp(const MyApp());
 
@@ -48,7 +52,6 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
-        //'/': (context) => const ProductDetailPage(),
         //login screens
         "/": (context) => const LoginPage(),
         "SignUpPage": (context) => const SignUpPage(),
@@ -62,8 +65,6 @@ class MyApp extends StatelessWidget {
 
         //store screens
         "UncreatedStorePage": (context) => UncreatedStorePage(),
-        "CreateStorePage": (context) => const CreateStorePage(),
-        "EditStorePage": (context) => EditStorePage(),
         "MyStorePage": (context) => MyStorePage(),
         "AddProductPage": (context) => const AddProductPage(),
         "EditProductPage": (context) => const EditProductPage(),
@@ -74,11 +75,15 @@ class MyApp extends StatelessWidget {
         'PaymentOptionPage': (context) => const PaymentOptionPage(),
         'AddCardPage': (context) => const AddCardPage(),
 
+        //wishlist screens
+        "WishlistPage": (context) => WishlistPage(),
+
         //order history screens
         "OrderHistoryPage": (context) => const OrderHistoryPage(),
 
         //profile screens
         "ProfilePage": (context) => ProfilePage(),
+        "EditProfilePage": (context) => const EditProfilePage(),
 
         //category screens
         "CategoryPage": (context) => const CategoryPage(),

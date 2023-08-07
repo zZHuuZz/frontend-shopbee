@@ -2,6 +2,11 @@
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart';
+import 'package:shopbee/globals.dart';
+import 'dart:io';
+import 'dart:convert';
 
 class EditProductPage extends StatefulWidget {
   const EditProductPage({super.key});
@@ -11,20 +16,128 @@ class EditProductPage extends StatefulWidget {
 }
 
 class _EditProductState extends State<EditProductPage> {
+  String? jwtToken;
   final productNameController = TextEditingController();
-  final categoryProductController = TextEditingController();
   final priceController = TextEditingController();
-  final offerPriceController = TextEditingController();
-  final locationDetailsController = TextEditingController();
+  final quantityController = TextEditingController();
   final productDescriptionController = TextEditingController();
-  final priceTypeController = TextEditingController();
-  final additionalDetailsController = TextEditingController();
-  int photoController = 0;
+  int categoryValue = 1;
+  String conditionValue = 'used';
+  File? _image;
+  final picker = ImagePicker();
+  Map<String, dynamic> imageOnCloud = {};
+  Map<String, dynamic> categoryData = {};
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future<Map<String, dynamic>> getCategory() async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/category/list'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        categoryData = responseBody;
+        return responseBody;
+      } else {
+        print('failed category');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return categoryData;
+  }
+
+  Future<bool> addImage(Map<String, String> body, String filepath) async {
+    String addimageUrl = apiURL + 'api/v1/image/upload';
+    Map<String, String> headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+    var request = MultipartRequest('POST', Uri.parse(addimageUrl))
+      ..fields.addAll(body)
+      ..headers.addAll(headers)
+      ..files.add(await MultipartFile.fromPath('file', filepath));
+    Response response = await Response.fromStream(await request.send());
+    print("Result: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseBody = jsonDecode(response.body);
+      imageOnCloud = responseBody;
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void createProduct(String name, description, condition, int price, quantity,
+      Map<String, dynamic> image) async {
+    Map<String, dynamic> requestBody = {
+      "category_id": categoryValue,
+      "name": name,
+      "description": description,
+      "price": price,
+      "quantity": quantity,
+      "condition": condition,
+      "image": image['data'],
+    };
+
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/product/create'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+      } else {}
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F9FF),
+      backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
         toolbarHeight: 100,
         backgroundColor: Color(0xFF33907C),
@@ -63,65 +176,128 @@ class _EditProductState extends State<EditProductPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                if (photoController < 4) photoController++;
-                              });
-                            },
-                            child: DottedBorder(
-                              color: Colors.grey,
-                              borderType: BorderType.RRect,
-                              radius: Radius.circular(12),
-                              padding: EdgeInsets.all(12),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(24)),
-                                child: Container(
-                                  height: 105,
-                                  width: 150,
-                                  child: Column(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 50,
-                                          color: Colors.grey,
+                        _image != null
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: InkWell(
+                                  onTap: () {
+                                    getImage().then((value) {
+                                      Map<String, String> body = {
+                                        'folder': 'product'
+                                      };
+                                      addImage(body, _image!.path)
+                                          .then((value) {
+                                        setState(() {});
+                                      });
+                                    });
+                                  },
+                                  child: DottedBorder(
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(12),
+                                    padding: EdgeInsets.all(12),
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(24)),
+                                      child: Container(
+                                        height: 105,
+                                        width: 150,
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.refresh,
+                                                size: 50,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Change photos',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          'Add photos',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 22,
-                                            color: Colors.grey,
-                                          ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      getImage().then((value) {
+                                        Map<String, String> body = {
+                                          'folder': 'product'
+                                        };
+                                        addImage(body, _image!.path)
+                                            .then((value) {
+                                          setState(() {});
+                                        });
+                                      });
+                                    });
+                                  },
+                                  child: DottedBorder(
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(12),
+                                    padding: EdgeInsets.all(12),
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(24)),
+                                      child: Container(
+                                        height: 105,
+                                        width: 150,
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 50,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Add photos',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 22,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '1600 x 1200 for high res',
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          '1600 x 1200 for high res',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                        for (int i = 0; i < photoController; i++)
+                        if (_image != null)
                           Stack(
                             clipBehavior: Clip.none,
                             children: [
@@ -144,7 +320,7 @@ class _EditProductState extends State<EditProductPage> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(24)),
                                       image: DecorationImage(
-                                        image: AssetImage('images/logo.png'),
+                                        image: FileImage(_image!),
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -163,8 +339,7 @@ class _EditProductState extends State<EditProductPage> {
                                   child: IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        if (photoController > 0)
-                                          photoController--;
+                                        _image = null;
                                       });
                                     },
                                     icon: const Icon(
@@ -187,7 +362,7 @@ class _EditProductState extends State<EditProductPage> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      'Max. 4 photos per product',
+                      'Max. 1 photo per product',
                       style: TextStyle(color: Colors.grey, fontSize: 18),
                     ),
                   ),
@@ -249,25 +424,51 @@ class _EditProductState extends State<EditProductPage> {
                       ),
                     ),
                   ),
-                  Container(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: categoryProductController,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: FutureBuilder<Map<String, dynamic>>(
+                          future:
+                              getCategory(), // function where you call your api
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            // AsyncSnapshot<Your object type>
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Container();
+                            } else {
+                              if (snapshot.hasError)
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 200,
+                                    color: Colors.white,
+                                    child: Center(
+                                        child:
+                                            Text('Error: ${snapshot.error}')));
+                              else
+                                return DropdownButton<int>(
+                                  value: categoryValue,
+                                  items: [
+                                    for (var category in snapshot.data?['data'])
+                                      DropdownMenuItem(
+                                          child: Text(
+                                            category['name'],
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          value: category['rid']),
+                                  ],
+                                  onChanged: (int? value) {
+                                    //get value when changed
+                                    setState(() {
+                                      categoryValue = value!;
+                                    });
+                                  },
+                                );
+                            }
+                          }),
                     ),
                   ),
                   Row(
@@ -292,7 +493,7 @@ class _EditProductState extends State<EditProductPage> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: TextField(
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 controller: priceController,
                                 style: TextStyle(
                                   fontSize: 20,
@@ -325,7 +526,7 @@ class _EditProductState extends State<EditProductPage> {
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Offer Price',
+                                  'Quantity',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 20,
@@ -336,14 +537,13 @@ class _EditProductState extends State<EditProductPage> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: TextField(
-                                keyboardType: TextInputType.text,
-                                controller: offerPriceController,
+                                keyboardType: TextInputType.number,
+                                controller: quantityController,
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
                                 decoration: InputDecoration(
                                   prefixIconColor: Colors.grey,
-                                  prefixIcon: Icon(Icons.attach_money),
                                   labelStyle: TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -360,50 +560,6 @@ class _EditProductState extends State<EditProductPage> {
                         ),
                       ),
                     ],
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Location Details',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: locationDetailsController,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                        suffix: InkWell(
-                          onTap: () {
-                            //add map functions
-                          },
-                          child: Icon(
-                            Icons.map,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ),
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -448,7 +604,7 @@ class _EditProductState extends State<EditProductPage> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Price Type',
+                        'Condition',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 20,
@@ -456,62 +612,42 @@ class _EditProductState extends State<EditProductPage> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: priceTypeController,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Additional Details',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                        ),
+                      child: DropdownButton<String>(
+                        value: conditionValue,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text(
+                              'new',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            value: 'new',
+                          ),
+                          DropdownMenuItem(
+                            child: Text(
+                              'used',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            value: 'used',
+                          ),
+                        ],
+                        onChanged: (String? value) {
+                          //get value when changed
+                          setState(() {
+                            conditionValue = value!;
+                          });
+                        },
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: additionalDetailsController,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
@@ -526,7 +662,14 @@ class _EditProductState extends State<EditProductPage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
               onTap: () {
-                //add edit product button
+                createProduct(
+                    productNameController.text,
+                    productDescriptionController.text,
+                    conditionValue,
+                    int.parse(priceController.text),
+                    int.parse(quantityController.text),
+                    imageOnCloud);
+                Navigator.pop(context);
               },
               child: Container(
                 height: 49,
@@ -537,7 +680,7 @@ class _EditProductState extends State<EditProductPage> {
                 ),
                 child: Center(
                   child: Text(
-                    "Edit Product",
+                    "Add Product",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,

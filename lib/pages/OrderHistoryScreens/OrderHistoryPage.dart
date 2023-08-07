@@ -36,7 +36,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   Future<Map<String, dynamic>> getProfile() async {
     try {
       Response response = await get(
-        Uri.parse('http://shopbee-api.shop:3055/api/v1/user/profile'),
+        Uri.parse(apiURL + 'api/v1/user/profile'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken',

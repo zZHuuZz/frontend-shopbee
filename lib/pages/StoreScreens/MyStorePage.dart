@@ -3,6 +3,7 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:shopbee/widgets/StoreScreens/MyStoreEditWidget.dart';
 import 'package:shopbee/widgets/StoreScreens/MyStoreEmptyWidget.dart';
 import 'package:shopbee/widgets/StoreScreens/MyStoreViewWidget.dart';
 import 'package:shopbee/globals.dart';
@@ -18,6 +19,9 @@ class _MyStorePageState extends State<MyStorePage> {
   String? jwtToken;
   Map<String, dynamic> profileData = {};
   Map<String, dynamic> myProductData = {};
+  bool storeState = true;
+  bool edit = false;
+
   Future<Map<String, dynamic>> getProfile() async {
     try {
       Response response = await get(
@@ -94,10 +98,6 @@ class _MyStorePageState extends State<MyStorePage> {
   }
 
   int _selectedIndex = 2;
-
-  //this bool define whether Empty or Item MyStoreWidget is loaded
-  bool storeState = true;
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -192,8 +192,7 @@ class _MyStorePageState extends State<MyStorePage> {
                               radius: 24,
                               backgroundColor: Color(0xFF33907C),
                               foregroundColor: Colors.white,
-                              backgroundImage: NetworkImage(
-                                  profileData['data']['avatar']['url']),
+                              //backgroundImage: NetworkImage(profileData['data']['avatar']['url']),
                             ),
                             SizedBox(height: 16),
                             Text(
@@ -213,6 +212,8 @@ class _MyStorePageState extends State<MyStorePage> {
                                   height: 25,
                                   width: 110,
                                   decoration: BoxDecoration(
+                                    color:
+                                        edit ? Color(0xFF33907C) : Colors.white,
                                     border: Border.all(
                                       color: Color(0xFF33907C),
                                     ),
@@ -220,14 +221,17 @@ class _MyStorePageState extends State<MyStorePage> {
                                   ),
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, 'EditStorePage');
+                                      setState(() {
+                                        edit = true;
+                                      });
                                     },
                                     child: Center(
                                       child: Text(
                                         "Edit Store",
                                         style: TextStyle(
-                                          color: Color(0xFF33907C),
+                                          color: edit
+                                              ? Colors.white
+                                              : Color(0xFF33907C),
                                           fontSize: 12,
                                         ),
                                       ),
@@ -239,18 +243,26 @@ class _MyStorePageState extends State<MyStorePage> {
                                   height: 25,
                                   width: 110,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFF33907C),
+                                    color:
+                                        edit ? Colors.white : Color(0xFF33907C),
+                                    border: Border.all(
+                                      color: Color(0xFF33907C),
+                                    ),
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                   child: InkWell(
                                     onTap: () {
-                                      //Navigate to ViewStorePage
+                                      setState(() {
+                                        edit = false;
+                                      });
                                     },
                                     child: Center(
                                       child: Text(
                                         "View Store",
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: edit
+                                              ? Color(0xFF33907C)
+                                              : Colors.white,
                                           fontSize: 12,
                                         ),
                                       ),
@@ -266,9 +278,13 @@ class _MyStorePageState extends State<MyStorePage> {
                         ),
                       ),
                       storeState
-                          ? MyStoreViewWidget(
-                              profileData: profileData,
-                            )
+                          ? edit
+                              ? MyStoreEditWidget(
+                                  profileData: profileData,
+                                )
+                              : MyStoreViewWidget(
+                                  profileData: profileData,
+                                )
                           : MyStoreEmptyWidget(),
                     ],
                   ),

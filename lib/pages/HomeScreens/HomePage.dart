@@ -356,7 +356,7 @@ class _HomePageState extends State<HomePage> {
                         height: 200,
                         color: Colors.white,
                         child: Center(child: Text('Error: ${snapshot.error}')));
-                  else
+                  else if (snapshot.data == null)
                     return Container(
                       height: MediaQuery.of(context).size.width / 2,
                       width: MediaQuery.of(context).size.width,
@@ -399,7 +399,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                    ); // snapshot.data  :- get your object which is pass from your downloadData() function
+                    );
+                  else
+                    return Text('No data');
                 }
               },
             ),

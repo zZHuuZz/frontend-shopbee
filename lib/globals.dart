@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final _storage = FlutterSecureStorage();
-final apiURL = 'http://13.54.238.78/';
+final apiURL = 'http://shopbee-api.shop/';
 
 // Save the JWT token
 Future<void> setToken(String token) async {
