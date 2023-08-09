@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 size: 30,
               ),
               onPressed: () {
-                //favorite shop button
+                Navigator.pushNamed(context, 'WishlistPage');
               },
             ),
             SizedBox(width: 10),
@@ -128,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 size: 30,
               ),
               onPressed: () {
-                //navigate to cart button
+                Navigator.pushNamed(context, 'CartPage');
               },
             ),
           ],

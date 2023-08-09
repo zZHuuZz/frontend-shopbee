@@ -151,7 +151,7 @@ class _BrowsePageState extends State<BrowsePage> {
                     size: 30,
                   ),
                   onPressed: () {
-                    //favorite shop button
+                    Navigator.pushNamed(context, 'WishlistPage');
                   },
                 ),
                 const SizedBox(width: 10),
@@ -161,7 +161,7 @@ class _BrowsePageState extends State<BrowsePage> {
                     size: 30,
                   ),
                   onPressed: () {
-                    //navigate to cart button
+                    Navigator.pushNamed(context, 'CartPage');
                   },
                 ),
               ],

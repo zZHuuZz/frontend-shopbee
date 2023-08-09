@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   Map<String, dynamic> storeListData = {};
   Map<String, dynamic> profileData = {};
   bool switchable = false;
+
   @override
   void initState() {
     _getToken().then((value) {
@@ -210,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                     size: 30,
                   ),
                   onPressed: () {
-                    //favorite shop button
+                    Navigator.pushNamed(context, 'WishlistPage');
                   },
                 ),
                 const SizedBox(width: 10),
@@ -220,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                     size: 30,
                   ),
                   onPressed: () {
-                    //navigate to cart button
+                    Navigator.pushNamed(context, 'CartPage');
                   },
                 ),
               ],
@@ -241,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 200,
+                      height: 165,
                       color: Colors.grey,
                     );
                   } else {
@@ -252,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white,
                           child:
                               Center(child: Text('Error: ${snapshot.error}')));
-                    else
+                    else if (!snapshot.data?['data'].isEmpty)
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -335,6 +336,12 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       );
+                    else
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 165,
+                        color: Colors.grey,
+                      );
                   }
                 }),
             const SizedBox(height: 16),
@@ -356,32 +363,19 @@ class _HomePageState extends State<HomePage> {
                         height: 200,
                         color: Colors.white,
                         child: Center(child: Text('Error: ${snapshot.error}')));
-                  else if (snapshot.data != null)
-                    return Container(
-                      height: MediaQuery.of(context).size.width / 2,
-                      width: MediaQuery.of(context).size.width,
-                      child: Stack(
-                        children: [
-                          Column(
+                  else if (!snapshot.data?['data'].isEmpty)
+                    return Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.width / 2,
+                          width: MediaQuery.of(context).size.width,
+                          child: Stack(
                             children: [
-                              Row(
-                                children: [
-                                  for (int i = 0; i <= 3; i++)
-                                    Center(
-                                      child: CategoryWidget(
-                                          rid: snapshot.data?['data'][i]['rid'],
-                                          name: snapshot.data?['data'][i]
-                                              ['name'],
-                                          url: snapshot.data?['data'][i]
-                                              ['image']['url']),
-                                    ),
-                                ],
-                              ),
-                              Row(
+                              Column(
                                 children: [
                                   Row(
                                     children: [
-                                      for (int i = 4; i <= 7; i++)
+                                      for (int i = 0; i <= 3; i++)
                                         Center(
                                           child: CategoryWidget(
                                               rid: snapshot.data?['data'][i]
@@ -393,15 +387,37 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                     ],
                                   ),
+                                  Row(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          for (int i = 4; i <= 7; i++)
+                                            Center(
+                                              child: CategoryWidget(
+                                                  rid: snapshot.data?['data'][i]
+                                                      ['rid'],
+                                                  name: snapshot.data?['data']
+                                                      [i]['name'],
+                                                  url: snapshot.data?['data'][i]
+                                                      ['image']['url']),
+                                            ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     );
                   else
-                    return Text('No data');
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 200,
+                      color: Colors.grey,
+                    );
                 }
               },
             ),
@@ -472,7 +488,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white,
                           child:
                               Center(child: Text('Error: ${snapshot.error}')));
-                    else
+                    else if (!snapshot.data?['data'].isEmpty)
                       return Container(
                         height: 268,
                         child: GridView.count(
@@ -494,6 +510,12 @@ class _HomePageState extends State<HomePage> {
                                   url: product['image']['url']),
                           ],
                         ),
+                      );
+                    else
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 268,
+                        color: Colors.grey,
                       );
                   }
                 }),
@@ -564,7 +586,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white,
                           child:
                               Center(child: Text('Error: ${snapshot.error}')));
-                    else
+                    else if (!snapshot.data?['data'].isEmpty)
                       return Container(
                         height: 268,
                         child: GridView.count(
@@ -586,6 +608,12 @@ class _HomePageState extends State<HomePage> {
                                   url: product['image']['url']),
                           ],
                         ),
+                      );
+                    else
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 268,
+                        color: Colors.grey,
                       );
                   }
                 }),
@@ -661,8 +689,6 @@ class _HomePageState extends State<HomePage> {
                             width: MediaQuery.of(context).size.width,
                             height: 210,
                             color: Colors.grey,
-                            child: Center(
-                                child: Text('Please wait its loading...')),
                           );
                         } else {
                           if (snapshot.hasError)
@@ -672,7 +698,7 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 child: Center(
                                     child: Text('Error: ${snapshot.error}')));
-                          else
+                          else if (!snapshot.data?['data'].isEmpty)
                             return Padding(
                               padding: const EdgeInsets.only(top: 60),
                               child: Align(
@@ -699,6 +725,12 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
+                            );
+                          else
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 210,
+                              color: Colors.grey,
                             );
                         }
                       }),

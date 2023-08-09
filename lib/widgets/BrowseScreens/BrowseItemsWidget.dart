@@ -57,7 +57,7 @@ class _BrowseItemsWidgetState extends State<BrowseItemsWidget> {
                   height: 300,
                   color: Colors.white,
                   child: Center(child: Text('Error: ${snapshot.error}')));
-            else
+            else if (!snapshot.data?['data'].isEmpty)
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 23),
                 child: GridView.count(
@@ -210,6 +210,8 @@ class _BrowseItemsWidgetState extends State<BrowseItemsWidget> {
                   ],
                 ),
               );
+            else
+              return Container();
           }
         });
   }

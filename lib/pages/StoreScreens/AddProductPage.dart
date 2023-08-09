@@ -82,8 +82,8 @@ class _AddProductState extends State<AddProductPage> {
     }
   }
 
-  void createProduct(String name, description, condition, int price, quantity,
-      Map<String, dynamic> image) async {
+  Future<void> createProduct(String name, description, condition, int price,
+      quantity, Map<String, dynamic> image) async {
     Map<String, dynamic> requestBody = {
       "category_id": categoryValue,
       "name": name,
@@ -663,13 +663,17 @@ class _AddProductState extends State<AddProductPage> {
             child: InkWell(
               onTap: () {
                 createProduct(
-                    productNameController.text,
-                    productDescriptionController.text,
-                    conditionValue,
-                    int.parse(priceController.text),
-                    int.parse(quantityController.text),
-                    imageOnCloud);
-                Navigator.pop(context);
+                        productNameController.text,
+                        productDescriptionController.text,
+                        conditionValue,
+                        int.parse(priceController.text),
+                        int.parse(quantityController.text),
+                        imageOnCloud)
+                    .then(
+                  (value) {
+                    Navigator.pop(context);
+                  },
+                );
               },
               child: Container(
                 height: 49,

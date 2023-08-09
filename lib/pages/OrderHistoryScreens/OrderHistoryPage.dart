@@ -118,7 +118,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 size: 30,
               ),
               onPressed: () {
-                //favorite shop button
+                Navigator.pushNamed(context, 'WishlistPage');
               },
             ),
             const SizedBox(width: 10),
@@ -128,7 +128,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 size: 30,
               ),
               onPressed: () {
-                //navigate to cart button
+                Navigator.pushNamed(context, 'CartPage');
               },
             ),
           ],

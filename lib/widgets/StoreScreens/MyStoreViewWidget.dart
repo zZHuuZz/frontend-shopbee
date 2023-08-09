@@ -60,7 +60,7 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                   height: 200,
                   color: Colors.grey,
                   child: Center(child: Text('Error: ${snapshot.error}')));
-            else
+            else if (!snapshot.data?['data'].isEmpty)
               return Container(
                 color: Colors.transparent,
                 child: Column(
@@ -275,6 +275,8 @@ class _MyStoreViewWidgetState extends State<MyStoreViewWidget> {
                   ],
                 ),
               );
+            else
+              return Text('no data');
           }
         });
   }

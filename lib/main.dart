@@ -19,6 +19,9 @@ import 'pages/StoreScreens/EditProductPage.dart';
 import 'pages/StoreScreens/MyStorePage.dart';
 import 'pages/StoreScreens/UncreatedStorePage.dart';
 
+//store profile page
+import 'pages/StoreProfileScreens/StoreProfilePage.dart';
+
 //login screens
 import 'pages/LoginScreens/LoginPage.dart';
 import 'pages/LoginScreens/SignUpPage.dart';
@@ -52,6 +55,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
+        //"/": (context) => const StoreProfilePage(),
         //login screens
         "/": (context) => const LoginPage(),
         "SignUpPage": (context) => const SignUpPage(),
@@ -68,6 +72,9 @@ class MyApp extends StatelessWidget {
         "MyStorePage": (context) => MyStorePage(),
         "AddProductPage": (context) => const AddProductPage(),
         "EditProductPage": (context) => const EditProductPage(),
+
+        //store profile screens
+        "StoreProfilePage": (context) => const StoreProfilePage(),
 
         //cart screens
         "CartPage": (context) => const CartPage(),

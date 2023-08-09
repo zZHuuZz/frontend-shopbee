@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:shopbee/widgets/ProductDetailWidget.dart/ProductDetailWidget.dart';
+import 'package:shopbee/globals.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 
 class ProductData {
   final String id;
@@ -16,8 +19,48 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  String? jwtToken;
+
+  void addToWishlist(String productID) async {
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/wishlist/addproduct/${productID}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+      } else {
+        print('failed to add');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
   @override
   void initState() {
+    _getToken().then((value) {});
     super.initState();
   }
 
@@ -35,7 +78,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color.fromARGB(65, 255, 255, 255),
+              color: Color.fromARGB(65, 67, 67, 67),
             ),
             child: IconButton(
               icon: Icon(
@@ -53,11 +96,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color.fromARGB(65, 255, 255, 255),
+                color: Color.fromARGB(65, 67, 67, 67),
               ),
               child: IconButton(
                 icon: Icon(Icons.favorite, color: Colors.white, size: 30),
-                onPressed: () => {},
+                onPressed: () => {
+                  setState(
+                    () {
+                      addToWishlist(data.id);
+                    },
+                  )
+                },
               ),
             ),
           ),
@@ -66,7 +115,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color.fromARGB(65, 255, 255, 255),
+                color: Color.fromARGB(65, 67, 67, 67),
               ),
               child: IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
@@ -87,9 +136,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
-              onTap: () {
-                //payment button
-              },
+              onTap: () {},
               child: Container(
                 height: 49,
                 width: 84,

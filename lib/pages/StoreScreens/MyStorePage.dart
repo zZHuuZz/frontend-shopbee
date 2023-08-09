@@ -19,8 +19,8 @@ class _MyStorePageState extends State<MyStorePage> {
   String? jwtToken;
   Map<String, dynamic> profileData = {};
   Map<String, dynamic> myProductData = {};
-  bool storeState = true;
   bool edit = false;
+  bool switchable = false;
 
   Future<Map<String, dynamic>> getProfile() async {
     try {
@@ -89,6 +89,7 @@ class _MyStorePageState extends State<MyStorePage> {
     _getToken().then((value) {
       getProfile().then((result) {
         setState(() {
+          switchable = true;
           profileData = result;
         });
       });
@@ -99,21 +100,22 @@ class _MyStorePageState extends State<MyStorePage> {
 
   int _selectedIndex = 2;
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 0) {
-        Navigator.pushNamed(context, 'HomePage');
-      }
-      if (index == 1) {
-        Navigator.pushNamed(context, 'BrowsePage');
-      }
-      if (index == 3) {
-        Navigator.pushNamed(context, 'OrderHistoryPage');
-      }
-      if (index == 4) {
-        Navigator.pushNamed(context, 'ProfilePage');
-      }
-    });
+    if (switchable)
+      setState(() {
+        _selectedIndex = index;
+        if (index == 0) {
+          Navigator.pushNamed(context, 'HomePage');
+        }
+        if (index == 1) {
+          Navigator.pushNamed(context, 'BrowsePage');
+        }
+        if (index == 3) {
+          Navigator.pushNamed(context, 'OrderHistoryPage');
+        }
+        if (index == 4) {
+          Navigator.pushNamed(context, 'ProfilePage');
+        }
+      });
   }
 
   @override
@@ -140,7 +142,7 @@ class _MyStorePageState extends State<MyStorePage> {
                 size: 30,
               ),
               onPressed: () {
-                //favorite shop button
+                Navigator.pushNamed(context, 'WishlistPage');
               },
             ),
             SizedBox(width: 10),
@@ -150,7 +152,7 @@ class _MyStorePageState extends State<MyStorePage> {
                 size: 30,
               ),
               onPressed: () {
-                //navigate to cart button
+                Navigator.pushNamed(context, 'CartPage');
               },
             ),
           ],
@@ -278,15 +280,35 @@ class _MyStorePageState extends State<MyStorePage> {
                           ],
                         ),
                       ),
-                      storeState
-                          ? edit
-                              ? MyStoreEditWidget(
-                                  profileData: profileData,
-                                )
-                              : MyStoreViewWidget(
-                                  profileData: profileData,
-                                )
-                          : MyStoreEmptyWidget(),
+                      FutureBuilder<Map<String, dynamic>>(
+                          future: getMyProduct(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            // AsyncSnapshot<Your object type>
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Container();
+                            } else {
+                              if (snapshot.hasError)
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 200,
+                                    color: Colors.grey,
+                                    child: Center(
+                                        child:
+                                            Text('Error: ${snapshot.error}')));
+                              else if (!snapshot.data?['data'].isEmpty)
+                                return edit
+                                    ? MyStoreEditWidget(
+                                        profileData: profileData,
+                                      )
+                                    : MyStoreViewWidget(
+                                        profileData: profileData,
+                                      );
+                              else
+                                return MyStoreEmptyWidget();
+                            }
+                          }),
                     ],
                   ),
                 );
