@@ -133,7 +133,8 @@ class _WishlistPageState extends State<WishlistPage> {
                     child: Center(child: Text('Error: ${snapshot.error}')));
               else
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 23, vertical: 20),
                   child: GridView.count(
                     mainAxisSpacing: 15,
                     crossAxisSpacing: 12.35,
@@ -162,7 +163,7 @@ class _WishlistPageState extends State<WishlistPage> {
                                       child: Center(
                                           child: Text(
                                               'Error: ${snapshot.error}')));
-                                else
+                                else if (!snapshot.data?['data'].isEmpty)
                                   return Container(
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
@@ -343,6 +344,8 @@ class _WishlistPageState extends State<WishlistPage> {
                                       ),
                                     ),
                                   );
+                                else
+                                  return Container();
                               }
                             }),
                     ],

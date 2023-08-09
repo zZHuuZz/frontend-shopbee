@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:shopbee/pages/StoreProfileScreens/StoreProfilePage.dart';
 
 class FollowStoreWidget extends StatefulWidget {
   final String name;
@@ -65,11 +66,22 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                         padding: EdgeInsets.symmetric(vertical: 35),
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            widget.name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                'StoreProfilePage',
+                                arguments: StoreProfileData(
+                                  widget.id,
+                                ),
+                              );
+                            },
+                            child: Text(
+                              widget.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
@@ -80,7 +92,7 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                         alignment: Alignment.center,
                         child: InkWell(
                           onTap: () {
-                            //add start shopping function
+                            //add follow api
                           },
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 12),
