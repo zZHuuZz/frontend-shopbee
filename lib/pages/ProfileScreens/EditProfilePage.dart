@@ -23,13 +23,14 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfilePage> {
   String? jwtToken;
-  final fullNameController = TextEditingController();
-  final phoneNumberController = TextEditingController();
-  final addressController = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   File? _image;
   final picker = ImagePicker();
   Map<String, dynamic> imageOnCloud = {};
   Map<String, dynamic> profileData = {};
+  bool changedImage = false;
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -76,6 +77,9 @@ class _EditProfileState extends State<EditProfilePage> {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
         profileData = responseBody;
+        fullNameController.text = profileData['data']['fullname'];
+        phoneNumberController.text = profileData['data']['phone'];
+        addressController.text = profileData['data']['addr'];
         return responseBody;
       } else {
         print('failed profile');
@@ -173,327 +177,328 @@ class _EditProfileState extends State<EditProfilePage> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 15,
-            ),
-            width: MediaQuery.of(context).size.width,
-            color: Color(0xFFF6F9FF),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        _image != null
-                            ? Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: InkWell(
-                                  onTap: () {
-                                    getImage().then((value) {
-                                      Map<String, String> body = {
-                                        'folder': 'product'
-                                      };
-                                      addImage(body, _image!.path)
-                                          .then((value) {
-                                        setState(() {});
-                                      });
-                                    });
-                                  },
-                                  child: DottedBorder(
-                                    color: Colors.grey,
-                                    borderType: BorderType.RRect,
-                                    radius: Radius.circular(12),
-                                    padding: EdgeInsets.all(12),
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(24)),
-                                      child: Container(
-                                        height: 105,
-                                        width: 150,
-                                        child: Column(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Icon(
-                                                Icons.refresh,
-                                                size: 50,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                'Change avatar',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                  color: Colors.grey,
+      body: FutureBuilder<Map<String, dynamic>>(
+          future: getProfile(), // function where you call your api
+          builder: (BuildContext context,
+              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+            // AsyncSnapshot<Your object type>
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(height: 64);
+            } else {
+              if (snapshot.hasError)
+                return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    color: Colors.white,
+                    child: Center(child: Text('Error: ${snapshot.error}')));
+              else
+                return Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 15,
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      height: 180,
+                      color: Color(0xFFF6F9FF),
+                      child: Column(
+                        children: [
+                          changedImage != false
+                              ? Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          child: InkWell(
+                                            onTap: () {
+                                              getImage().then((value) {
+                                                Map<String, String> body = {
+                                                  'folder': 'product'
+                                                };
+                                                addImage(body, _image!.path)
+                                                    .then((value) {
+                                                  setState(() {
+                                                    changedImage = true;
+                                                  });
+                                                });
+                                              });
+                                            },
+                                            child: DottedBorder(
+                                              color: Colors.grey,
+                                              borderType: BorderType.RRect,
+                                              radius: Radius.circular(12),
+                                              padding: EdgeInsets.all(12),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(24)),
+                                                child: Container(
+                                                  height: 105,
+                                                  width: 150,
+                                                  child: Column(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Icon(
+                                                          Icons.refresh,
+                                                          size: 50,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          'Change avatar',
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      getImage().then((value) {
-                                        Map<String, String> body = {
-                                          'folder': 'product'
-                                        };
-                                        addImage(body, _image!.path)
-                                            .then((value) {
-                                          setState(() {});
-                                        });
-                                      });
-                                    });
-                                  },
-                                  child: DottedBorder(
-                                    color: Colors.grey,
-                                    borderType: BorderType.RRect,
-                                    radius: Radius.circular(12),
-                                    padding: EdgeInsets.all(12),
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(24)),
-                                      child: Container(
-                                        height: 105,
-                                        width: 150,
-                                        child: Column(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Icon(
-                                                Icons.add,
-                                                size: 50,
-                                                color: Colors.grey,
-                                              ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          height: 123,
+                                          width: 168,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(24)),
+                                            image: DecorationImage(
+                                              image: FileImage(_image!),
+                                              fit: BoxFit.fill,
                                             ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                'Add avatar',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 22,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                '1600 x 1200 for high res',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          child: InkWell(
+                                            onTap: () {
+                                              getImage().then((value) {
+                                                Map<String, String> body = {
+                                                  'folder': 'product'
+                                                };
+                                                addImage(body, _image!.path)
+                                                    .then((value) {
+                                                  setState(() {
+                                                    changedImage = true;
+                                                  });
+                                                });
+                                              });
+                                            },
+                                            child: DottedBorder(
+                                              color: Colors.grey,
+                                              borderType: BorderType.RRect,
+                                              radius: Radius.circular(12),
+                                              padding: EdgeInsets.all(12),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(24)),
+                                                child: Container(
+                                                  height: 105,
+                                                  width: 150,
+                                                  child: Column(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Icon(
+                                                          Icons.refresh,
+                                                          size: 50,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          'Change avatar',
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          height: 123,
+                                          width: 168,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(24)),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  snapshot.data?['data']
+                                                      ['avatar']['url']),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              ),
-                        if (_image != null)
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                height: 123,
-                                width: 168,
-                                color: Colors.transparent,
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Container(
-                                    height: 105,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(24)),
-                                      image: DecorationImage(
-                                        image: FileImage(_image!),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Full Name',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Container(
-                                  height: 25,
-                                  width: 25,
-                                  decoration: BoxDecoration(
-                                      color: Color.fromARGB(80, 0, 0, 0),
-                                      shape: BoxShape.circle),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _image = null;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.clear,
-                                      color: Colors.white,
-                                      size: 10,
-                                    ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: fullNameController,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Full Name',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Phone Number',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                controller: phoneNumberController,
+                                maxLength: 10,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                                decoration: InputDecoration(
+                                  counterText: "",
+                                  labelStyle: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Address',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                minLines: 1,
+                                maxLines: 99,
+                                keyboardType: TextInputType.multiline,
+                                controller: addressController,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: fullNameController,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Phone Number',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      controller: phoneNumberController,
-                      maxLength: 10,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      decoration: InputDecoration(
-                        counterText: "",
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Address',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TextFormField(
-                      minLines: 1,
-                      maxLines: 99,
-                      keyboardType: TextInputType.multiline,
-                      controller: addressController,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+                  ],
+                );
+            }
+          }),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         child: Container(
@@ -508,7 +513,9 @@ class _EditProfileState extends State<EditProfilePage> {
                     addressController.text,
                     data.id,
                     imageOnCloud);
-                Navigator.pop(context);
+
+                Navigator.pushNamedAndRemoveUntil(
+                    context, 'ProfilePage', ModalRoute.withName('ProfilePag'));
               },
               child: Container(
                 height: 49,

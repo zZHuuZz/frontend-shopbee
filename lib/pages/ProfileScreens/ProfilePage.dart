@@ -263,7 +263,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.pushNamed(context, 'EditProfilePage',
                                 arguments: EditProfileData(
                                   profileData['data']['id'],
-                                ));
+                                )).then((_) => setState(() {}));
+                            ;
                           },
                           child: Align(
                             alignment: Alignment.centerLeft,

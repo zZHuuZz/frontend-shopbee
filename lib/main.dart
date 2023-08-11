@@ -55,7 +55,6 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
       ),
       routes: {
-        //"/": (context) => const StoreProfilePage(),
         //login screens
         "/": (context) => const LoginPage(),
         "SignUpPage": (context) => const SignUpPage(),
@@ -83,7 +82,7 @@ class MyApp extends StatelessWidget {
         'AddCardPage': (context) => const AddCardPage(),
 
         //wishlist screens
-        "WishlistPage": (context) => WishlistPage(),
+        "WishlistPage": (context) => const WishlistPage(),
 
         //order history screens
         "OrderHistoryPage": (context) => const OrderHistoryPage(),
