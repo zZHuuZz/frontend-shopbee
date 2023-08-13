@@ -15,8 +15,12 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  bool userLocation = false;
+  String userName = "";
+  String phone = "";
+  String address = "";
+  String shopChoose = "";
   Map<String, dynamic> wishlistData = {};
+  Map<String, dynamic> profileData = {};
   String? jwtToken;
 
   // Function to set the JWT token
@@ -56,6 +60,31 @@ class _CartPageState extends State<CartPage> {
       print(e.toString());
     }
     return wishlistData;
+  }
+
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        userName = profileData['data']['fullname'];
+        phone = profileData['data']['phone'];
+        address = profileData['data']['addr'];
+        return responseBody;
+      } else {
+        print('failed profile');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
   }
 
   @override
@@ -112,41 +141,72 @@ class _CartPageState extends State<CartPage> {
               else if (snapshot.data!['data'] != null)
                 return Column(
                   children: [
-                    userLocation
-                        ? UserLocationWidget()
-                        : Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 69,
-                            child: InkWell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '+ Add New Address',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, 'AddNewAddressPage');
-                                setState(() {
-                                  userLocation = true;
-                                });
-                              },
-                            ),
-                            color: Colors.white,
-                          ),
+                    FutureBuilder<Map<String, dynamic>>(
+                        future:
+                            getProfile(), // function where you call your api
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                          // AsyncSnapshot<Your object type>
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(height: 64);
+                          } else {
+                            if (snapshot.hasError)
+                              return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 200,
+                                  color: Colors.white,
+                                  child: Center(
+                                      child: Text('Error: ${snapshot.error}')));
+                            else
+                              return address != ""
+                                  ? UserLocationWidget(
+                                      userName: userName,
+                                      phone: phone,
+                                      address: address,
+                                    )
+                                  : Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 69,
+                                      child: InkWell(
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            '+ Add New Address',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, 'AddNewAddressPage');
+                                        },
+                                      ),
+                                      color: Colors.white,
+                                    );
+                          }
+                        }),
                     SizedBox(height: 9),
                     Expanded(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Column(
                           children: [
-                            for (var cartShopData in snapshot.data?['data'])
-                              CartWidget(cartData: cartShopData),
+                            for (int i = 0;
+                                i < snapshot.data!['data'].length;
+                                i++)
+                              CartWidget(
+                                cartData: snapshot.data?['data'][i],
+                                shopChoose: shopChoose,
+                                callbackChoose: (p0) {
+                                  setState(() {
+                                    shopChoose = p0;
+                                  });
+                                },
+                              ),
                           ],
                         ),
                       ),
@@ -158,38 +218,6 @@ class _CartPageState extends State<CartPage> {
               }
             }
           }),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, 'PaymentOptionPage');
-              },
-              child: Container(
-                height: 49,
-                width: 84,
-                decoration: BoxDecoration(
-                  color: Color(0xFF33907C),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Center(
-                  child: Text(
-                    "Continue to Payment",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

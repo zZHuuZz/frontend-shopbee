@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class UserLocationWidget extends StatefulWidget {
-  const UserLocationWidget({super.key});
+  final String userName;
+  final String phone;
+  final String address;
+  const UserLocationWidget(
+      {super.key,
+      required this.userName,
+      required this.phone,
+      required this.address});
 
   @override
   State<UserLocationWidget> createState() => _UserLocationWidgetState();
@@ -12,7 +19,7 @@ class _UserLocationWidgetState extends State<UserLocationWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 69,
+      height: 90,
       color: Colors.white,
       padding: EdgeInsets.all(13),
       child: Row(
@@ -23,14 +30,24 @@ class _UserLocationWidgetState extends State<UserLocationWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '!User name' + ', ' + '!Zip code',
+                widget.userName,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 13,
                 ),
               ),
               Text(
-                '!Street' + ', ' + '!City',
+                widget.phone,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 13,
+                ),
+              ),
+              Text(
+                widget.address,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 13,

@@ -1,9 +1,24 @@
 // ignore_for_file: file_names, prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
+import 'package:shopbee/globals.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
+import 'package:shopbee/widgets/CartScreens/CardWidget.dart';
 import 'package:shopbee/widgets/CartScreens/UserLocationWidget.dart';
+
+class PaymentData {
+  final String id;
+  final int totalPrice;
+  final List<String> productName;
+  final List<int> price;
+  final List<int> quantity;
+  final List<String> url;
+
+  PaymentData(this.id, this.productName, this.price, this.quantity, this.url,
+      this.totalPrice);
+}
 
 class PaymentOptionPage extends StatefulWidget {
   const PaymentOptionPage({super.key});
@@ -13,14 +28,137 @@ class PaymentOptionPage extends StatefulWidget {
 }
 
 class _PaymentOptionPageState extends State<PaymentOptionPage> {
+  String userName = "";
+  String phone = "";
+  String address = "";
+  String cardHolder = "";
+  String cardNumber = "";
+  String expiresDate = "";
+  String cvc = "";
   int paymentChoice = 0;
-  late int selectedPage;
-  late final PageController _paymentController;
+  bool addcard = false;
+  String? jwtToken;
+  Map<String, dynamic> profileData = {};
+
+  Future<Map<String, dynamic>> createPayment(
+      String paymentMethod, int amount) async {
+    Map<String, dynamic> requestBody = {
+      'payment_method': paymentMethod,
+      'amount': amount,
+    };
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/payment/create'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      Map<String, dynamic> responseBody = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        return responseBody;
+      } else {
+        print(responseBody);
+        print('failed to pay');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return {};
+  }
+
+  Future<Map<String, dynamic>> createOrder(String shopID, paymentID, address,
+      totalPrice, List<Map<String, dynamic>> products) async {
+    Map<String, dynamic> requestBody = {
+      'shop_id': shopID,
+      'payment_id': paymentID,
+      'shipping_addr': address,
+      'total_price': totalPrice,
+      'product_list': products,
+    };
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/order/create'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        return responseBody;
+      } else {
+        print('failed to order');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return {};
+  }
+
+  List<Map<String, dynamic>> makeProduct(List<String> productname,
+      List<String> url, List<int> quantity, List<int> price) {
+    List<Map<String, dynamic>> products = [];
+    for (int i = 0; i < productname.length; i++) {
+      Map<String, dynamic> temp = {
+        'name': productname[i],
+        'price': price[i],
+        'quantity': quantity[i],
+        'image': url[i],
+      };
+      products.add(temp);
+    }
+    return products;
+  }
+
   @override
   void initState() {
-    selectedPage = 0;
-    _paymentController = PageController(initialPage: selectedPage);
+    _getToken().then((value) {});
     super.initState();
+  }
+
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        profileData = responseBody;
+        userName = profileData['data']['fullname'];
+        phone = profileData['data']['phone'];
+        address = profileData['data']['addr'];
+        return responseBody;
+      } else {
+        print('failed profile');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return profileData;
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
   }
 
   Icon chooseIcon(bool check) {
@@ -32,6 +170,7 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as PaymentData;
     return Scaffold(
       backgroundColor: Color(0xFFF6F9FF),
       appBar: AppBar(
@@ -59,30 +198,35 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 275,
-              color: Colors.white,
-              child: Stack(
-                children: [
-                  PageView(
-                    onPageChanged: (page) {
-                      setState(() {
-                        selectedPage = page;
-                      });
-                    },
-                    controller: _paymentController,
-                    children: <Widget>[
-                      for (int i = 0; i < 3; i++)
-                        Center(
+            paymentChoice == 0
+                ? addcard
+                    ? Column(
+                        children: [
+                          SizedBox(height: 20),
+                          CardWidget(
+                            name: '',
+                            cardNumber: 'xxxx xxxx xxxx xxxx',
+                            expiresDate: '',
+                            cvc: '',
+                          ),
+                        ],
+                      )
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 240,
+                        color: Colors.white,
+                        child: Center(
                           child: Column(
                             children: [
                               SizedBox(
-                                height: 26,
+                                height: 20,
                               ),
                               InkWell(
                                 onTap: () {
-                                  //add payment function
+                                  Navigator.pushNamed(context, 'AddCardPage');
+                                  setState(() {
+                                    addcard = true;
+                                  });
                                 },
                                 child: DottedBorder(
                                   color: Colors.grey,
@@ -110,7 +254,7 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                                           Align(
                                             alignment: Alignment.center,
                                             child: Text(
-                                              'Add Payment Method',
+                                              'Add Card',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,
@@ -127,26 +271,8 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                             ],
                           ),
                         ),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 5),
-                      child: PageViewDotIndicator(
-                        currentItem: selectedPage,
-                        count: 3,
-                        unselectedColor: Colors.black26,
-                        selectedColor: Color(0xFF33907C),
-                        duration: const Duration(milliseconds: 200),
-                        boxShape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                      )
+                : Container(),
             SizedBox(height: 6),
             Container(
               width: MediaQuery.of(context).size.width,
@@ -207,79 +333,7 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                                   : chooseIcon(false),
                               SizedBox(width: 10),
                               Text(
-                                "Netbanking",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Color(0xFFEFEFEF),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            paymentChoice = 2;
-                          });
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              paymentChoice == 2
-                                  ? chooseIcon(true)
-                                  : chooseIcon(false),
-                              SizedBox(width: 10),
-                              Text(
                                 "Cash on  Delivery",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Color(0xFFEFEFEF),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            paymentChoice = 3;
-                          });
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              paymentChoice == 3
-                                  ? chooseIcon(true)
-                                  : chooseIcon(false),
-                              SizedBox(width: 10),
-                              Text(
-                                "Wallet",
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -302,118 +356,84 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
               ),
             ),
             SizedBox(height: 6),
-            UserLocationWidget(),
+            FutureBuilder<Map<String, dynamic>>(
+                future: getProfile(), // function where you call your api
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  // AsyncSnapshot<Your object type>
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(height: 64);
+                  } else {
+                    if (snapshot.hasError)
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 200,
+                          color: Colors.white,
+                          child:
+                              Center(child: Text('Error: ${snapshot.error}')));
+                    else
+                      return snapshot.data!['data']['addr'] != ""
+                          ? UserLocationWidget(
+                              address: address,
+                              phone: phone,
+                              userName: userName,
+                            )
+                          : Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 69,
+                              child: InkWell(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '+ Add New Address',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, 'AddNewAddressPage');
+                                  setState(() {});
+                                },
+                              ),
+                              color: Colors.white,
+                            );
+                  }
+                }),
             SizedBox(height: 6),
             Padding(
               padding: EdgeInsets.only(top: 5),
               child: Container(
                 width: MediaQuery.of(context).size.height,
-                height: 183,
+                height: 80,
                 color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 11, left: 6, right: 6),
-                      child: Text(
-                        'Price Details',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Price',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Spacer(),
-                          Text(
-                            '5\$',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Delivery Fee',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Spacer(),
-                          Text(
-                            '1\$',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: MediaQuery.of(context).size.height,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                              color: Colors.grey,
-                              width: 0.5,
-                            ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total amount',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
                           ),
                         ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 6),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Total amount',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Text(
-                                  '6\$',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        Text(
+                          data.totalPrice.toString() + ' đ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -428,7 +448,37 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
               onTap: () {
-                //checkout button
+                (paymentChoice == 0
+                        ? createPayment("card", data.totalPrice)
+                        : createPayment("cod", data.totalPrice))
+                    .then(
+                  (value) {
+                    createOrder(
+                            data.id,
+                            value['data']['id'],
+                            address,
+                            data.totalPrice,
+                            makeProduct(data.productName, data.url,
+                                data.quantity, data.price))
+                        .then((value) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: const Text("Order Successed!"),
+                          actions: [
+                            TextButton(
+                              child: const Text("Ok"),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, 'OrderHistoryPage');
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+                  },
+                );
               },
               child: Container(
                 height: 49,

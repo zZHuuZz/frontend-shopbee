@@ -5,11 +5,13 @@ import 'package:shopbee/globals.dart';
 
 class CartItemsWidget extends StatefulWidget {
   final String id;
+  final int quantity;
   final Function(int, int) callbackQuantity;
 
   const CartItemsWidget({
     super.key,
     required this.id,
+    required this.quantity,
     required this.callbackQuantity,
   });
 
@@ -47,6 +49,7 @@ class _CartItemsWidgetState extends State<CartItemsWidget> {
 
   @override
   void initState() {
+    num = widget.quantity;
     super.initState();
   }
 

@@ -19,6 +19,29 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   Map<String, dynamic> profileData = {};
   int _selectedIndex = 3;
   bool switchable = false;
+  Map<String, dynamic> orderData = {};
+
+  Future<Map<String, dynamic>> getOrderList() async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/order/list'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        orderData = responseBody;
+        return responseBody;
+      } else {
+        print('failed order list');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return orderData;
+  }
 
   @override
   void initState() {
@@ -173,11 +196,39 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
               ],
             ),
             const SizedBox(height: 18),
-            Column(
-              children: [
-                for (int i = 0; i < 15; i++) const OrderWidget(),
-              ],
-            ),
+            FutureBuilder<Map<String, dynamic>>(
+                future: getOrderList(), // function where you call your api
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  // AsyncSnapshot<Your object type>
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 78,
+                      color: Colors.grey,
+                    );
+                  } else {
+                    if (snapshot.hasError)
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 78,
+                          color: Colors.white,
+                          child:
+                              Center(child: Text('Error: ${snapshot.error}')));
+                    else if (snapshot.data?['data'] != null)
+                      return Column(
+                        children: [
+                          for (var order in snapshot.data?['data'])
+                            OrderWidget(
+                              orderData: order,
+                            ),
+                        ],
+                      );
+                    else {
+                      return Container();
+                    }
+                  }
+                }),
           ],
         ),
       ),

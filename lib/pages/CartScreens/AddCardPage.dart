@@ -205,14 +205,15 @@ class _AddCardPageState extends State<AddCardPage> {
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: TextField(
-                        maxLength: 18,
+                      child: TextFormField(
+                        maxLength: 15,
                         keyboardType: TextInputType.text,
                         controller: nameController,
                         style: TextStyle(
                           fontSize: 20,
                         ),
                         decoration: InputDecoration(
+                          counterText: "",
                           labelStyle: TextStyle(
                             color: Colors.grey,
                           ),
@@ -291,15 +292,14 @@ class _AddCardPageState extends State<AddCardPage> {
                                 width: 98,
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: TextField(
-                                  inputFormatters: [
-                                    CustomInputFormatter(inputLength: 3),
-                                  ],
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
+                                  maxLength: 3,
                                   controller: cvcController,
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
                                   decoration: InputDecoration(
+                                    counterText: "",
                                     labelStyle: TextStyle(
                                       color: Colors.grey,
                                     ),
@@ -335,7 +335,7 @@ class _AddCardPageState extends State<AddCardPage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
               onTap: () {
-                //Save location
+                Navigator.pop(context);
               },
               child: Container(
                 height: 49,

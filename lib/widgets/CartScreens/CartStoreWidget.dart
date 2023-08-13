@@ -6,14 +6,27 @@ class CartStoreWidget extends StatefulWidget {
   final String id;
   final String name;
   final String url;
-  const CartStoreWidget(
-      {super.key, required this.id, required this.name, required this.url});
+  final Function(String) callbackChoose;
+  final String shopChoose;
+  const CartStoreWidget({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.url,
+    required this.shopChoose,
+    required this.callbackChoose,
+  });
 
   @override
   State<CartStoreWidget> createState() => _CartStoreWidgetState();
 }
 
 class _CartStoreWidgetState extends State<CartStoreWidget> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -56,13 +69,22 @@ class _CartStoreWidgetState extends State<CartStoreWidget> {
                 ),
                 Spacer(),
                 IconButton(
-                    onPressed: () {
-                      //do thing
-                    },
-                    icon: Icon(
-                      Icons.radio_button_checked,
-                      color: Color(0xFF33907C),
-                    ))
+                  onPressed: () {
+                    setState(() {
+                      widget.callbackChoose(widget.id);
+                      print(widget.id);
+                    });
+                  },
+                  icon: widget.shopChoose == widget.id
+                      ? Icon(
+                          Icons.radio_button_checked,
+                          color: Color(0xFF33907C),
+                        )
+                      : Icon(
+                          Icons.radio_button_unchecked,
+                          color: Colors.grey,
+                        ),
+                )
               ],
             ),
           ),
