@@ -1,7 +1,10 @@
 // ignore_for_file: file_names, prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:shopbee/widgets/CartScreens/CartItemsWidget.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
+import 'package:shopbee/globals.dart';
+import 'package:shopbee/widgets/CartScreens/CartWidget.dart';
 import 'package:shopbee/widgets/CartScreens/UserLocationWidget.dart';
 
 class CartPage extends StatefulWidget {
@@ -13,6 +16,59 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   bool userLocation = false;
+  Map<String, dynamic> wishlistData = {};
+  String? jwtToken;
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  Future<Map<String, dynamic>> getCart() async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/cart/view'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        wishlistData = responseBody;
+        return responseBody;
+      } else {
+        print('failed cart');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return wishlistData;
+  }
+
+  @override
+  void initState() {
+    _getToken().then((value) {
+      getCart().then((result) {
+        setState(() {
+          wishlistData = result;
+        });
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,162 +95,69 @@ class _CartPageState extends State<CartPage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          userLocation
-              ? UserLocationWidget()
-              : Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 69,
-                  child: InkWell(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        '+ Add New Address',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+      body: FutureBuilder<Map<String, dynamic>>(
+          future: getCart(), // function where you call your api
+          builder: (BuildContext context,
+              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+            // AsyncSnapshot<Your object type>
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container();
+            } else {
+              if (snapshot.hasError)
+                return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 300,
+                    color: Colors.white,
+                    child: Center(child: Text('Error: ${snapshot.error}')));
+              else if (snapshot.data!['data'] != null)
+                return Column(
+                  children: [
+                    userLocation
+                        ? UserLocationWidget()
+                        : Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 69,
+                            child: InkWell(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '+ Add New Address',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, 'AddNewAddressPage');
+                                setState(() {
+                                  userLocation = true;
+                                });
+                              },
+                            ),
+                            color: Colors.white,
+                          ),
+                    SizedBox(height: 9),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: [
+                            for (var cartShopData in snapshot.data?['data'])
+                              CartWidget(cartData: cartShopData),
+                          ],
                         ),
                       ),
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, 'AddNewAddressPage');
-                      setState(() {
-                        userLocation = true;
-                      });
-                    },
-                  ),
-                  color: Colors.white,
-                ),
-          SizedBox(height: 9),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  for (int i = 0; i < 5; i++) CartItemsWidget(),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Container(
-                      width: MediaQuery.of(context).size.height,
-                      height: 183,
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                EdgeInsets.only(top: 11, left: 6, right: 6),
-                            child: Text(
-                              'Price Details',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 6),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Price',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  '5\$',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 6),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Delivery Fee',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  '1\$',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          Expanded(
-                            child: Container(
-                              width: MediaQuery.of(context).size.height,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Colors.grey,
-                                    width: 0.5,
-                                  ),
-                                ),
-                              ),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 6),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Total amount',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Text(
-                                        '6\$',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+                  ],
+                );
+              else {
+                return Container();
+              }
+            }
+          }),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         child: Container(
@@ -203,7 +166,7 @@ class _CartPageState extends State<CartPage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
               onTap: () {
-                //payment button
+                Navigator.pushNamed(context, 'PaymentOptionPage');
               },
               child: Container(
                 height: 49,

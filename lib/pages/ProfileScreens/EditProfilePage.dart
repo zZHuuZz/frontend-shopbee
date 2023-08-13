@@ -508,14 +508,17 @@ class _EditProfileState extends State<EditProfilePage> {
             child: InkWell(
               onTap: () {
                 updateProfile(
-                    fullNameController.text,
-                    phoneNumberController.text,
-                    addressController.text,
-                    data.id,
-                    imageOnCloud);
-
-                Navigator.pushNamedAndRemoveUntil(
-                    context, 'ProfilePage', ModalRoute.withName('ProfilePag'));
+                        fullNameController.text,
+                        phoneNumberController.text,
+                        addressController.text,
+                        data.id,
+                        imageOnCloud)
+                    .then(
+                  (value) {
+                    Navigator.pushNamedAndRemoveUntil(context, 'ProfilePage',
+                        ModalRoute.withName('ProfilePage'));
+                  },
+                );
               },
               child: Container(
                 height: 49,

@@ -6,7 +6,9 @@ import 'package:shopbee/pages/StoreProfileScreens/StoreProfilePage.dart';
 class FollowStoreWidget extends StatefulWidget {
   final String name;
   final String id;
-  const FollowStoreWidget({super.key, required this.name, required this.id});
+  final String url;
+  const FollowStoreWidget(
+      {super.key, required this.name, required this.id, required this.url});
 
   @override
   State<FollowStoreWidget> createState() => _FollowStoreWidgetState();
@@ -123,13 +125,13 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
               ),
             ),
           ),
-          const Align(
+          Align(
             alignment: Alignment(0, -0.25),
             child: CircleAvatar(
               radius: 35,
               backgroundColor: Color(0xFF33907C),
               foregroundColor: Colors.white,
-              //backgroundImage: NetworkImage("ADD URL HERE"),
+              backgroundImage: NetworkImage(widget.url),
             ),
           ),
         ],

@@ -11,7 +11,7 @@ class ProductDetailWidget extends StatefulWidget {
 }
 
 class _ProductDetailWidgetState extends State<ProductDetailWidget> {
-  Map<String, dynamic> categoryData = {};
+  Map<String, dynamic> productData = {};
   Future<Map<String, dynamic>> getProductDetail() async {
     try {
       Response response = await get(
@@ -22,7 +22,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
-        categoryData = responseBody;
+        productData = responseBody;
         return responseBody;
       } else {
         print('failed category');
@@ -30,9 +30,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
     } catch (e) {
       print(e.toString());
     }
-    return categoryData;
+    return productData;
   }
 
+  @override
   void initState() {
     super.initState();
   }

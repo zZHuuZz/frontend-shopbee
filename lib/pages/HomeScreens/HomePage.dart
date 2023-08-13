@@ -601,11 +601,12 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             for (var product in snapshot.data?['data'])
                               HomePageProductWidget(
-                                  id: product['id'],
-                                  name: product['name'],
-                                  price: product['price'],
-                                  store: product['shop']['fullname'],
-                                  url: product['image']['url']),
+                                id: product['id'],
+                                name: product['name'],
+                                price: product['price'],
+                                store: product['shop']['fullname'],
+                                url: product['image']['url'],
+                              ),
                           ],
                         ),
                       );
@@ -651,7 +652,7 @@ class _HomePageState extends State<HomePage> {
                             alignment: Alignment.topRight,
                             child: InkWell(
                               onTap: () {
-                                //add start shopping function
+                                //add follow store function
                               },
                               child: Container(
                                 width: 93,
@@ -720,7 +721,8 @@ class _HomePageState extends State<HomePage> {
                                           in snapshot.data?['data'])
                                         FollowStoreWidget(
                                             name: storeData['fullname'],
-                                            id: storeData['id']),
+                                            id: storeData['id'],
+                                            url: storeData['avatar']['url']),
                                     ],
                                   ),
                                 ),

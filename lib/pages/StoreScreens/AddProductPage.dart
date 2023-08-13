@@ -671,7 +671,8 @@ class _AddProductState extends State<AddProductPage> {
                         imageOnCloud)
                     .then(
                   (value) {
-                    Navigator.pop(context);
+                    Navigator.pushNamedAndRemoveUntil(context, 'MyStorePage',
+                        ModalRoute.withName('MyStorePage'));
                   },
                 );
               },

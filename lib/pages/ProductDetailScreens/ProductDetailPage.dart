@@ -34,7 +34,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
         print(responseBody);
       } else {
-        print('failed to add');
+        print('failed to add wishlist');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void addToCart(String productID) async {
+    Map<String, dynamic> requestBody = {
+      'product_id': productID,
+      'quantity': 1,
+    };
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/cart/addproduct'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+      } else {
+        print('failed to add cart');
       }
     } catch (e) {
       print(e.toString());
@@ -119,7 +144,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               child: IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
-                onPressed: () => {},
+                onPressed: () => {
+                  setState(
+                    () {
+                      addToCart(data.id);
+                    },
+                  )
+                },
               ),
             ),
           ),
