@@ -21,26 +21,6 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   String? jwtToken;
 
-  void addToWishlist(String productID) async {
-    try {
-      Response response = await post(
-        Uri.parse(apiURL + 'api/v1/wishlist/addproduct/${productID}'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $jwtToken',
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
-        print(responseBody);
-      } else {
-        print('failed to add wishlist');
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   void addToCart(String productID) async {
     Map<String, dynamic> requestBody = {
       'product_id': productID,
@@ -58,8 +38,38 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
         print(responseBody);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Success"),
+            content: const Text("Product added to cart"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
       } else {
         print('failed to add cart');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Failed"),
+            content: const Text("Product failed to add cart"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
       }
     } catch (e) {
       print(e.toString());
@@ -125,13 +135,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               child: IconButton(
                 icon: Icon(Icons.favorite, color: Colors.white, size: 30),
-                onPressed: () => {
-                  setState(
-                    () {
-                      addToWishlist(data.id);
-                    },
-                  )
-                },
+                onPressed: () => Navigator.pushNamed(context, 'WishlistPage'),
               ),
             ),
           ),
@@ -144,13 +148,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               child: IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
-                onPressed: () => {
-                  setState(
-                    () {
-                      addToCart(data.id);
-                    },
-                  )
-                },
+                onPressed: () => Navigator.pushNamed(context, 'CartPage'),
               ),
             ),
           ),
@@ -167,12 +165,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                addToCart(data.id);
+              },
               child: Container(
                 height: 49,
                 width: 84,
                 decoration: BoxDecoration(
-                  color: Color(0xFF33907C),
+                  color: Color(0xFF),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Center(

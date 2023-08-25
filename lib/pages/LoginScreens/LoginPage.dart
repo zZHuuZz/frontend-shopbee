@@ -6,6 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shopbee/globals.dart';
 
+extension extString on String {
+  bool get isValidEmail {
+    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    return !emailRegExp.hasMatch(this);
+  }
+}
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -14,6 +21,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   String? jwtToken;
   final emailController = TextEditingController();
   final passController = TextEditingController();
@@ -82,6 +90,7 @@ class _LoginState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF33907C),
       body: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
@@ -118,6 +127,11 @@ class _LoginState extends State<LoginPage> {
                   controller: emailController,
                   style: const TextStyle(color: Colors.white),
                   cursorColor: Colors.white,
+                  validator: (val) {
+                    if (val!.isValidEmail) return 'Enter valid email';
+                    if (val.isEmpty) return 'Please enter email';
+                    return null;
+                  },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
@@ -134,6 +148,14 @@ class _LoginState extends State<LoginPage> {
                       borderSide: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(100),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                   ),
                 ),
               ),
@@ -147,6 +169,10 @@ class _LoginState extends State<LoginPage> {
                   obscureText: passToggle,
                   style: const TextStyle(color: Colors.white),
                   cursorColor: Colors.white,
+                  validator: (val) {
+                    if (val!.isEmpty) return 'Please enter password';
+                    return null;
+                  },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
@@ -160,6 +186,14 @@ class _LoginState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(100),
                     ),
@@ -199,8 +233,10 @@ class _LoginState extends State<LoginPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(
                   onTap: () {
-                    signin(emailController.text.toString(),
-                        passController.text.toString());
+                    if (_formKey.currentState!.validate()) {
+                      signin(emailController.text.toString(),
+                          passController.text.toString());
+                    }
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,

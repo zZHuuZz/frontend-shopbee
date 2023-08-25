@@ -11,6 +11,8 @@ class ProductDetailWidget extends StatefulWidget {
 }
 
 class _ProductDetailWidgetState extends State<ProductDetailWidget> {
+  String? jwtToken;
+
   Map<String, dynamic> productData = {};
   Future<Map<String, dynamic>> getProductDetail() async {
     try {
@@ -25,7 +27,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
         productData = responseBody;
         return responseBody;
       } else {
-        print('failed category');
+        print('failed product details');
       }
     } catch (e) {
       print(e.toString());
@@ -33,8 +35,76 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
     return productData;
   }
 
+  void addToWishlist(String productID) async {
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/wishlist/addproduct/${productID}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Success"),
+            content: const Text("Product added in whishlist"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      } else {
+        print('failed to add wishlist');
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Error"),
+            content: const Text("Product already in whishlist"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
   @override
   void initState() {
+    _getToken().then((value) {});
     super.initState();
   }
 
@@ -78,18 +148,31 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                              padding:
-                                  EdgeInsets.only(top: 16, left: 16, right: 16),
-                              child: Text(
-                                snapshot.data?['data']['name'],
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black,
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 5, left: 16, right: 16),
+                                  child: Text(
+                                    snapshot.data?['data']['name'],
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                              Spacer(),
+                              Padding(
+                                padding: EdgeInsets.only(left: 16, right: 16),
+                                child: IconButton(
+                                  icon: Icon(Icons.favorite_border,
+                                      color: Colors.pink, size: 30),
+                                  onPressed: () => {addToWishlist(widget.id)},
                                 ),
-                              )),
+                              ),
+                            ],
+                          ),
                           Row(
                             children: [
                               Padding(

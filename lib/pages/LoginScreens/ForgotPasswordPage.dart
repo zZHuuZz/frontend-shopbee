@@ -1,6 +1,16 @@
 // ignore_for_file: file_names, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:shopbee/globals.dart';
+import 'dart:convert';
+
+extension extString on String {
+  bool get isValidEmail {
+    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    return !emailRegExp.hasMatch(this);
+  }
+}
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -12,6 +22,43 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPasswordPage> {
   final emailController = TextEditingController();
   bool passToggle = true;
+
+  void forgotpassword(String email) async {
+    Map<String, dynamic> requestBody = {'email': email};
+
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/user/forgotpw'),
+        body: jsonEncode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Success"),
+            content: const Text("Please check your email"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      } else {
+        print('Forgot password failed');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +128,11 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                     controller: emailController,
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
+                    validator: (val) {
+                      if (val!.isValidEmail) return 'Enter valid email';
+                      if (val.isEmpty) return 'Please enter email';
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelText: "Email",
                       labelStyle: const TextStyle(
@@ -104,8 +156,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(
                   onTap: () {
-                    //add send code to email functions
-                    Navigator.pushNamed(context, "/");
+                    forgotpassword(emailController.text);
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -140,10 +191,10 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "SignUpPage");
+                      Navigator.pushNamed(context, "/");
                     },
                     child: const Text(
-                      "Sign Up",
+                      "Sign In",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

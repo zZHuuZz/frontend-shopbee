@@ -341,7 +341,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Refer a Friend",
+                              "Terms & Conditions",
                               style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,
@@ -361,11 +361,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     Expanded(
                       child: Container(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, "ChangePasswordPage");
+                          },
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Terms & Conditions",
+                              "Change Password",
                               style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,

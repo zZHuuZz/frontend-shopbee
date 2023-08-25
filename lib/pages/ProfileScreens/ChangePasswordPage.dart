@@ -6,16 +6,6 @@ import 'package:shopbee/globals.dart';
 import 'package:http/http.dart';
 
 extension extString on String {
-  bool get isValidName {
-    final nameRegExp = new RegExp(r'[0-9!@#\$%^&*()_+{}\[\]:;<>,.?~\\/-]');
-    return nameRegExp.hasMatch(this);
-  }
-
-  bool get isValidEmail {
-    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    return !emailRegExp.hasMatch(this);
-  }
-
   bool get isValidPassword {
     final passwordRegExp =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
@@ -23,19 +13,19 @@ extension extString on String {
   }
 }
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpState();
+  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
-class _SignUpState extends State<SignUpPage> {
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
+  String? jwtToken;
   final _formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController();
+  final oldpassController = TextEditingController();
   final passController = TextEditingController();
-  final nameController = TextEditingController();
   final repassController = TextEditingController();
 
   bool passToggle = true;
@@ -52,42 +42,85 @@ class _SignUpState extends State<SignUpPage> {
     return const Color(0xFF44E49E);
   }
 
-  void _sleep() {
-    Future.delayed(const Duration(seconds: 10)).then((value) {
-      print('Sleep completed');
-    });
-  }
-
-  void signup(String email, name, password, repass) async {
+  void changepassword(String oldpass, password) async {
     Map<String, dynamic> requestBody = {
-      'email': email,
-      'fullname': name,
-      'password': password,
+      'old_pass': oldpass,
+      'new_pass': password,
     };
     try {
       final response = await post(
-        Uri.parse(apiURL + 'api/v1/user/register'),
+        Uri.parse(apiURL + 'api/v1/user/changepw'),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
         },
         body: jsonEncode(requestBody),
-        encoding: Encoding.getByName('utf-8'),
       );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
-        String data = responseBody['data'];
-        print(data);
-        print('Sign up successfully');
-        _sleep();
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/');
+        print(responseBody['data']);
+        print('Change password successfully');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Success"),
+            content: const Text("Password have been changed"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.popUntil(
+                      context, ModalRoute.withName('ProfilePage'));
+                },
+              ),
+            ],
+          ),
+        );
       } else {
-        print('Sign up failed');
+        print('Change password failed');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Failded"),
+            content: const Text("Change password failed"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
       }
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  @override
+  void initState() {
+    _getToken().then((value) {});
+    super.initState();
   }
 
   @override
@@ -120,7 +153,7 @@ class _SignUpState extends State<SignUpPage> {
               const Align(
                 alignment: Alignment.center,
                 child: Text(
-                  "Welcome to ShopBee",
+                  "Change Password",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 29,
@@ -128,13 +161,15 @@ class _SignUpState extends State<SignUpPage> {
                 ),
               ),
               const SizedBox(height: 54),
-              const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Signup to your account",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+              Center(
+                child: Center(
+                  child: Text(
+                    "Password must have at least eight character and special symbol",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -143,59 +178,14 @@ class _SignUpState extends State<SignUpPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                 child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  controller: nameController,
-                  style: const TextStyle(color: Colors.white),
-                  cursorColor: Colors.white,
-                  validator: (val) {
-                    if (val!.isValidName) return 'Enter valid name';
-                    if (val.isEmpty) return 'Please enter name';
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 10.0),
-                    labelText: "Full Name",
-                    labelStyle: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-                child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  controller: emailController,
+                  controller: oldpassController,
                   style: const TextStyle(color: Colors.white),
                   cursorColor: Colors.white,
-                  validator: (val) {
-                    if (val!.isValidEmail) return 'Enter valid email';
-                    if (val.isEmpty) return 'Please enter email';
-                    return null;
-                  },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
-                    labelText: "Email",
+                    labelText: "Old Password",
                     labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -236,7 +226,7 @@ class _SignUpState extends State<SignUpPage> {
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
-                    labelText: "Password",
+                    labelText: "New Password",
                     labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -294,7 +284,7 @@ class _SignUpState extends State<SignUpPage> {
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
-                    labelText: "Re-enter Password",
+                    labelText: "Re-enter New Password",
                     labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -339,11 +329,8 @@ class _SignUpState extends State<SignUpPage> {
                 child: InkWell(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      signup(
-                          emailController.text.toString(),
-                          nameController.text.toString(),
-                          passController.text.toString(),
-                          repassController.text.toString());
+                      changepassword(
+                          oldpassController.text, passController.text);
                     }
                   },
                   child: Container(
@@ -355,7 +342,7 @@ class _SignUpState extends State<SignUpPage> {
                     ),
                     child: const Center(
                       child: Text(
-                        "Create",
+                        "Change",
                         style: TextStyle(
                           color: Color(0xFF13B58C),
                           fontSize: 20,
@@ -365,32 +352,6 @@ class _SignUpState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Have an account?",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/");
-                    },
-                    child: const Text(
-                      "Sign In",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),

@@ -12,6 +12,7 @@ import 'pages/OrderHistoryScreens/OrderHistoryPage.dart';
 //profile screens
 import 'pages/ProfileScreens/ProfilePage.dart';
 import 'pages/ProfileScreens/EditProfilePage.dart';
+import 'pages/ProfileScreens/ChangePasswordPage.dart';
 
 //store screens
 import 'pages/StoreScreens/AddProductPage.dart';
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
         //profile screens
         "ProfilePage": (context) => ProfilePage(),
         "EditProfilePage": (context) => const EditProfilePage(),
+        "ChangePasswordPage": (context) => const ChangePasswordPage(),
 
         //category screens
         "CategoryPage": (context) => const CategoryPage(),
