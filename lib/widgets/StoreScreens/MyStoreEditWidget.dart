@@ -16,6 +16,7 @@ class MyStoreEditWidget extends StatefulWidget {
 }
 
 class _MyStoreEditWidgetState extends State<MyStoreEditWidget> {
+  String? jwtToken;
   final searchController = TextEditingController();
   Map<String, dynamic> myProductData = {};
 
@@ -40,6 +41,49 @@ class _MyStoreEditWidgetState extends State<MyStoreEditWidget> {
       print(e.toString());
     }
     return myProductData;
+  }
+
+  Future<void> deleteProduct(String id) async {
+    try {
+      Response response = await delete(
+        Uri.parse(apiURL + 'api/v1/product/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+      } else {
+        print('failed to delete');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
+  }
+
+  @override
+  void initState() {
+    _getToken().then((value) {});
+    super.initState();
   }
 
   @override
@@ -251,8 +295,12 @@ class _MyStoreEditWidgetState extends State<MyStoreEditWidget> {
                                                           color: Colors.red),
                                                     ),
                                                     onPressed: () {
-                                                      // add delete product funtion here
-                                                      Navigator.pop(context);
+                                                      deleteProduct(
+                                                              myProduct['id'])
+                                                          .then((value) {
+                                                        Navigator.pop(context);
+                                                        setState(() {});
+                                                      });
                                                     },
                                                   ),
                                                 ],

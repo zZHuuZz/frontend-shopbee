@@ -8,8 +8,10 @@ import 'package:shopbee/widgets/StoreProfileScreens/StoreProfileWidget.dart';
 
 class StoreProfileData {
   final String id;
+  final String name;
+  final String url;
 
-  StoreProfileData(this.id);
+  StoreProfileData(this.id, this.name, this.url);
 }
 
 class StoreProfilePage extends StatefulWidget {
@@ -21,11 +23,108 @@ class StoreProfilePage extends StatefulWidget {
 class _StoreProfilePageState extends State<StoreProfilePage> {
   String? jwtToken;
   Map<String, dynamic> storeProfileData = {};
+  Map<String, dynamic> storeProfileProductData = {};
+  Map<String, dynamic> storeFollowers = {};
 
   @override
   void initState() {
     _getToken().then((value) {});
     super.initState();
+  }
+
+  Future<Map<String, dynamic>> getFollower(String id) async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/user/like/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        storeFollowers = responseBody;
+        print(responseBody);
+        return responseBody;
+      } else {
+        print(jsonDecode(response.body));
+        print('failed followers');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return storeFollowers;
+  }
+
+  Future<bool> getFollowStatus(String id) async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/user/likestatus/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        print(jsonDecode(response.body));
+        return true;
+      } else {
+        print(jsonDecode(response.body));
+        print('failed check follow');
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+  Future<Map<String, dynamic>> followShop(String id) async {
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/user/like/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        storeFollowers = responseBody;
+        print(responseBody);
+        return responseBody;
+      } else {
+        print(jsonDecode(response.body));
+        print('failed to follow shop');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return storeFollowers;
+  }
+
+  Future<Map<String, dynamic>> unfollowShop(String id) async {
+    try {
+      Response response = await post(
+        Uri.parse(apiURL + 'api/v1/user/dislike/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        storeFollowers = responseBody;
+        print(responseBody);
+        return responseBody;
+      } else {
+        print(jsonDecode(response.body));
+        print('failed disfllow shop');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return storeFollowers;
   }
 
   Future<Map<String, dynamic>> getStoreProfile(String id) async {
@@ -48,6 +147,28 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
       print(e.toString());
     }
     return storeProfileData;
+  }
+
+  Future<Map<String, dynamic>> getStoreProfileProduct(String id) async {
+    try {
+      Response response = await get(
+        Uri.parse(apiURL + 'api/v1/product/list?shop_id=${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        storeProfileProductData = responseBody;
+        return responseBody;
+      } else {
+        print(response.body);
+        print('failed product');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return storeProfileProductData;
   }
 
   // Function to set the JWT token
@@ -106,7 +227,7 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
                   toolbarHeight: 100,
                   backgroundColor: Color(0xFF33907C),
                   title: Text(
-                    'Shop name',
+                    data.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
@@ -140,57 +261,183 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
                                       CircleAvatar(
                                         backgroundColor: Color(0xFF33907C),
                                         radius: 24,
+                                        backgroundImage: NetworkImage(data.url),
                                       ),
                                       SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Shop name',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                          Text(
-                                            '@shop email',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black54),
-                                          ),
-                                        ],
+                                      Text(
+                                        data.name,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
                                       ),
                                       Spacer(),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 39),
-                                        child: InkWell(
-                                          onTap: () {},
-                                          child: Container(
-                                            width: 87,
-                                            height: 23,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                              color: const Color(0xFF33907C),
-                                            ),
-                                            child: const Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Follow",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
+                                      FutureBuilder<bool>(
+                                          future: getFollowStatus(data.id),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<bool> snapshot) {
+                                            // AsyncSnapshot<Your object type>
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 39),
+                                                child: InkWell(
+                                                  child: Container(
+                                                    width: 87,
+                                                    height: 23,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              14),
+                                                      color: Colors.white,
+                                                      border: Border.all(
+                                                        color:
+                                                            Color(0xFF33907C),
+                                                      ),
+                                                    ),
+                                                    child: const Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        "Loading...",
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xFF33907C),
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                              );
+                                            } else {
+                                              if (snapshot.hasError)
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 39),
+                                                  child: InkWell(
+                                                    child: Container(
+                                                      width: 87,
+                                                      height: 23,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(14),
+                                                        color: Colors.white,
+                                                        border: Border.all(
+                                                          color:
+                                                              Color(0xFF33907C),
+                                                        ),
+                                                      ),
+                                                      child: const Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          "Loading...",
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xFF33907C),
+                                                            fontSize: 12,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              else
+                                                return !snapshot.data!
+                                                    ? Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 39),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            followShop(data.id)
+                                                                .then((value) {
+                                                              setState(() {});
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            width: 87,
+                                                            height: 23,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          14),
+                                                              color: const Color(
+                                                                  0xFF33907C),
+                                                            ),
+                                                            child: const Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: Text(
+                                                                "Follow",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 39),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            unfollowShop(
+                                                                    data.id)
+                                                                .then((value) {
+                                                              setState(() {});
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            width: 87,
+                                                            height: 23,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          14),
+                                                              color:
+                                                                  Colors.white,
+                                                              border:
+                                                                  Border.all(
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            ),
+                                                            child: const Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: Text(
+                                                                "Unfollow",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                            }
+                                          }),
                                     ],
                                   ),
                                 ),
@@ -213,13 +460,45 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.black),
                                           ),
-                                          Text(
-                                            '0',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
+                                          FutureBuilder<Map<String, dynamic>>(
+                                              future: getFollower(data.id),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<
+                                                          Map<String, dynamic>>
+                                                      snapshot) {
+                                                // AsyncSnapshot<Your object type>
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Text(
+                                                    '?',
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black),
+                                                  );
+                                                } else {
+                                                  if (snapshot.hasError)
+                                                    return Text(
+                                                      '?',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                    );
+                                                  else
+                                                    return Text(
+                                                      snapshot.data!['like']
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                    );
+                                                }
+                                              }),
                                         ],
                                       ),
                                       Column(
@@ -235,13 +514,58 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.black),
                                           ),
-                                          Text(
-                                            '0',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
+                                          FutureBuilder<Map<String, dynamic>>(
+                                              future: getStoreProfileProduct(
+                                                  data.id),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<
+                                                          Map<String, dynamic>>
+                                                      snapshot) {
+                                                // AsyncSnapshot<Your object type>
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Text(
+                                                    '?',
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black),
+                                                  );
+                                                } else {
+                                                  if (snapshot.hasError)
+                                                    return Text(
+                                                      '?',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                    );
+                                                  else if (!snapshot
+                                                      .data?['data'].isEmpty)
+                                                    return Text(
+                                                      snapshot
+                                                          .data!['data'].length
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                    );
+                                                  else {
+                                                    return Text(
+                                                      '?',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                    );
+                                                  }
+                                                }
+                                              }),
                                         ],
                                       ),
                                     ],
@@ -275,7 +599,7 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
                     toolbarHeight: 100,
                     backgroundColor: Color(0xFF33907C),
                     title: Text(
-                      '',
+                      data.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,

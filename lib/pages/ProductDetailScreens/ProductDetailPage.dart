@@ -172,7 +172,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 height: 49,
                 width: 84,
                 decoration: BoxDecoration(
-                  color: Color(0xFF),
+                  color: Color(0xFF33907C),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Center(

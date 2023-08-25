@@ -126,89 +126,71 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF33907C),
+      backgroundColor: Color(0xFFE5E5E5),
+      appBar: AppBar(
+        toolbarHeight: 100,
+        backgroundColor: Color(0xFF33907C),
+        title: Text(
+          'Change Password',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            size: 40,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 85),
-              const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Change Password",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 29,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 54),
-              Center(
-                child: Center(
-                  child: Text(
-                    "Password must have at least eight character and special symbol",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 86),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: oldpassController,
-                  style: const TextStyle(color: Colors.white),
-                  cursorColor: Colors.white,
+                  style: const TextStyle(color: Color(0xFF33907C)),
+                  cursorColor: Color(0xFF33907C),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
                     labelText: "Old Password",
                     labelStyle: const TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF33907C),
                       fontSize: 18,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                   ),
                 ),
               ),
+              const SizedBox(height: 35),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
@@ -216,8 +198,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   keyboardType: TextInputType.visiblePassword,
                   controller: passController,
                   obscureText: passToggle,
-                  style: const TextStyle(color: Colors.white),
-                  cursorColor: Colors.white,
+                  style: const TextStyle(color: Color(0xFF33907C)),
+                  cursorColor: Color(0xFF33907C),
                   validator: (val) {
                     if (val!.isValidPassword) return 'Enter valid password';
                     if (val.isEmpty) return 'Please enter password';
@@ -228,23 +210,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         vertical: 10.0, horizontal: 10.0),
                     labelText: "New Password",
                     labelStyle: const TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF33907C),
                       fontSize: 18,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     suffix: InkWell(
@@ -259,12 +241,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       },
                       child: Icon(
                         passToggle ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.white,
+                        color: Color(0xFF33907C),
                       ),
                     ),
                   ),
                 ),
               ),
+              const SizedBox(height: 35),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
@@ -272,8 +255,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   keyboardType: TextInputType.visiblePassword,
                   controller: repassController,
                   obscureText: passToggle,
-                  style: const TextStyle(color: Colors.white),
-                  cursorColor: Colors.white,
+                  style: const TextStyle(color: Color(0xFF33907C)),
+                  cursorColor: Color(0xFF33907C),
                   validator: (value) {
                     if (repassController.text.toString() !=
                         passController.text.toString()) {
@@ -286,23 +269,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         vertical: 10.0, horizontal: 10.0),
                     labelText: "Re-enter New Password",
                     labelStyle: const TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF33907C),
                       fontSize: 18,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Color(0xFF33907C)),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     suffix: InkWell(
@@ -317,13 +300,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       },
                       child: Icon(
                         passToggle ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.white,
+                        color: Color(0xFF33907C),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 55),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: InkWell(
@@ -337,14 +320,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     width: MediaQuery.of(context).size.width,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color(0xFF33907C),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: const Center(
                       child: Text(
                         "Change",
                         style: TextStyle(
-                          color: Color(0xFF13B58C),
+                          color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),

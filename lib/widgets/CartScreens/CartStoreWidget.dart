@@ -53,9 +53,8 @@ class _CartStoreWidgetState extends State<CartStoreWidget> {
                     Navigator.pushNamed(
                       context,
                       'StoreProfilePage',
-                      arguments: StoreProfileData(
-                        widget.id,
-                      ),
+                      arguments:
+                          StoreProfileData(widget.id, widget.name, widget.url),
                     );
                   },
                   child: Text(

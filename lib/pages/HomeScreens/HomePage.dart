@@ -720,9 +720,10 @@ class _HomePageState extends State<HomePage> {
                                       for (var storeData
                                           in snapshot.data?['data'])
                                         FollowStoreWidget(
-                                            name: storeData['fullname'],
-                                            id: storeData['id'],
-                                            url: storeData['avatar']['url']),
+                                          name: storeData['fullname'],
+                                          id: storeData['id'],
+                                          url: storeData['avatar']['url'],
+                                        ),
                                     ],
                                   ),
                                 ),

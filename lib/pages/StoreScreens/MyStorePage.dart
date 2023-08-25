@@ -94,7 +94,6 @@ class _MyStorePageState extends State<MyStorePage> {
         });
       });
     });
-    print(myProductData);
     super.initState();
   }
 

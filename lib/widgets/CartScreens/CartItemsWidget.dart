@@ -20,6 +20,7 @@ class CartItemsWidget extends StatefulWidget {
 }
 
 class _CartItemsWidgetState extends State<CartItemsWidget> {
+  String? jwtToken;
   int num = 1;
   Map<String, dynamic> productData = {};
   Future<Map<String, dynamic>> getCartProduct() async {
@@ -43,14 +44,55 @@ class _CartItemsWidgetState extends State<CartItemsWidget> {
     return productData;
   }
 
-  int calculatePrice(int price) {
-    return price;
+  void deleteProduct(String id) async {
+    try {
+      Response response = await delete(
+        Uri.parse(apiURL + 'api/v1/cart/removeproduct/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+        setState(() {
+          Navigator.pushReplacementNamed(context, "CartPage");
+        });
+      } else {
+        print('failed to remoce cart');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Function to set the JWT token
+  Future<void> _setToken(String token) async {
+    await setToken(token);
+    setState(() {
+      jwtToken = token;
+    });
+    print(jwtToken.toString());
+  }
+
+  // Function to get the JWT token
+  Future<void> _getToken() async {
+    String? token = await getToken();
+    setState(() {
+      jwtToken = token;
+    });
   }
 
   @override
   void initState() {
+    _getToken().then((value) {});
     num = widget.quantity;
     super.initState();
+  }
+
+  int calculatePrice(int price) {
+    return price;
   }
 
   @override
@@ -180,7 +222,7 @@ class _CartItemsWidgetState extends State<CartItemsWidget> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            //remove item button
+                            deleteProduct(widget.id);
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.height,

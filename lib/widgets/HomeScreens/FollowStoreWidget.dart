@@ -74,8 +74,7 @@ class _FollowStoreWidgetState extends State<FollowStoreWidget> {
                                 context,
                                 'StoreProfilePage',
                                 arguments: StoreProfileData(
-                                  widget.id,
-                                ),
+                                    widget.id, widget.name, widget.url),
                               );
                             },
                             child: Text(
