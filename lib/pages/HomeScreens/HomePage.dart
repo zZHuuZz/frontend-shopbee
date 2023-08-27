@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getPopularBook() async {
     try {
       Response response = await get(
-        Uri.parse(apiURL + 'api/v1/product/list?limit=7'),
+        Uri.parse(apiURL + 'api/v1/product/list?category_id=2'),
         headers: {
           'Content-Type': 'application/json',
         },

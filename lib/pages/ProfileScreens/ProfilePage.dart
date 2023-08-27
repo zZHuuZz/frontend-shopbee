@@ -289,55 +289,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     Expanded(
                       child: Container(
                         child: TextButton(
-                          onPressed: () {},
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Language & Currency",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xFFEFEFEF),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Feedback",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xFFEFEFEF),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, "TermsAndConditionsPage");
+                          },
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(

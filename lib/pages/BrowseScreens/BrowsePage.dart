@@ -1,7 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use, file_names
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shopbee/widgets/BrowseScreens/BrowseItemsWidget.dart';
 import 'package:shopbee/globals.dart';
 import 'dart:convert';
@@ -210,9 +210,9 @@ class _BrowsePageState extends State<BrowsePage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               width: MediaQuery.of(context).size.width,
-              height: 56,
+              height: 10,
               color: const Color(0xFF33907C),
-              child: Row(
+              /*child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
@@ -318,7 +318,7 @@ class _BrowsePageState extends State<BrowsePage> {
                     ),
                   ),
                 ],
-              ),
+              ),*/
             ),
             const SizedBox(height: 30),
             BrowseItemsWidget(searchKey: searchController.text),

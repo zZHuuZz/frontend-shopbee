@@ -13,6 +13,7 @@ import 'pages/OrderHistoryScreens/OrderHistoryPage.dart';
 import 'pages/ProfileScreens/ProfilePage.dart';
 import 'pages/ProfileScreens/EditProfilePage.dart';
 import 'pages/ProfileScreens/ChangePasswordPage.dart';
+import 'pages/ProfileScreens/TermsAndConditions.dart';
 
 //store screens
 import 'pages/StoreScreens/AddProductPage.dart';
@@ -94,6 +95,7 @@ class MyApp extends StatelessWidget {
         "ProfilePage": (context) => ProfilePage(),
         "EditProfilePage": (context) => const EditProfilePage(),
         "ChangePasswordPage": (context) => const ChangePasswordPage(),
+        "TermsAndConditionsPage": (context) => const TermsAndConditionsPage(),
 
         //category screens
         "CategoryPage": (context) => const CategoryPage(),
