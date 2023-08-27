@@ -44,6 +44,27 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
     return orderProduct;
   }
 
+  Future<void> changeStatus(String id, String value) async {
+    try {
+      Response response = await patch(
+        Uri.parse(apiURL + 'api/v1/order/shop/${id}/${value}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+      } else {
+        print(jsonDecode(response.body));
+        print('failed change status list');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   void initState() {
     _getToken().then((value) {});
@@ -113,33 +134,23 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
                   ],
                 ),
                 const Spacer(),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7),
-                      child: Container(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 23, vertical: 4),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              widget.orderData['order_status'],
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF33907C),
-                              ),
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: const Color(0xFF33907C)),
-                        ),
-                      ),
-                    )),
+                DropdownMenu<String>(
+                  width: 155,
+                  initialSelection: widget.orderData['order_status'],
+                  onSelected: (String? value) {
+                    // This is called when the user selects an item.
+                    changeStatus(widget.orderData['id'], value!).then(
+                      (value) {
+                        setState(() {});
+                      },
+                    );
+                  },
+                  dropdownMenuEntries: orderStatus
+                      .map<DropdownMenuEntry<String>>((String value) {
+                    return DropdownMenuEntry<String>(
+                        value: value, label: value);
+                  }).toList(),
+                ),
               ]),
             ),
           ),
@@ -225,32 +236,6 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
                       ),
                     ),
                     SizedBox(width: 5),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 7),
-                          child: Container(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 23, vertical: 4),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Change status',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                          ),
-                        )),
                   ],
                 ),
               ),
