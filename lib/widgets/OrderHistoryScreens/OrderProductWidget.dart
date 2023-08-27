@@ -41,63 +41,67 @@ class _OrderProductWidgetState extends State<OrderProductWidget> {
               ),
             ),
             const SizedBox(width: 22),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  /*
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      'ProductDetailPage',
-                      arguments: ProductData(
-                        //product id here
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    /*
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        'ProductDetailPage',
+                        arguments: ProductData(
+                          //product id here
+                        ),
+                      );
+                    },*/
+                    child: Text(
+                      widget.orderProduct['product_origin']['name'],
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
                       ),
-                    );
-                  },*/
-                  child: Text(
-                    widget.orderProduct['product_origin']['name'],
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          widget.orderProduct['product_origin']['price']
-                                  .toString() +
-                              ' đ',
-                          style: TextStyle(
-                            color: Color(0xFF33907C),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            widget.orderProduct['product_origin']['price']
+                                    .toString() +
+                                ' đ',
+                            style: TextStyle(
+                              color: Color(0xFF33907C),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          "Qty: " +
-                              widget.orderProduct['product_origin']['quantity']
-                                  .toString(),
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                        SizedBox(width: 10),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            "Qty: " +
+                                widget.orderProduct['product_origin']
+                                        ['quantity']
+                                    .toString(),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ]),
         ),
