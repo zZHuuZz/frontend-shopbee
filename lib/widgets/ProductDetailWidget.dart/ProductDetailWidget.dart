@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:shopbee/globals.dart';
+import 'package:shopbee/widgets/ProductDetailWidget.dart/ProductDetailFollowStoreWidget.dart';
 
 class ProductDetailWidget extends StatefulWidget {
   final String id;
@@ -12,7 +13,6 @@ class ProductDetailWidget extends StatefulWidget {
 
 class _ProductDetailWidgetState extends State<ProductDetailWidget> {
   String? jwtToken;
-
   Map<String, dynamic> productData = {};
   Future<Map<String, dynamic>> getProductDetail() async {
     try {
@@ -25,8 +25,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
         productData = responseBody;
+        print(responseBody);
         return responseBody;
       } else {
+        print(jsonDecode(response.body));
         print('failed product details');
       }
     } catch (e) {
@@ -240,31 +242,9 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                             ),
                             Spacer(),
                             Padding(
-                              padding: const EdgeInsets.only(right: 16),
-                              child: InkWell(
-                                onTap: () {
-                                  //add follow store button
-                                },
-                                child: Container(
-                                  width: 87,
-                                  height: 23,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14),
-                                    color: const Color(0xFF33907C),
-                                  ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Follow",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                                padding: const EdgeInsets.only(right: 16),
+                                child: ProductDetailFollowStoreWidget(
+                                    id: snapshot.data!['data']['shop']['id'])),
                           ],
                         ),
                       ),

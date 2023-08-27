@@ -397,7 +397,9 @@ class _MyStoreEditWidgetState extends State<MyStoreEditWidget> {
                                                             Color(0xFF33907C),
                                                         foregroundColor:
                                                             Colors.white,
-                                                        //backgroundImage: NetworkImage("ADD URL HERE"),
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                                "http://d1851nciml9u0m.cloudfront.net/user/default-1691832193326062897.png"),
                                                       ),
                                                       SizedBox(width: 6),
                                                       Flexible(
