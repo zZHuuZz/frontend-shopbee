@@ -21,6 +21,7 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPasswordPage> {
   final emailController = TextEditingController();
+  bool errorMessage = false;
   bool passToggle = true;
 
   void forgotpassword(String email) async {
@@ -53,6 +54,9 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
           ),
         );
       } else {
+        setState(() {
+          errorMessage = true;
+        });
         print('Forgot password failed');
       }
     } catch (e) {
@@ -151,6 +155,19 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 10),
+              errorMessage
+                  ? const Align(
+                      child: Text(
+                        '*Your email doesn\'t exist*',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    )
+                  : Container(),
               const SizedBox(height: 47),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),

@@ -19,6 +19,7 @@ import 'pages/StoreScreens/AddProductPage.dart';
 import 'pages/StoreScreens/EditProductPage.dart';
 import 'pages/StoreScreens/MyStorePage.dart';
 import 'pages/StoreScreens/UncreatedStorePage.dart';
+import 'pages/StoreScreens/ViewOrderPage.dart';
 
 //store profile page
 import 'pages/StoreProfileScreens/StoreProfilePage.dart';
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
         "MyStorePage": (context) => MyStorePage(),
         "AddProductPage": (context) => const AddProductPage(),
         "EditProductPage": (context) => const EditProductPage(),
+        "ViewOrderPage": (context) => const ViewOrderPage(),
 
         //store profile screens
         "StoreProfilePage": (context) => const StoreProfilePage(),

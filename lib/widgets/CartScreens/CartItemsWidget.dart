@@ -139,81 +139,94 @@ class _CartItemsWidgetState extends State<CartItemsWidget> {
                               ),
                             ),
                             const SizedBox(width: 22),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data?['data']['name'],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    snapshot.data!['data']['price'].toString() +
-                                        ' đ',
-                                    style: TextStyle(
-                                      color: Color(0xFF33907C),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                StatefulBuilder(builder: (BuildContext context,
-                                    StateSetter setState) {
-                                  return Row(
-                                    children: [
-                                      Text(
-                                        'Qty: ',
+                            Expanded(
+                              child: Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Text(
+                                        snapshot.data?['data']['name'],
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w500,
                                           fontSize: 14,
                                         ),
                                       ),
-                                      InkWell(
-                                        child: Icon(
-                                          Icons.arrow_drop_down,
-                                          color: Colors.grey,
-                                          size: 22,
-                                        ),
-                                        onTap: () {
-                                          setState(() {
-                                            if (num > 1) num = num - 1;
-                                            widget.callbackQuantity(
-                                                num,
-                                                calculatePrice(snapshot
-                                                    .data!['data']['price']));
-                                          });
-                                        },
-                                      ),
-                                      Text(
-                                        num.toString(),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Text(
+                                        snapshot.data!['data']['price']
+                                                .toString() +
+                                            ' đ',
                                         style: TextStyle(
-                                            fontSize: 14, color: Colors.grey),
-                                      ),
-                                      InkWell(
-                                        child: Icon(
-                                          Icons.arrow_drop_up,
-                                          color: Colors.grey,
-                                          size: 22,
+                                          color: Color(0xFF33907C),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
                                         ),
-                                        onTap: () {
-                                          setState(() {
-                                            if (num <= 100) num = num + 1;
-                                            widget.callbackQuantity(
-                                                num,
-                                                calculatePrice(snapshot
-                                                    .data!['data']['price']));
-                                          });
-                                        },
                                       ),
-                                    ],
-                                  );
-                                }),
-                              ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    StatefulBuilder(builder:
+                                        (BuildContext context,
+                                            StateSetter setState) {
+                                      return Row(
+                                        children: [
+                                          Text(
+                                            'Qty: ',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            child: Icon(
+                                              Icons.arrow_drop_down,
+                                              color: Colors.grey,
+                                              size: 22,
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                if (num > 1) num = num - 1;
+                                                widget.callbackQuantity(
+                                                    num,
+                                                    calculatePrice(
+                                                        snapshot.data!['data']
+                                                            ['price']));
+                                              });
+                                            },
+                                          ),
+                                          Text(
+                                            num.toString(),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          ),
+                                          InkWell(
+                                            child: Icon(
+                                              Icons.arrow_drop_up,
+                                              color: Colors.grey,
+                                              size: 22,
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                if (num <= 100) num = num + 1;
+                                                widget.callbackQuantity(
+                                                    num,
+                                                    calculatePrice(
+                                                        snapshot.data!['data']
+                                                            ['price']));
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                                  ],
+                                ),
+                              ),
                             ),
                             const Spacer(),
                           ],

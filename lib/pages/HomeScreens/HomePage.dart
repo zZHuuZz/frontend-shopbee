@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getNewBook() async {
     try {
       Response response = await get(
-        Uri.parse(apiURL + 'api/v1/product/list?limit=3'),
+        Uri.parse(apiURL + 'api/v1/product/list?limit=7'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getPopularBook() async {
     try {
       Response response = await get(
-        Uri.parse(apiURL + 'api/v1/product/list?limit=3'),
+        Uri.parse(apiURL + 'api/v1/product/list?limit=7'),
         headers: {
           'Content-Type': 'application/json',
         },

@@ -234,85 +234,54 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
                     ),
                   ),
                 ),
-                body: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 100,
-                          color: Color(0xFF33907C),
-                        ),
-                        Container(
-                          child: Container(
+                body: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 46, top: 22),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: Color(0xFF33907C),
-                                        radius: 24,
-                                        backgroundImage: NetworkImage(data.url),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        data.name,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                      Spacer(),
-                                      FutureBuilder<bool>(
-                                          future: getFollowStatus(data.id),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<bool> snapshot) {
-                                            // AsyncSnapshot<Your object type>
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 39),
-                                                child: InkWell(
-                                                  child: Container(
-                                                    width: 87,
-                                                    height: 23,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              14),
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                        color:
-                                                            Color(0xFF33907C),
-                                                      ),
-                                                    ),
-                                                    child: const Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Text(
-                                                        "Loading...",
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF33907C),
-                                                          fontSize: 12,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            } else {
-                                              if (snapshot.hasError)
+                            height: 100,
+                            color: Color(0xFF33907C),
+                          ),
+                          Container(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 180,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 46, top: 22),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFF33907C),
+                                          radius: 24,
+                                          backgroundImage:
+                                              NetworkImage(data.url),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          data.name,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black),
+                                        ),
+                                        Spacer(),
+                                        FutureBuilder<bool>(
+                                            future: getFollowStatus(data.id),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<bool> snapshot) {
+                                              // AsyncSnapshot<Your object type>
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
                                                 return Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -346,239 +315,292 @@ class _StoreProfilePageState extends State<StoreProfilePage> {
                                                     ),
                                                   ),
                                                 );
-                                              else
-                                                return !snapshot.data!
-                                                    ? Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 39),
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            followShop(data.id)
-                                                                .then((value) {
-                                                              setState(() {});
-                                                            });
-                                                          },
-                                                          child: Container(
-                                                            width: 87,
-                                                            height: 23,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          14),
-                                                              color: const Color(
+                                              } else {
+                                                if (snapshot.hasError)
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 39),
+                                                    child: InkWell(
+                                                      child: Container(
+                                                        width: 87,
+                                                        height: 23,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(14),
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            color: Color(
+                                                                0xFF33907C),
+                                                          ),
+                                                        ),
+                                                        child: const Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            "Loading...",
+                                                            style: TextStyle(
+                                                              color: Color(
                                                                   0xFF33907C),
+                                                              fontSize: 12,
                                                             ),
-                                                            child: const Align(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              child: Text(
-                                                                "Follow",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 12,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                else
+                                                  return !snapshot.data!
+                                                      ? Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 39),
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              followShop(
+                                                                      data.id)
+                                                                  .then(
+                                                                      (value) {
+                                                                setState(() {});
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              width: 87,
+                                                              height: 23,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14),
+                                                                color: const Color(
+                                                                    0xFF33907C),
+                                                              ),
+                                                              child:
+                                                                  const Align(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                  "Follow",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      )
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 39),
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            unfollowShop(
-                                                                    data.id)
-                                                                .then((value) {
-                                                              setState(() {});
-                                                            });
-                                                          },
-                                                          child: Container(
-                                                            width: 87,
-                                                            height: 23,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          14),
-                                                              color:
-                                                                  Colors.white,
-                                                              border:
-                                                                  Border.all(
-                                                                color:
-                                                                    Colors.red,
-                                                              ),
-                                                            ),
-                                                            child: const Align(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              child: Text(
-                                                                "Unfollow",
-                                                                style:
-                                                                    TextStyle(
+                                                        )
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 39),
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              unfollowShop(
+                                                                      data.id)
+                                                                  .then(
+                                                                      (value) {
+                                                                setState(() {});
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              width: 87,
+                                                              height: 23,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14),
+                                                                color: Colors
+                                                                    .white,
+                                                                border:
+                                                                    Border.all(
                                                                   color: Colors
                                                                       .red,
-                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  const Align(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                  "Unfollow",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
+                                                        );
+                                              }
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Total Followers',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black),
+                                            ),
+                                            FutureBuilder<Map<String, dynamic>>(
+                                                future: getFollower(data.id),
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<
+                                                            Map<String,
+                                                                dynamic>>
+                                                        snapshot) {
+                                                  // AsyncSnapshot<Your object type>
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return Text(
+                                                      '?',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                    );
+                                                  } else {
+                                                    if (snapshot.hasError)
+                                                      return Text(
+                                                        '?',
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black),
                                                       );
-                                            }
-                                          }),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Total Followers',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                          FutureBuilder<Map<String, dynamic>>(
-                                              future: getFollower(data.id),
-                                              builder: (BuildContext context,
-                                                  AsyncSnapshot<
-                                                          Map<String, dynamic>>
-                                                      snapshot) {
-                                                // AsyncSnapshot<Your object type>
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return Text(
-                                                    '?',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.black),
-                                                  );
-                                                } else {
-                                                  if (snapshot.hasError)
-                                                    return Text(
-                                                      '?',
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.black),
-                                                    );
-                                                  else
-                                                    return Text(
-                                                      snapshot.data!['like']
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.black),
-                                                    );
-                                                }
-                                              }),
-                                        ],
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Total Product',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                          FutureBuilder<Map<String, dynamic>>(
-                                              future: getStoreProfileProduct(
-                                                  data.id),
-                                              builder: (BuildContext context,
-                                                  AsyncSnapshot<
-                                                          Map<String, dynamic>>
-                                                      snapshot) {
-                                                // AsyncSnapshot<Your object type>
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return Text(
-                                                    '?',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.black),
-                                                  );
-                                                } else {
-                                                  if (snapshot.hasError)
-                                                    return Text(
-                                                      '?',
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.black),
-                                                    );
-                                                  else if (!snapshot
-                                                      .data?['data'].isEmpty)
-                                                    return Text(
-                                                      snapshot
-                                                          .data!['data'].length
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.black),
-                                                    );
-                                                  else {
-                                                    return Text(
-                                                      '?',
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.black),
-                                                    );
+                                                    else
+                                                      return Text(
+                                                        snapshot.data!['like']
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black),
+                                                      );
                                                   }
-                                                }
-                                              }),
-                                        ],
-                                      ),
-                                    ],
+                                                }),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Total Product',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black),
+                                            ),
+                                            FutureBuilder<Map<String, dynamic>>(
+                                                future: getStoreProfileProduct(
+                                                    data.id),
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<
+                                                            Map<String,
+                                                                dynamic>>
+                                                        snapshot) {
+                                                  // AsyncSnapshot<Your object type>
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return Text(
+                                                      '?',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                    );
+                                                  } else {
+                                                    if (snapshot.hasError)
+                                                      return Text(
+                                                        '?',
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black),
+                                                      );
+                                                    else if (!snapshot
+                                                        .data?['data'].isEmpty)
+                                                      return Text(
+                                                        snapshot.data!['data']
+                                                            .length
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black),
+                                                      );
+                                                    else {
+                                                      return Text(
+                                                        '?',
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black),
+                                                      );
+                                                    }
+                                                  }
+                                                }),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    StoreProfileWidget(id: data.id),
-                  ],
+                        ],
+                      ),
+                      StoreProfileWidget(id: data.id),
+                    ],
+                  ),
                 ),
               );
             else

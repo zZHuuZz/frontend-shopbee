@@ -150,19 +150,20 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                         children: [
                           Row(
                             children: [
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 5, left: 16, right: 16),
-                                  child: Text(
-                                    snapshot.data?['data']['name'],
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black,
-                                    ),
-                                  )),
-                              Spacer(),
+                              Expanded(
+                                child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 5, left: 16, right: 16),
+                                    child: Text(
+                                      snapshot.data?['data']['name'],
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black,
+                                      ),
+                                    )),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(left: 16, right: 16),
                                 child: IconButton(
@@ -223,6 +224,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               child: CircleAvatar(
                                 radius: 16,
                                 backgroundColor: Color(0xFF33907C),
+                                backgroundImage: NetworkImage(
+                                    'http://d1851nciml9u0m.cloudfront.net/user/default-1691832193326062897.png'),
                               ),
                             ),
                             SizedBox(width: 11),

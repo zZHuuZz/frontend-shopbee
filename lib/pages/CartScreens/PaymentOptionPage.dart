@@ -88,8 +88,38 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print(responseBody);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const Text("Order Successed!"),
+            actions: [
+              TextButton(
+                child: const Text("Ok"),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'OrderHistoryPage');
+                },
+              ),
+            ],
+          ),
+        );
         return responseBody;
       } else {
+        print(jsonDecode(response.body));
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const Text("Order Failed!"),
+            actions: [
+              TextButton(
+                child: const Text("Ok"),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'CartPage');
+                },
+              ),
+            ],
+          ),
+        );
         print('failed to order');
       }
     } catch (e) {
@@ -454,29 +484,12 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                     .then(
                   (value) {
                     createOrder(
-                            data.id,
-                            value['data']['id'],
-                            address,
-                            data.totalPrice,
-                            makeProduct(data.productName, data.url,
-                                data.quantity, data.price))
-                        .then((value) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          content: const Text("Order Successed!"),
-                          actions: [
-                            TextButton(
-                              child: const Text("Ok"),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, 'OrderHistoryPage');
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    });
+                        data.id,
+                        value['data']['id'],
+                        address,
+                        data.totalPrice,
+                        makeProduct(data.productName, data.url, data.quantity,
+                            data.price));
                   },
                 );
               },

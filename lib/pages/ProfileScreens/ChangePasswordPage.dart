@@ -161,6 +161,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: oldpassController,
+                  obscureText: true,
                   style: const TextStyle(color: Color(0xFF33907C)),
                   cursorColor: Color(0xFF33907C),
                   decoration: InputDecoration(

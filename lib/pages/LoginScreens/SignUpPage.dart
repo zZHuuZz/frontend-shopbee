@@ -52,12 +52,6 @@ class _SignUpState extends State<SignUpPage> {
     return const Color(0xFF44E49E);
   }
 
-  void _sleep() {
-    Future.delayed(const Duration(seconds: 10)).then((value) {
-      print('Sleep completed');
-    });
-  }
-
   void signup(String email, name, password, repass) async {
     Map<String, dynamic> requestBody = {
       'email': email,
@@ -79,9 +73,21 @@ class _SignUpState extends State<SignUpPage> {
         String data = responseBody['data'];
         print(data);
         print('Sign up successfully');
-        _sleep();
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Success"),
+            content: const Text("Singup successful"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                },
+              ),
+            ],
+          ),
+        );
       } else {
         print('Sign up failed');
       }

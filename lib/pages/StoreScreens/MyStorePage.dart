@@ -181,7 +181,7 @@ class _MyStorePageState extends State<MyStorePage> {
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.height,
-                        height: 210,
+                        height: 243,
                         color: Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -275,6 +275,34 @@ class _MyStorePageState extends State<MyStorePage> {
                             ),
                             SizedBox(
                               height: 27,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, "ViewOrderPage");
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border(
+                                    top: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'View Order',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
