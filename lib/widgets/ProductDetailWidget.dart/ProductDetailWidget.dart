@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:shopbee/globals.dart';
+import 'package:shopbee/pages/StoreProfileScreens/StoreProfilePage.dart';
 import 'package:shopbee/widgets/ProductDetailWidget.dart/ProductDetailFollowStoreWidget.dart';
 
 class ProductDetailWidget extends StatefulWidget {
@@ -231,13 +232,26 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               ),
                             ),
                             SizedBox(width: 11),
-                            Text(
-                              snapshot.data!['data']['shop']['fullname'],
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  'StoreProfilePage',
+                                  arguments: StoreProfileData(
+                                      snapshot.data!['data']['shop']['id'],
+                                      snapshot.data!['data']['shop']
+                                          ['fullname'],
+                                      'http://d1851nciml9u0m.cloudfront.net/user/default-1691832193326062897.png'),
+                                );
+                              },
+                              child: Text(
+                                snapshot.data!['data']['shop']['fullname'],
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                             Spacer(),

@@ -6,6 +6,7 @@ import '../../pages/ProductDetailScreens/ProductDetailPage.dart';
 import 'package:shopbee/globals.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 
 class OrderWidget extends StatefulWidget {
   final Map<String, dynamic> orderData;
@@ -90,7 +91,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.orderData['id'],
+                        widget.orderData['id'].toString().toUpperCase(),
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14,

@@ -5,6 +5,7 @@ import 'package:shopbee/globals.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:shopbee/widgets/CartScreens/ViewOrderProductWidget.dart';
+import 'package:intl/intl.dart';
 
 class ViewOrderWidget extends StatefulWidget {
   final Map<String, dynamic> orderData;
@@ -79,9 +80,8 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
             height: 78,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-            ),
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Colors.grey, width: 2))),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 15, left: 16, bottom: 16, right: 10),
@@ -90,7 +90,7 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.orderData['id'],
+                      widget.orderData['id'].toString().toUpperCase(),
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -117,23 +117,27 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
                     alignment: Alignment.centerRight,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
-                      child: DropdownButton<String>(
-                        value: widget.orderData['status'].toString(),
-                        items: [
-                          for (var status in orderStatus)
-                            DropdownMenuItem(
-                                child: Text(
-                                  status,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                value: status),
-                        ],
-                        onChanged: (String? value) {
-                          //get value when changed
-                          setState(() {});
-                        },
+                      child: Container(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 23, vertical: 4),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              widget.orderData['order_status'],
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF33907C),
+                              ),
+                            ),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: const Color(0xFF33907C)),
+                        ),
                       ),
                     )),
               ]),
@@ -186,9 +190,9 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
               height: 78,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-              ),
+                  color: Colors.white,
+                  border:
+                      Border(bottom: BorderSide(color: Colors.grey, width: 2))),
               child: Padding(
                 padding: const EdgeInsets.only(
                     top: 15, left: 16, bottom: 16, right: 10),
@@ -220,6 +224,33 @@ class _ViewOrderWidgetState extends State<ViewOrderWidget> {
                         ],
                       ),
                     ),
+                    SizedBox(width: 5),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 7),
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 23, vertical: 4),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Change status',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                          ),
+                        )),
                   ],
                 ),
               ),

@@ -130,7 +130,7 @@ class _ViewOrderPageState extends State<ViewOrderPage> {
                 const Padding(
                   padding: EdgeInsets.only(left: 9),
                   child: Text(
-                    "Transactions",
+                    "My Shop Order",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
