@@ -206,7 +206,7 @@ class _AddCardPageState extends State<AddCardPage> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: TextFormField(
-                        maxLength: 15,
+                        maxLength: 19,
                         keyboardType: TextInputType.text,
                         controller: nameController,
                         style: TextStyle(
@@ -246,7 +246,7 @@ class _AddCardPageState extends State<AddCardPage> {
                                 ),
                               ),
                               Container(
-                                width: 300,
+                                width: 200,
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: TextField(
                                   inputFormatters: [

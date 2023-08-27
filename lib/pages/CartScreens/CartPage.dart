@@ -214,7 +214,17 @@ class _CartPageState extends State<CartPage> {
                   ],
                 );
               else {
-                return Container();
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                      child: Text('Your cart is empty',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ))),
+                );
               }
             }
           }),
