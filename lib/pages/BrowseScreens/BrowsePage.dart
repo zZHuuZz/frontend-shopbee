@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use, file_names
+// ignore_for_file: sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use, file_names, prefer_interpolation_to_compose_strings, unused_element, avoid_print, avoid_single_cascade_in_expression_statements, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';

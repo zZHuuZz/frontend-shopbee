@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors, sized_box_for_whitespace
+// ignore_for_file: file_names, prefer_const_constructors, sized_box_for_whitespace, annotate_overrides, avoid_single_cascade_in_expression_statements, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations
 import 'dart:math';
 
 import 'package:flutter/material.dart';

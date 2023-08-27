@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_declarations
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final _storage = FlutterSecureStorage();
