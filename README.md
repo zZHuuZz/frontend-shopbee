@@ -30,7 +30,6 @@ Join the ShopBee buzz today and experience a new way of shopping and selling tha
 
 ## ShopBee: Empowering HCMUS Students Through E-Commerce
 
-## TVC video: https://drive.google.com/file/d/19GCsX2raf7-MZiWoifK07AI7tB-U4eQ_/view
+## TVC video: https://youtu.be/3luafCfqHzc
 
-## Demo video: https://drive.google.com/file/d/1ysnISfjMon7Esv6HeVqTzbtbQgLGGveD/view?usp=drivesdk
-
+## Demo video: https://youtu.be/RE1wqO8GH1Q
